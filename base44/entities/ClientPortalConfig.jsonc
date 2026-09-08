@@ -1,0 +1,101 @@
+{
+  "name": "ClientPortalConfig",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "Obra"
+    },
+    "active": {
+      "type": "boolean",
+      "title": "Portal Ativo",
+      "default": false
+    },
+    "access_token": {
+      "type": "string",
+      "title": "Token de Acesso"
+    },
+    "password": {
+      "type": "string",
+      "title": "Senha (opcional)"
+    },
+    "show_photos": {
+      "type": "boolean",
+      "title": "Mostrar Fotos",
+      "default": true
+    },
+    "show_reports": {
+      "type": "boolean",
+      "title": "Mostrar Relat\u00f3rios",
+      "default": true
+    },
+    "show_progress": {
+      "type": "boolean",
+      "title": "Mostrar Progresso",
+      "default": true
+    },
+    "show_next_steps": {
+      "type": "boolean",
+      "title": "Mostrar Pr\u00f3ximos Passos",
+      "default": true
+    },
+    "show_deadline": {
+      "type": "boolean",
+      "title": "Mostrar Prazo",
+      "default": true
+    }
+  },
+  "required": [
+    "project_id"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

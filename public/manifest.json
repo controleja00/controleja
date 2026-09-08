@@ -1,0 +1,27 @@
+{
+  "name": "ControleJá",
+  "short_name": "ControleJá",
+  "description": "Sistema simples para construtores controlarem obras, gastos, etapas, documentos, fotos, equipes, alertas e relatórios.",
+  "theme_color": "#1B2F55",
+  "background_color": "#F4F6FA",
+  "display": "standalone",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "any",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%231B2F55'/%3E%3Ctext x='96' y='130' text-anchor='middle' font-family='Inter,sans-serif' font-weight='900' font-size='80' fill='%23D7D9DE'%3ECJ%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%231B2F55'/%3E%3Ctext x='256' y='340' text-anchor='middle' font-family='Inter,sans-serif' font-weight='900' font-size='210' fill='%23D7D9DE'%3ECJ%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "name": "Project",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Nome da Obra"
+    },
+    "address": {
+      "type": "string",
+      "title": "Endere\u00e7o"
+    },
+    "client": {
+      "type": "string",
+      "title": "Cliente"
+    },
+    "technical_responsible": {
+      "type": "string",
+      "title": "Respons\u00e1vel T\u00e9cnico"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de In\u00edcio"
+    },
+    "expected_end_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Prazo Previsto"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Planejamento",
+        "Em andamento",
+        "Atrasada",
+        "Conclu\u00edda",
+        "Paralisada",
+        "Arquivada"
+      ],
+      "default": "Planejamento"
+    },
+    "project_type": {
+      "type": "string",
+      "title": "Tipo de Obra",
+      "enum": [
+        "Casa residencial",
+        "Pr\u00e9dio residencial",
+        "Galp\u00e3o industrial",
+        "Obra comercial",
+        "Terraplenagem",
+        "Pavimenta\u00e7\u00e3o",
+        "Drenagem",
+        "Loteamento",
+        "Infraestrutura urbana",
+        "Reforma",
+        "Demoli\u00e7\u00e3o",
+        "Constru\u00e7\u00e3o pesada",
+        "Obra p\u00fablica",
+        "Obra personalizada"
+      ]
+    },
+    "phases": {
+      "type": "array",
+      "title": "Fases da Obra",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "contracted_qty": {
+            "type": "number"
+          },
+          "executed_qty": {
+            "type": "number",
+            "default": 0
+          },
+          "status": {
+            "type": "string",
+            "default": "Pendente"
+          },
+          "responsible": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "progress_method": {
+      "type": "string",
+      "title": "M\u00e9todo de Progresso",
+      "enum": [
+        "F\u00edsico (quantidade)",
+        "Financeiro (valor)",
+        "Manual",
+        "Misto"
+      ],
+      "default": "F\u00edsico (quantidade)"
+    },
+    "measurement_generates": {
+      "type": "string",
+      "title": "Medi\u00e7\u00e3o aprovada gera",
+      "enum": [
+        "Conta a pagar (empreiteiro)",
+        "Conta a receber (cliente)",
+        "Ambas"
+      ],
+      "default": "Conta a pagar (empreiteiro)"
+    },
+    "contracted_value": {
+      "type": "number",
+      "title": "Valor Total Contratado (R$)"
+    },
+    "initial_capital": {
+      "type": "number",
+      "title": "Capital Inicial Dispon\u00edvel (R$)"
+    },
+    "subcontractor_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Subempreiteiros Vinculados"
+    },
+    "budget": {
+      "type": "number",
+      "title": "Or\u00e7amento / Custo Previsto (R$)"
+    },
+    "progress_percent": {
+      "type": "number",
+      "title": "% Progresso F\u00edsico",
+      "default": 0
+    },
+    "financial_progress_percent": {
+      "type": "number",
+      "title": "% Progresso Financeiro",
+      "default": 0
+    },
+    "description": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Fotos"
+    }
+  },
+  "required": [
+    "name",
+    "address",
+    "client"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "user"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "name": "Measurement",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "Obra"
+    },
+    "project_name": {
+      "type": "string",
+      "title": "Nome da Obra"
+    },
+    "subcontractor_id": {
+      "type": "string",
+      "title": "Subempreiteiro"
+    },
+    "subcontractor_name": {
+      "type": "string",
+      "title": "Nome do Subempreiteiro"
+    },
+    "service": {
+      "type": "string",
+      "title": "Servi\u00e7o Executado"
+    },
+    "unit": {
+      "type": "string",
+      "title": "Unidade",
+      "enum": [
+        "m\u00b2",
+        "m\u00b3",
+        "metro linear",
+        "di\u00e1ria",
+        "percentual",
+        "unidade"
+      ]
+    },
+    "contracted_qty": {
+      "type": "number",
+      "title": "Qtd Contratada"
+    },
+    "executed_qty": {
+      "type": "number",
+      "title": "Qtd Executada"
+    },
+    "unit_price": {
+      "type": "number",
+      "title": "Valor Unit\u00e1rio (R$)"
+    },
+    "total_value": {
+      "type": "number",
+      "title": "Valor Total (R$)"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Pendente",
+        "Aprovada",
+        "Rejeitada",
+        "Em revis\u00e3o"
+      ],
+      "default": "Pendente"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Evid\u00eancias Fotogr\u00e1ficas"
+    },
+    "comments": {
+      "type": "string",
+      "title": "Coment\u00e1rios"
+    },
+    "measurement_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Data da Medi\u00e7\u00e3o"
+    },
+    "approved_by": {
+      "type": "string",
+      "title": "Aprovado por"
+    }
+  },
+  "required": [
+    "project_id",
+    "subcontractor_id",
+    "service",
+    "unit"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "user"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

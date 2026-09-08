@@ -1,0 +1,87 @@
+{
+  "name": "Benchmark",
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "string",
+      "title": "Servi\u00e7o"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Terraplenagem",
+        "Drenagem",
+        "Pavimenta\u00e7\u00e3o",
+        "Demoli\u00e7\u00e3o",
+        "Alvenaria",
+        "Acabamento",
+        "Estrutura",
+        "Instala\u00e7\u00f5es",
+        "Limpeza p\u00f3s-obra"
+      ],
+      "title": "Categoria"
+    },
+    "region": {
+      "type": "string",
+      "title": "Regi\u00e3o"
+    },
+    "unit": {
+      "type": "string",
+      "title": "Unidade"
+    },
+    "avg_price": {
+      "type": "number",
+      "title": "Pre\u00e7o M\u00e9dio (R$)"
+    },
+    "min_price": {
+      "type": "number",
+      "title": "Pre\u00e7o M\u00ednimo (R$)"
+    },
+    "max_price": {
+      "type": "number",
+      "title": "Pre\u00e7o M\u00e1ximo (R$)"
+    },
+    "avg_productivity": {
+      "type": "number",
+      "title": "Produtividade M\u00e9dia"
+    },
+    "productivity_unit": {
+      "type": "string",
+      "title": "Unidade de Produtividade"
+    },
+    "sample_size": {
+      "type": "number",
+      "title": "Amostra (obras)"
+    },
+    "period": {
+      "type": "string",
+      "title": "Per\u00edodo"
+    }
+  },
+  "required": [
+    "service",
+    "category"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "user"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

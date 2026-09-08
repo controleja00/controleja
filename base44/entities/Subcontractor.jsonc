@@ -1,0 +1,173 @@
+{
+  "name": "Subcontractor",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string",
+      "title": "Nome da Empresa"
+    },
+    "cnpj": {
+      "type": "string",
+      "title": "CNPJ"
+    },
+    "contact_name": {
+      "type": "string",
+      "title": "Respons\u00e1vel"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Telefone"
+    },
+    "email": {
+      "type": "string",
+      "title": "E-mail"
+    },
+    "specialty": {
+      "type": "string",
+      "title": "Especialidade",
+      "enum": [
+        "Terraplenagem",
+        "Drenagem",
+        "Pavimenta\u00e7\u00e3o",
+        "Demoli\u00e7\u00e3o",
+        "Alvenaria",
+        "Acabamento",
+        "Estrutura",
+        "Instala\u00e7\u00f5es",
+        "Limpeza p\u00f3s-obra",
+        "Outro"
+      ]
+    },
+    "city": {
+      "type": "string",
+      "title": "Cidade"
+    },
+    "state": {
+      "type": "string",
+      "title": "Estado"
+    },
+    "employee_count": {
+      "type": "number",
+      "title": "N\u00ba de Funcion\u00e1rios"
+    },
+    "has_own_equipment": {
+      "type": "boolean",
+      "title": "Equipamentos Pr\u00f3prios"
+    },
+    "previous_works": {
+      "type": "string",
+      "title": "Obras Anteriores"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Fotos de Servi\u00e7os"
+    },
+    "score_operational": {
+      "type": "number",
+      "title": "Score Operacional",
+      "default": 0
+    },
+    "score_technical": {
+      "type": "number",
+      "title": "Score T\u00e9cnico",
+      "default": 0
+    },
+    "score_legal": {
+      "type": "number",
+      "title": "Score Jur\u00eddico",
+      "default": 0
+    },
+    "score_financial": {
+      "type": "number",
+      "title": "Score Financeiro",
+      "default": 0
+    },
+    "score_behavioral": {
+      "type": "number",
+      "title": "Score Comportamental",
+      "default": 0
+    },
+    "score_total": {
+      "type": "number",
+      "title": "Score Total",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Ativo",
+        "Bloqueado",
+        "Pendente",
+        "Inativo"
+      ],
+      "default": "Pendente"
+    },
+    "availability": {
+      "type": "string",
+      "title": "Disponibilidade",
+      "enum": [
+        "Dispon\u00edvel",
+        "Ocupado",
+        "Indispon\u00edvel"
+      ],
+      "default": "Dispon\u00edvel"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "company_name",
+    "cnpj",
+    "contact_name",
+    "specialty"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "user"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "name": "CashFlowEntry",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "Obra"
+    },
+    "project_name": {
+      "type": "string",
+      "title": "Nome da Obra"
+    },
+    "description": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "type": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "Receita",
+        "Despesa"
+      ],
+      "default": "Despesa"
+    },
+    "category": {
+      "type": "string",
+      "title": "Categoria",
+      "enum": [
+        "Medi\u00e7\u00e3o",
+        "Pagamento empreiteiro",
+        "Material",
+        "Equipamento",
+        "M\u00e3o de obra",
+        "Imposto",
+        "Seguro",
+        "Administrativo",
+        "Outro"
+      ]
+    },
+    "value": {
+      "type": "number",
+      "title": "Valor (R$)"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Vencimento"
+    },
+    "paid_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Pagamento"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Previsto",
+        "A pagar",
+        "Pago",
+        "Atrasado",
+        "Cancelado"
+      ],
+      "default": "Previsto"
+    },
+    "related_entity": {
+      "type": "string",
+      "title": "Entidade relacionada"
+    },
+    "related_id": {
+      "type": "string",
+      "title": "ID relacionado"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "project_id",
+    "description",
+    "type",
+    "value"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "user"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
