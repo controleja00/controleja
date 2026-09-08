@@ -60,7 +60,7 @@ export default function AIAssistant() {
                 <Bot className="h-7 w-7 text-primary" />
               </div>
               <div>
-                <p className="font-semibold text-base">Gerente IA — ControleJá</p>
+                <p className="font-semibold text-base">Gerente IA — Consuobra</p>
               <p className="text-sm text-muted-foreground mt-1 max-w-sm">Falo como gerente de obras, não como robô. Sou específico com números, impactos e ações concretas. Pode perguntar.</p>
               </div>
               <div className="flex flex-wrap gap-2 justify-center max-w-lg">

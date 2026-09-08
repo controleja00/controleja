@@ -6,17 +6,18 @@
 
 @layer base {
   :root {
-    /* ControleJá — Paleta Grupo Busk */
-    --cj-navy:       27 47 85;     /* #1B2F55 — azul-marinho principal */
-    --cj-navy-deep:  19 35 63;     /* #13233F — azul-marinho profundo */
-    --cj-blue:       36 63 115;    /* #243F73 — azul institucional */
-    --cj-steel:      127 149 186;  /* #7F95BA — azul aço */
-    --cj-steel-lt:   167 182 210;  /* #A7B6D2 — azul aço claro */
-    --cj-silver:     215 217 222;  /* #D7D9DE — prata metálico */
-    --cj-gray:       168 171 179;  /* #A8ABB3 — cinza prata */
-    --cj-bg:         244 246 250;  /* #F4F6FA — fundo frio */
-    --cj-text:       16 24 40;     /* #101828 — texto principal */
-    --cj-text-muted: 102 112 133;  /* #667085 — texto secundário */
+    /* Consuobra — canteiro, controle e clareza operacional */
+    --cj-navy:       18 60 52;     /* #123C34 — verde canteiro */
+    --cj-navy-deep:  16 26 24;     /* #101A18 — grafite profundo */
+    --cj-blue:       31 111 97;    /* #1F6F61 — verde técnico */
+    --cj-steel:      102 128 120;  /* #668078 — aço esverdeado */
+    --cj-steel-lt:   184 216 204;  /* #B8D8CC — menta técnica */
+    --cj-silver:     220 230 225;  /* #DCE6E1 — concreto claro */
+    --cj-gray:       129 146 139;  /* #81928B — cinza obra */
+    --cj-bg:         243 246 242;  /* #F3F6F2 — fundo concreto */
+    --cj-text:       17 25 23;     /* #111917 — texto principal */
+    --cj-text-muted: 82 97 91;     /* #52615B — texto secundário */
+    --cj-amber:      229 169 54;   /* #E5A936 — destaque obra */
 
     --background: 220 30% 97%;
     --foreground: 222 47% 9%;
@@ -24,20 +25,20 @@
     --card-foreground: 222 47% 9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 9%;
-    --primary: 220 52% 28%;           /* #1B2F55 */
+    --primary: 171 54% 15%;           /* #123C34 */
     --primary-foreground: 0 0% 100%;
     --secondary: 220 30% 94%;
     --secondary-foreground: 220 52% 28%;
     --muted: 220 20% 93%;
     --muted-foreground: 220 14% 46%;
-    --accent: 214 52% 30%;
+    --accent: 41 77% 55%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 18% 86%;
     --input: 220 18% 86%;
-    --ring: 220 52% 28%;
-    --chart-1: 220 52% 28%;
+    --ring: 171 54% 15%;
+    --chart-1: 171 54% 15%;
     --chart-2: 152 60% 42%;
     --chart-3: 38 92% 50%;
     --chart-4: 0 72% 51%;
@@ -46,14 +47,14 @@
     --font-inter: 'Inter', sans-serif;
 
     /* Sidebar = azul-marinho profundo */
-    --sidebar-background: 220 56% 16%;
+    --sidebar-background: 165 24% 8%;
     --sidebar-foreground: 210 25% 88%;
-    --sidebar-primary: 214 52% 70%;
+    --sidebar-primary: 41 77% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 45% 22%;
+    --sidebar-accent: 169 43% 18%;
     --sidebar-accent-foreground: 210 25% 88%;
-    --sidebar-border: 220 35% 20%;
-    --sidebar-ring: 214 52% 60%;
+    --sidebar-border: 165 20% 18%;
+    --sidebar-ring: 41 77% 55%;
 
     /* aliases */
     --busk-navy: 220 56% 16%;
@@ -103,6 +104,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-color: #F4F6FA;
+    background-color: #F3F6F2;
   }
 }

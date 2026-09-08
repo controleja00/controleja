@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { ChevronLeft, Bell, HardHat } from "lucide-react";
+import { ChevronLeft, Bell } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+import BrandLogo from "@/components/BrandLogo";
 
 const pageTitles = {
   "/dashboard": "Dashboard",
@@ -45,15 +46,15 @@ export default function AppHeader() {
   }, [path]);
 
   const isRoot = rootPages.some((r) => path === r);
-  const title = Object.entries(pageTitles).find(([k]) => path === k || path.startsWith(k + "/"))?.[1] || "ControleJá";
+  const title = Object.entries(pageTitles).find(([k]) => path === k || path.startsWith(k + "/"))?.[1] || "Consuobra";
 
   useEffect(() => {
-    const baseTitle = "ControleJá";
+    const baseTitle = "Consuobra";
     document.title = title && title !== baseTitle ? `${title} | ${baseTitle}` : baseTitle;
   }, [title]);
 
   return (
-    <header className="sticky top-0 z-30 bg-busk-navy border-b border-white/10 shadow-lg">
+    <header className="sticky top-0 z-30 border-b border-white/10 shadow-lg" style={{ background: "linear-gradient(135deg, #101A18 0%, #123C34 100%)" }}>
       <div className="flex items-center h-14 px-4 gap-3">
         {!isRoot ?
         <button
@@ -63,15 +64,7 @@ export default function AppHeader() {
             <ChevronLeft className="h-5 w-5 text-white" />
           </button> :
 
-        <div className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-xl bg-busk-blue-light/20 border border-busk-blue-light/30 flex items-center justify-center">
-              <HardHat className="h-4 w-4 text-busk-blue-light" />
-            </div>
-            <div className="leading-none">
-              <p className="text-white font-black text-sm tracking-tight">ControleJá</p>
-              <p className="text-white/40 text-[9px] font-semibold uppercase tracking-widest">Grupo Busk</p>
-            </div>
-          </div>
+          <BrandLogo light size="sm" to="/dashboard" />
         }
 
         <h1 className={`flex-1 font-bold text-base text-white ${isRoot ? "hidden sm:block" : ""}`}>

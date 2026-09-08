@@ -39,7 +39,7 @@ Documentos: total ${documents.length}, vencidos ${documents.filter(d => d.status
 
     const history = newMessages.map(m => `${m.role === "user" ? "Usuário" : "Assistente"}: ${m.content}`).join("\n");
     const res = await base44.integrations.Core.InvokeLLM({
-      prompt: `Você é o Assistente IA da obra "${project.name}" no ControleJá. Responda em português, de forma direta e prática, usando os dados abaixo.
+      prompt: `Você é o Assistente IA da obra "${project.name}" no Consuobra. Responda em português, de forma direta e prática, usando os dados abaixo.
 
 DADOS DA OBRA:
 ${context}

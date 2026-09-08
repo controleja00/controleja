@@ -49,7 +49,7 @@ export default function ProjClientPortal({ project }) {
 
       {/* Mobile quick action */}
       {!showUpload && (
-        <button onClick={() => { setShowUpload(true); setTab("upload"); }} className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl text-white font-bold text-base shadow-lg active:scale-95 transition-transform" style={{ background: "linear-gradient(135deg, #1B2F55 0%, #243F73 100%)" }}>
+        <button onClick={() => { setShowUpload(true); setTab("upload"); }} className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl text-white font-bold text-base shadow-lg active:scale-95 transition-transform" style={{ background: "linear-gradient(135deg, #123C34 0%, #1F6F61 100%)" }}>
           <Camera className="h-5 w-5" />
           Enviar fotos do dia
         </button>

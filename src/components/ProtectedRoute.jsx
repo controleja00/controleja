@@ -4,9 +4,9 @@ import { useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
 const DefaultFallback = () => (
-  <div className="fixed inset-0 flex flex-col items-center justify-center gap-3" style={{ background: "#F4F6FA" }}>
-    <div className="h-10 w-10 rounded-2xl flex items-center justify-center" style={{ background: "#1B2F55" }}>
-      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#D7D9DE" strokeWidth="2">
+  <div className="fixed inset-0 flex flex-col items-center justify-center gap-3" style={{ background: "#F3F6F2" }}>
+    <div className="h-10 w-10 rounded-2xl flex items-center justify-center" style={{ background: "#123C34" }}>
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#DCE6E1" strokeWidth="2">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
       </svg>
     </div>

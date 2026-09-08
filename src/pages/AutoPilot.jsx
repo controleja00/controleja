@@ -217,7 +217,7 @@ export default function AutoPilot() {
     setAiMode(true);
     const { projects, measurements, alerts, cashFlow, documents, subcontractors } = data;
     const result = await base44.integrations.Core.InvokeLLM({
-      prompt: `Você é o sistema de IA do ControleJá. Modo Autopiloto ativado.
+      prompt: `Você é o sistema de IA do Consuobra. Modo Autopiloto ativado.
 
 Analise TODOS os dados abaixo e gere um relatório executivo completo com ações prioritárias.
 

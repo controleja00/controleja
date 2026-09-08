@@ -93,7 +93,7 @@ export default function Dashboard() {
   return (
     <div className="pb-24 bg-gray-50 min-h-screen">
       {/* Header saudação */}
-      <div className="px-4 pt-5 pb-6" style={{ background: "#1B2F55" }}>
+      <div className="px-4 pt-5 pb-6" style={{ background: "#123C34" }}>
         <p className="text-blue-300 text-xs font-semibold uppercase tracking-widest mb-1">{getGreeting()},</p>
         <h1 className="text-white text-2xl font-black">{firstName} 👷</h1>
         <p className="text-blue-300 text-xs mt-1">
@@ -277,10 +277,10 @@ export default function Dashboard() {
 function EmptyState() {
   return (
     <div className="pb-24 bg-gray-50 min-h-screen">
-      <div className="px-4 pt-5 pb-8" style={{ background: "#1B2F55" }}>
+      <div className="px-4 pt-5 pb-8" style={{ background: "#123C34" }}>
         <p className="text-blue-300 text-xs font-semibold uppercase tracking-widest mb-1">Bem-vindo!</p>
-        <h1 className="text-white text-2xl font-black">ControleJá</h1>
-        <p className="text-blue-300 text-sm mt-1">Seu painel de controle de obras · Grupo Busk</p>
+        <h1 className="text-white text-2xl font-black">Consuobra</h1>
+        <p className="text-blue-300 text-sm mt-1">Seu painel de controle de obras · Obra sob controle</p>
       </div>
       <div className="px-4 -mt-4 space-y-4">
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 text-center">

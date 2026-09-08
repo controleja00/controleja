@@ -1,5 +1,5 @@
 /**
- * Motor Central de Eventos — ControleJá
+ * Motor Central de Eventos — Consuobra
  * "Digite uma vez. O sistema faz o resto."
  *
  * Toda alteração em qualquer módulo dispara eventos automáticos em cascata:

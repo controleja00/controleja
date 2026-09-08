@@ -101,7 +101,7 @@ export default function ProjectForm() {
           </button>
           <div>
             <h1 className="text-white font-black text-base">{isEdit ? "Editar Obra" : "Nova Obra"}</h1>
-            <p className="text-white/50 text-xs">ControleJá · Grupo Busk</p>
+            <p className="text-white/50 text-xs">Consuobra · Obra sob controle</p>
           </div>
         </div>
 

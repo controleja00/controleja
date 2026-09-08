@@ -70,16 +70,16 @@ module.exports = {
   				'blue-light': 'hsl(var(--busk-blue-light))'
   			},
   			cj: {
-  				navy: '#1B2F55',
-  				'navy-deep': '#13233F',
-  				blue: '#243F73',
-  				steel: '#7F95BA',
-  				'steel-lt': '#A7B6D2',
-  				silver: '#D7D9DE',
-  				gray: '#A8ABB3',
-  				bg: '#F4F6FA',
-  				text: '#101828',
-  				muted: '#667085',
+  				navy: '#123C34',
+  				'navy-deep': '#101A18',
+  				blue: '#1F6F61',
+  				steel: '#668078',
+  				'steel-lt': '#B8D8CC',
+  				silver: '#DCE6E1',
+  				gray: '#81928B',
+  				bg: '#F3F6F2',
+  				text: '#111917',
+  				muted: '#52615B',
   			}
   		},
   		keyframes: {

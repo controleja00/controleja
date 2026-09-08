@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Layout from './components/Layout';
+import { BrandMark } from '@/components/BrandLogo';
 
 // Auth pages
 import Login from './pages/Login';
@@ -66,12 +67,8 @@ const AuthenticatedApp = () => {
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-50 gap-3">
-        <div className="h-14 w-14 rounded-2xl bg-blue-600 flex items-center justify-center">
-          <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-          </svg>
-        </div>
-        <div className="w-6 h-6 border-[3px] border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+        <BrandMark className="h-14 w-14 rounded-2xl shadow-lg" />
+        <div className="w-6 h-6 border-[3px] border-[#DCE6E1] border-t-[#E5A936] rounded-full animate-spin" />
         <p className="text-sm text-gray-400 font-semibold">Carregando suas obras...</p>
       </div>
     );

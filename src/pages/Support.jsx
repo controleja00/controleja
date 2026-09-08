@@ -27,8 +27,8 @@ export default function Support() {
   const send = async () => {
     setSending(true);
     await base44.integrations.Core.SendEmail({
-      to: "suporte@controleja.com.br",
-      subject: `[Suporte ControleJá] ${form.category}: ${form.subject}`,
+      to: "suporte@consuobra.com.br",
+      subject: `[Suporte Consuobra] ${form.category}: ${form.subject}`,
       body: `Categoria: ${form.category}\nAssunto: ${form.subject}\n\nMensagem:\n${form.message}`,
     });
     setSending(false);
@@ -51,14 +51,14 @@ export default function Support() {
               <p className="text-xs text-gray-400 mt-1">Estamos configurando o canal de atendimento via WhatsApp.</p>
             </div>
           </div>
-          <a href="mailto:suporte@controleja.com.br" className="bg-white border border-gray-100 rounded-2xl p-5 flex gap-4 items-start shadow-sm hover:shadow-md transition-all">
+          <a href="mailto:suporte@consuobra.com.br" className="bg-white border border-gray-100 rounded-2xl p-5 flex gap-4 items-start shadow-sm hover:shadow-md transition-all">
             <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
               <Mail className="h-5 w-5 text-blue-600" />
             </div>
             <div>
               <p className="font-bold text-sm text-gray-900">E-mail</p>
               <p className="text-xs text-gray-500 mt-0.5">Resposta em até 24h</p>
-              <p className="text-xs text-blue-600 mt-1 font-medium">suporte@controleja.com.br</p>
+              <p className="text-xs text-blue-600 mt-1 font-medium">suporte@consuobra.com.br</p>
             </div>
           </a>
         </div>
@@ -130,7 +130,7 @@ export default function Support() {
         </div>
 
         <p className="text-xs text-gray-400 text-center">
-          ControleJá · suporte@controleja.com.br · Seus dados são protegidos pela LGPD
+          Consuobra · suporte@consuobra.com.br · Seus dados são protegidos pela LGPD
         </p>
       </div>
     </div>

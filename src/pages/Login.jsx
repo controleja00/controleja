@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Building2, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,7 +11,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => { document.title = "Entrar | ControleJá"; }, []);
+  useEffect(() => { document.title = "Entrar | Consuobra"; }, []);
 
   const redirect = () => {
     const params = new URLSearchParams(window.location.search);
@@ -31,24 +32,16 @@ export default function Login() {
   };
 
   const inputBase = "w-full h-10 rounded-xl px-3 text-sm outline-none transition-all";
-  const inputStyle = { border: "1.5px solid #D7D9DE", background: "#F4F6FA", color: "#101828" };
+  const inputStyle = { border: "1.5px solid #DCE6E1", background: "#F3F6F2", color: "#111917" };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8" style={{ background: "#F4F6FA" }}>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8" style={{ background: "#F3F6F2" }}>
       <div className="w-full max-w-sm">
-        <Link to="/" className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="h-11 w-11 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #1B2F55 0%, #243F73 100%)" }}>
-            <Building2 className="h-5 w-5 text-[#D7D9DE]" />
-          </div>
-          <div className="leading-none">
-            <p className="font-black text-xl tracking-tight" style={{ color: "#1B2F55" }}>ControleJá</p>
-            <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#A8ABB3" }}>Grupo Busk</p>
-          </div>
-        </Link>
+        <BrandLogo size="lg" className="justify-center mb-8" />
 
-        <div className="rounded-2xl p-7 shadow-sm" style={{ background: "#FFFFFF", border: "1.5px solid #D7D9DE" }}>
-          <h1 className="text-2xl font-black mb-1" style={{ color: "#101828" }}>Bem-vindo de volta</h1>
-          <p className="text-sm mb-6" style={{ color: "#667085" }}>Entre para continuar no ControleJá</p>
+        <div className="rounded-2xl p-7 shadow-sm" style={{ background: "#FFFFFF", border: "1.5px solid #DCE6E1" }}>
+          <h1 className="text-2xl font-black mb-1" style={{ color: "#111917" }}>Bem-vindo de volta</h1>
+          <p className="text-sm mb-6" style={{ color: "#52615B" }}>Entre para continuar no Consuobra</p>
 
           {error && (
             <div className="text-sm rounded-xl px-4 py-3 mb-4" style={{ background: "#FEF2F2", border: "1px solid #FECACA", color: "#DC2626" }}>
@@ -58,39 +51,39 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold mb-1.5" style={{ color: "#101828" }}>E-mail</label>
+              <label className="block text-sm font-semibold mb-1.5" style={{ color: "#111917" }}>E-mail</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="seu@email.com" autoComplete="email"
                 className={inputBase} style={inputStyle}
-                onFocus={e => e.target.style.borderColor = "#1B2F55"} onBlur={e => e.target.style.borderColor = "#D7D9DE"} />
+                onFocus={e => e.target.style.borderColor = "#123C34"} onBlur={e => e.target.style.borderColor = "#DCE6E1"} />
             </div>
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="text-sm font-semibold" style={{ color: "#101828" }}>Senha</label>
-                <Link to="/forgot-password" className="text-xs font-medium hover:underline" style={{ color: "#243F73" }}>Esqueci minha senha</Link>
+                <label className="text-sm font-semibold" style={{ color: "#111917" }}>Senha</label>
+                <Link to="/forgot-password" className="text-xs font-medium hover:underline" style={{ color: "#1F6F61" }}>Esqueci minha senha</Link>
               </div>
               <div className="relative">
                 <input type={showPass ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Sua senha" autoComplete="current-password"
                   className={`${inputBase} pr-10`} style={inputStyle}
-                  onFocus={e => e.target.style.borderColor = "#1B2F55"} onBlur={e => e.target.style.borderColor = "#D7D9DE"} />
-                <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "#A8ABB3" }}>
+                  onFocus={e => e.target.style.borderColor = "#123C34"} onBlur={e => e.target.style.borderColor = "#DCE6E1"} />
+                <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "#81928B" }}>
                   {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
-            <button type="submit" disabled={loading} className="w-full h-11 rounded-xl font-bold text-base text-white transition-opacity disabled:opacity-60" style={{ background: "#1B2F55" }}>
+            <button type="submit" disabled={loading} className="w-full h-11 rounded-xl font-bold text-base text-white transition-opacity disabled:opacity-60" style={{ background: "#123C34" }}>
               {loading ? "Entrando..." : "Entrar"}
             </button>
           </form>
 
           <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px" style={{ background: "#D7D9DE" }} />
-            <span className="text-xs" style={{ color: "#A8ABB3" }}>ou</span>
-            <div className="flex-1 h-px" style={{ background: "#D7D9DE" }} />
+            <div className="flex-1 h-px" style={{ background: "#DCE6E1" }} />
+            <span className="text-xs" style={{ color: "#81928B" }}>ou</span>
+            <div className="flex-1 h-px" style={{ background: "#DCE6E1" }} />
           </div>
 
           <button type="button" onClick={() => base44.auth.loginWithProvider("google", "/dashboard")}
             className="w-full h-11 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-colors hover:bg-gray-50"
-            style={{ border: "1.5px solid #D7D9DE", background: "#FFFFFF", color: "#101828" }}>
+            style={{ border: "1.5px solid #DCE6E1", background: "#FFFFFF", color: "#111917" }}>
             <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
               <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -100,13 +93,13 @@ export default function Login() {
             Continuar com Google
           </button>
 
-          <p className="text-center text-sm mt-5" style={{ color: "#667085" }}>
+          <p className="text-center text-sm mt-5" style={{ color: "#52615B" }}>
             Não tem conta?{" "}
-            <Link to="/register" className="font-bold hover:underline" style={{ color: "#1B2F55" }}>Criar conta grátis</Link>
+            <Link to="/register" className="font-bold hover:underline" style={{ color: "#123C34" }}>Criar conta grátis</Link>
           </p>
         </div>
 
-        <p className="text-center text-[11px] mt-4" style={{ color: "#A8ABB3" }}>
+        <p className="text-center text-[11px] mt-4" style={{ color: "#81928B" }}>
           Ao entrar, você concorda com os{" "}
           <Link to="/terms" className="underline hover:text-gray-500">Termos de Uso</Link> e a{" "}
           <Link to="/privacy" className="underline hover:text-gray-500">Política de Privacidade</Link>.

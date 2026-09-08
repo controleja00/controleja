@@ -1,8 +1,8 @@
-# ControleJa
+# Consuobra
 
 Aplicativo web para controle de obras, gastos, documentos, fotos, progresso e relatorios.
 
-URL publicada: https://controleja-lovat.vercel.app/
+URL publicada: https://consuobra-lovat.vercel.app/
 
 ## Rodar localmente
 

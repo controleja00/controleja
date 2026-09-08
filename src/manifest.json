@@ -1,9 +1,9 @@
 {
-  "name": "ControleJá",
-  "short_name": "ControleJá",
+  "name": "Consuobra",
+  "short_name": "Consuobra",
   "description": "Sistema simples para construtores controlarem obras, gastos, etapas, documentos, fotos, equipes, alertas e relatórios.",
-  "theme_color": "#1B2F55",
-  "background_color": "#F4F6FA",
+  "theme_color": "#123C34",
+  "background_color": "#F3F6F2",
   "display": "standalone",
   "lang": "pt-BR",
   "start_url": "/",
@@ -12,13 +12,13 @@
   "categories": ["business", "productivity"],
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%231B2F55'/%3E%3Ctext x='96' y='130' text-anchor='middle' font-family='Inter,sans-serif' font-weight='900' font-size='80' fill='%23D7D9DE'%3ECJ%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23123C34'/%3E%3Cpath d='M48 102L96 60l48 42' fill='none' stroke='%23DCE6E1' stroke-width='13' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M66 96v42h60V96' fill='none' stroke='%23DCE6E1' stroke-width='13' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M75 126h42' stroke='%23E5A936' stroke-width='13' stroke-linecap='round'/%3E%3Cpath d='M147 54l-21 21-12-12' fill='none' stroke='%23E5A936' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%231B2F55'/%3E%3Ctext x='256' y='340' text-anchor='middle' font-family='Inter,sans-serif' font-weight='900' font-size='210' fill='%23D7D9DE'%3ECJ%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='108' fill='%23123C34'/%3E%3Cpath d='M128 272L256 160l128 112' fill='none' stroke='%23DCE6E1' stroke-width='34' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M176 256v112h160V256' fill='none' stroke='%23DCE6E1' stroke-width='34' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M200 336h112' stroke='%23E5A936' stroke-width='34' stroke-linecap='round'/%3E%3Cpath d='M392 144l-56 56-32-32' fill='none' stroke='%23E5A936' stroke-width='32' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"

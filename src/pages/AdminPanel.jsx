@@ -42,7 +42,7 @@ export default function AdminPanel() {
 
   return (
     <div>
-      <PageHeader title="Painel Administrativo" subtitle="Visão geral da plataforma ControleJá — dados consolidados de todas as empresas" />
+      <PageHeader title="Painel Administrativo" subtitle="Visão geral da plataforma Consuobra — dados consolidados de todas as empresas" />
       <div className="p-4 sm:p-6 space-y-6">
         {/* KPIs */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">

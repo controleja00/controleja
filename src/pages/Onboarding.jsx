@@ -10,8 +10,8 @@ import { Building2, CheckCircle2, ChevronRight, DollarSign, FileText, BarChart3,
 const STEPS = [
   { id: 1, title: "Dados da empresa", sub: "Vamos configurar sua conta" },
   { id: 2, title: "Primeira obra", sub: "Cadastre seu primeiro projeto (opcional)" },
-  { id: 3, title: "Objetivo principal", sub: "Como você quer usar o ControleJá?" },
-  { id: 4, title: "Tudo pronto!", sub: "Bem-vindo ao ControleJá" },
+  { id: 3, title: "Objetivo principal", sub: "Como você quer usar o Consuobra?" },
+  { id: 4, title: "Tudo pronto!", sub: "Bem-vindo ao Consuobra" },
 ];
 
 const OBJECTIVES = [
@@ -65,7 +65,7 @@ export default function Onboarding() {
           <div className="h-10 w-10 rounded-2xl bg-blue-600 flex items-center justify-center">
             <Building2 className="h-5 w-5 text-white" />
           </div>
-          <span className="font-black text-xl" style={{ color: "#1B2F55" }}>ControleJá</span>
+          <span className="font-black text-xl" style={{ color: "#123C34" }}>Consuobra</span>
         </div>
 
         {/* Progress */}
@@ -212,7 +212,7 @@ export default function Onboarding() {
                 <CheckCircle2 className="h-8 w-8 text-emerald-500" />
               </div>
               <p className="text-lg font-black text-gray-900 mb-2">Sua conta está pronta!</p>
-              <p className="text-sm text-gray-500 mb-6">Bem-vindo ao ControleJá. Comece cadastrando ou acompanhando suas obras.</p>
+              <p className="text-sm text-gray-500 mb-6">Bem-vindo ao Consuobra. Comece cadastrando ou acompanhando suas obras.</p>
 
               <div className="bg-gray-50 rounded-xl p-4 text-left">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Próximos passos</p>

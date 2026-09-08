@@ -190,7 +190,7 @@ export default function ProjectClientView() {
         {/* Footer */}
         <div className="text-center py-4">
           <p className="text-slate-600 text-xs">Acompanhamento em tempo real por</p>
-          <p className="text-slate-400 font-bold text-sm mt-1">ControleJá · Grupo Busk</p>
+          <p className="text-slate-400 font-bold text-sm mt-1">Consuobra · Obra sob controle</p>
         </div>
       </div>
     </div>
