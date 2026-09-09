@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Building2, CheckCircle2, ChevronRight, DollarSign, FileText, BarChart3, Bell, Camera } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 const STEPS = [
   { id: 1, title: "Dados da empresa", sub: "Vamos configurar sua conta" },
@@ -15,12 +16,12 @@ const STEPS = [
 ];
 
 const OBJECTIVES = [
-  { key: "costs", icon: DollarSign, label: "Controlar gastos", color: "text-emerald-600" },
-  { key: "stages", icon: BarChart3, label: "Acompanhar etapas", color: "text-blue-600" },
-  { key: "docs", icon: FileText, label: "Organizar documentos", color: "text-violet-600" },
-  { key: "team", icon: Building2, label: "Controlar equipe", color: "text-orange-600" },
-  { key: "alerts", icon: Bell, label: "Receber alertas de atraso", color: "text-red-600" },
-  { key: "reports", icon: Camera, label: "Gerar relatórios", color: "text-gray-600" },
+  { key: "costs", icon: DollarSign, label: "Controlar gastos", bg: "#fde8ce" },
+  { key: "stages", icon: BarChart3, label: "Acompanhar etapas", bg: "#bee9f4" },
+  { key: "docs", icon: FileText, label: "Organizar documentos", bg: "#e5d3f7" },
+  { key: "team", icon: Building2, label: "Controlar equipe", bg: "#fef1e1" },
+  { key: "alerts", icon: Bell, label: "Receber alertas de atraso", bg: "#fee2e2" },
+  { key: "reports", icon: Camera, label: "Gerar relatórios", bg: "#c6c4f4" },
 ];
 
 export default function Onboarding() {
@@ -58,30 +59,24 @@ export default function Onboarding() {
   const progress = ((step - 1) / (STEPS.length - 1)) * 100;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: "#fbfaf8" }}>
       <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <div className="h-10 w-10 rounded-2xl bg-blue-600 flex items-center justify-center">
-            <Building2 className="h-5 w-5 text-white" />
-          </div>
-          <span className="font-black text-xl" style={{ color: "#004038" }}>Consuobra</span>
-        </div>
+        <BrandLogo size="lg" className="justify-center mb-8" />
 
         {/* Progress */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-3">
-            <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
+            <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: "#efefef" }}>
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progress}%`, background: "#004038" }} />
             </div>
-            <span className="text-xs text-gray-400 font-semibold shrink-0">{step}/{STEPS.length}</span>
+            <span className="text-xs font-semibold shrink-0" style={{ color: "#6f7073" }}>{step}/{STEPS.length}</span>
           </div>
         </div>
 
-        {/* Card */}
-        <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-          <h2 className="text-xl font-black text-gray-900 mb-1">{STEPS[step - 1].title}</h2>
-          <p className="text-sm text-gray-500 mb-6">{STEPS[step - 1].sub}</p>
+        <div className="bg-white rounded-2xl p-6" style={{ border: "1.5px solid #efefef" }}>
+          <p className="text-[11px] font-bold uppercase tracking-widest mb-1" style={{ color: "#6f7073" }}>Primeiros passos</p>
+          <h2 className="text-2xl font-black mb-1" style={{ color: "#0f161e" }}>{STEPS[step - 1].title}</h2>
+          <p className="text-sm mb-6" style={{ color: "#3d3e45" }}>{STEPS[step - 1].sub}</p>
 
           {/* Step 1: Empresa */}
           {step === 1 && (
@@ -132,7 +127,7 @@ export default function Onboarding() {
           {/* Step 2: Primeira obra */}
           {step === 2 && (
             <div className="space-y-4">
-              <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 text-sm text-blue-700 mb-2">
+              <div className="rounded-xl p-3 text-sm mb-2" style={{ background: "#bee9f4", border: "1px solid rgba(15,22,30,0.08)", color: "#004038" }}>
                 Esta etapa é opcional. Você pode cadastrar obras depois.
               </div>
               <div>
@@ -193,13 +188,15 @@ export default function Onboarding() {
                 <button
                   key={o.key}
                   onClick={() => set("objective", o.key)}
-                  className={`w-full text-left border-2 rounded-xl p-3.5 transition-all flex items-center gap-3 ${
-                    data.objective === o.key ? "border-blue-500 bg-blue-50" : "border-gray-100 hover:border-blue-200 bg-white"
-                  }`}
+                  className="w-full text-left border-2 rounded-xl p-3.5 transition-all flex items-center gap-3"
+                  style={{
+                    borderColor: data.objective === o.key ? "#004038" : "#efefef",
+                    background: data.objective === o.key ? o.bg : "#ffffff",
+                  }}
                 >
-                  <o.icon className={`h-4 w-4 shrink-0 ${data.objective === o.key ? "text-blue-600" : o.color}`} />
-                  <span className="text-sm font-medium text-gray-800">{o.label}</span>
-                  {data.objective === o.key && <CheckCircle2 className="h-4 w-4 text-blue-600 ml-auto" />}
+                  <o.icon className="h-4 w-4 shrink-0" style={{ color: "#004038" }} />
+                  <span className="text-sm font-semibold" style={{ color: "#0f161e" }}>{o.label}</span>
+                  {data.objective === o.key && <CheckCircle2 className="h-4 w-4 ml-auto" style={{ color: "#004038" }} />}
                 </button>
               ))}
             </div>
@@ -208,14 +205,14 @@ export default function Onboarding() {
           {/* Step 4: Tudo pronto */}
           {step === 4 && (
             <div className="py-2 text-center">
-              <div className="h-16 w-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
-                <CheckCircle2 className="h-8 w-8 text-emerald-500" />
+              <div className="h-16 w-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "#bee9f4" }}>
+                <CheckCircle2 className="h-8 w-8" style={{ color: "#004038" }} />
               </div>
-              <p className="text-lg font-black text-gray-900 mb-2">Sua conta está pronta!</p>
-              <p className="text-sm text-gray-500 mb-6">Bem-vindo ao Consuobra. Comece cadastrando ou acompanhando suas obras.</p>
+              <p className="text-lg font-black mb-2" style={{ color: "#0f161e" }}>Sua conta está pronta!</p>
+              <p className="text-sm mb-6" style={{ color: "#3d3e45" }}>Bem-vindo ao Consuobra. Comece cadastrando ou acompanhando suas obras.</p>
 
-              <div className="bg-gray-50 rounded-xl p-4 text-left">
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Próximos passos</p>
+              <div className="rounded-xl p-4 text-left" style={{ background: "#fef1e1" }}>
+                <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: "#6f7073" }}>Próximos passos</p>
                 <ul className="space-y-2.5">
                   {[
                     "Cadastrar uma obra",
@@ -242,13 +239,13 @@ export default function Onboarding() {
               <Button variant="outline" onClick={() => setStep(s => s - 1)} className="flex-1">Voltar</Button>
             )}
             {step < 4 && (
-              <Button onClick={next} disabled={loading} className="flex-1 gap-1.5 bg-blue-600 hover:bg-blue-700">
+              <Button onClick={next} disabled={loading} className="flex-1 gap-1.5">
                 {loading ? "Salvando..." : "Continuar"}
                 <ChevronRight className="h-4 w-4" />
               </Button>
             )}
             {step === 4 && (
-              <Button onClick={finish} className="w-full gap-2 bg-blue-600 hover:bg-blue-700">
+              <Button onClick={finish} className="w-full gap-2">
                 Ir para o Dashboard <ChevronRight className="h-4 w-4" />
               </Button>
             )}

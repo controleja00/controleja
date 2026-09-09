@@ -11,20 +11,20 @@ import PhaseEditor, { getTemplate } from "../components/project/PhaseEditor";
 import { cn } from "@/lib/utils";
 
 const PROJECT_TYPES = [
-  { value: "Casa residencial", icon: "🏠", desc: "Construção de residência unifamiliar" },
-  { value: "Prédio residencial", icon: "🏢", desc: "Edificação multi-pavimento" },
-  { value: "Galpão industrial", icon: "🏭", desc: "Estrutura industrial ou logística" },
-  { value: "Obra comercial", icon: "🏬", desc: "Espaço comercial ou corporativo" },
-  { value: "Terraplenagem", icon: "⛏️", desc: "Movimentação e preparo de solo" },
-  { value: "Pavimentação", icon: "🛣️", desc: "Vias, estradas e pátios" },
-  { value: "Drenagem", icon: "🌊", desc: "Redes de drenagem pluvial/esgoto" },
-  { value: "Loteamento", icon: "📐", desc: "Parcelamento e urbanização de terra" },
-  { value: "Infraestrutura urbana", icon: "🌆", desc: "Obras públicas e urbanismo" },
-  { value: "Reforma", icon: "🔨", desc: "Reforma ou ampliação de edificação" },
-  { value: "Demolição", icon: "💥", desc: "Demolição total ou parcial" },
-  { value: "Construção pesada", icon: "🏗️", desc: "Pontes, viadutos e obras pesadas" },
-  { value: "Obra pública", icon: "🏛️", desc: "Obra licitada ou pública" },
-  { value: "Obra personalizada", icon: "⚙️", desc: "Defina fases do zero" },
+  { value: "Casa residencial", icon: Building2, desc: "Construção de residência unifamiliar", bg: "#fef1e1" },
+  { value: "Prédio residencial", icon: Building2, desc: "Edificação multi-pavimento", bg: "#bee9f4" },
+  { value: "Galpão industrial", icon: HardHat, desc: "Estrutura industrial ou logística", bg: "#fde8ce" },
+  { value: "Obra comercial", icon: Building2, desc: "Espaço comercial ou corporativo", bg: "#e5d3f7" },
+  { value: "Terraplenagem", icon: Layers, desc: "Movimentação e preparo de solo", bg: "#fef1e1" },
+  { value: "Pavimentação", icon: Layers, desc: "Vias, estradas e pátios", bg: "#bee9f4" },
+  { value: "Drenagem", icon: Layers, desc: "Redes de drenagem pluvial/esgoto", bg: "#fde8ce" },
+  { value: "Loteamento", icon: Settings2, desc: "Parcelamento e urbanização de terra", bg: "#c6c4f4" },
+  { value: "Infraestrutura urbana", icon: Building2, desc: "Obras públicas e urbanismo", bg: "#e5d3f7" },
+  { value: "Reforma", icon: HardHat, desc: "Reforma ou ampliação de edificação", bg: "#fef1e1" },
+  { value: "Demolição", icon: Layers, desc: "Demolição total ou parcial", bg: "#fde8ce" },
+  { value: "Construção pesada", icon: HardHat, desc: "Pontes, viadutos e obras pesadas", bg: "#bee9f4" },
+  { value: "Obra pública", icon: Building2, desc: "Obra licitada ou pública", bg: "#e5d3f7" },
+  { value: "Obra personalizada", icon: Settings2, desc: "Defina fases do zero", bg: "#c6c4f4" },
 ];
 
 const PROGRESS_METHODS = [
@@ -92,9 +92,9 @@ export default function ProjectForm() {
   const canSave = canNext2 && (isEdit || form.project_type);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ background: "#fbfaf8" }}>
       {/* Header */}
-      <div className="bg-busk-navy px-4 pt-4 pb-5">
+      <div className="px-4 pt-4 pb-5" style={{ background: "#0f161e" }}>
         <div className="flex items-center gap-3 mb-4">
           <button onClick={() => navigate("/projects")} className="h-8 w-8 flex items-center justify-center rounded-xl hover:bg-white/10 transition-colors">
             <ChevronLeft className="h-5 w-5 text-white" />
@@ -112,14 +112,14 @@ export default function ProjectForm() {
               <div key={s.id} className="flex items-center flex-1">
                 <div className={cn(
                   "flex items-center justify-center h-8 w-8 rounded-full text-xs font-black transition-all shrink-0",
-                  step > s.id ? "bg-emerald-500 text-white" :
-                  step === s.id ? "bg-busk-blue-light text-white shadow-lg shadow-blue-500/30" :
+                  step > s.id ? "bg-[#004038] text-white" :
+                  step === s.id ? "bg-[#fef1e1] text-[#004038]" :
                   "bg-white/10 text-white/40"
                 )}>
                   {step > s.id ? <CheckCircle2 className="h-4 w-4" /> : s.id}
                 </div>
                 <p className={cn("text-[10px] ml-1 font-semibold hidden sm:block", step >= s.id ? "text-white/80" : "text-white/30")}>{s.label}</p>
-                {i < STEPS.length - 1 && <div className={cn("flex-1 h-px mx-2", step > s.id ? "bg-emerald-500/50" : "bg-white/10")} />}
+                {i < STEPS.length - 1 && <div className={cn("flex-1 h-px mx-2", step > s.id ? "bg-[#fef1e1]/70" : "bg-white/10")} />}
               </div>
             ))}
           </div>
@@ -132,26 +132,30 @@ export default function ProjectForm() {
         {step === 1 && !isEdit && (
           <div className="space-y-4">
             <div>
-              <h2 className="text-lg font-black text-foreground">Qual o tipo de obra?</h2>
-              <p className="text-sm text-muted-foreground mt-1">O sistema vai sugerir fases e indicadores adaptados ao tipo escolhido.</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: "#6f7073" }}>Nova obra</p>
+              <h2 className="text-2xl font-black" style={{ color: "#0f161e" }}>Qual o tipo de obra?</h2>
+              <p className="text-sm mt-1" style={{ color: "#3d3e45" }}>O sistema vai sugerir fases e indicadores adaptados ao tipo escolhido.</p>
             </div>
             <div className="grid grid-cols-2 gap-2.5">
-              {PROJECT_TYPES.map((t) => (
+              {PROJECT_TYPES.map((t) => {
+                const Icon = t.icon;
+                return (
                 <button
                   key={t.value}
                   onClick={() => selectType(t.value)}
                   className={cn(
-                    "flex flex-col items-start gap-1.5 p-3.5 rounded-2xl border-2 text-left transition-all hover:border-primary hover:bg-primary/5",
+                    "flex flex-col items-start gap-2 p-3.5 rounded-2xl border-2 text-left transition-all hover:border-[#004038]",
                     form.project_type === t.value
-                      ? "border-primary bg-primary/5 shadow-md"
-                      : "border-border bg-card"
+                      ? "border-[#004038]"
+                      : "border-[#efefef]"
                   )}
+                  style={{ background: form.project_type === t.value ? "#fef1e1" : t.bg }}
                 >
-                  <span className="text-2xl">{t.icon}</span>
-                  <p className="text-sm font-bold leading-tight">{t.value}</p>
-                  <p className="text-[10px] text-muted-foreground leading-snug">{t.desc}</p>
+                  <Icon className="h-5 w-5" style={{ color: "#004038" }} />
+                  <p className="text-sm font-black leading-tight" style={{ color: "#0f161e" }}>{t.value}</p>
+                  <p className="text-[10px] leading-snug" style={{ color: "#3d3e45" }}>{t.desc}</p>
                 </button>
-              ))}
+              )})}
             </div>
           </div>
         )}
@@ -160,7 +164,7 @@ export default function ProjectForm() {
         {step === 2 && (
           <div className="space-y-5">
             <div>
-              <h2 className="text-lg font-black">Dados da Obra</h2>
+              <h2 className="text-2xl font-black" style={{ color: "#0f161e" }}>Dados da obra</h2>
               {form.project_type && <p className="text-sm text-muted-foreground mt-1">Tipo: <span className="font-semibold text-primary">{form.project_type}</span></p>}
             </div>
 
@@ -226,7 +230,7 @@ export default function ProjectForm() {
         {step === 3 && (
           <div className="space-y-5">
             <div>
-              <h2 className="text-lg font-black">Fases da Obra</h2>
+              <h2 className="text-2xl font-black" style={{ color: "#0f161e" }}>Fases da obra</h2>
               <p className="text-sm text-muted-foreground mt-1">
                 Template carregado para <strong>{form.project_type}</strong>. Edite conforme necessário — os pesos devem somar 100%.
               </p>
@@ -240,10 +244,11 @@ export default function ProjectForm() {
                   <button
                     key={m.value}
                     onClick={() => set("progress_method", m.value)}
-                    className={cn(
-                      "p-3 rounded-xl border-2 text-left transition-all",
-                      form.progress_method === m.value ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/40"
-                    )}
+                    className="p-3 rounded-xl border-2 text-left transition-all"
+                    style={{
+                      borderColor: form.progress_method === m.value ? "#004038" : "#efefef",
+                      background: form.progress_method === m.value ? "#fef1e1" : "#ffffff",
+                    }}
                   >
                     <p className="text-xs font-bold">{m.label}</p>
                     <p className="text-[10px] text-muted-foreground mt-0.5">{m.desc}</p>
@@ -271,7 +276,7 @@ export default function ProjectForm() {
         {step === 4 && (
           <div className="space-y-5">
             <div>
-              <h2 className="text-lg font-black">Revisão Final</h2>
+              <h2 className="text-2xl font-black" style={{ color: "#0f161e" }}>Revisão final</h2>
               <p className="text-sm text-muted-foreground">Confirme os dados antes de criar a obra.</p>
             </div>
 
@@ -280,7 +285,10 @@ export default function ProjectForm() {
               <div className="bg-card border border-border rounded-2xl p-4 space-y-3">
                 <div className="flex items-center gap-2">
                   <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-xl">
-                    {PROJECT_TYPES.find(t => t.value === form.project_type)?.icon || "🏗️"}
+                    {(() => {
+                      const Icon = PROJECT_TYPES.find(t => t.value === form.project_type)?.icon || Building2;
+                      return <Icon className="h-5 w-5 text-primary" />;
+                    })()}
                   </div>
                   <div>
                     <p className="font-black text-sm">{form.name}</p>
@@ -328,8 +336,8 @@ export default function ProjectForm() {
 
             <div className="flex gap-3">
               <Button variant="outline" onClick={() => setStep(3)}><ChevronLeft className="h-4 w-4" />Voltar</Button>
-              <Button onClick={save} disabled={saving || !canSave} className="flex-1 bg-emerald-600 hover:bg-emerald-700">
-                {saving ? "Criando obra..." : "✓ Criar Obra"}
+              <Button onClick={save} disabled={saving || !canSave} className="flex-1">
+                {saving ? "Criando obra..." : "Criar obra"}
               </Button>
             </div>
           </div>

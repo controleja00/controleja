@@ -14,7 +14,7 @@ export default function MobileNav() {
   const location = useLocation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t safe-area-inset-bottom" style={{ background: "#ffffff", borderColor: "#efefef" }}>
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t safe-area-inset-bottom" style={{ background: "rgba(255,255,255,0.96)", borderColor: "#efefef", backdropFilter: "blur(16px)" }}>
       <div className="flex justify-around items-center h-16 px-1">
         {tabs.map((tab) => {
           const active = location.pathname === tab.path || (tab.path !== "/dashboard" && location.pathname.startsWith(tab.path));
@@ -29,7 +29,7 @@ export default function MobileNav() {
             >
               <div className={cn(
                 "flex items-center justify-center h-8 w-8 rounded-xl transition-all duration-200",
-                active ? "bg-[#e5d3f7] text-[#004038]" : ""
+                active ? "bg-[#fef1e1] text-[#004038]" : ""
               )}>
                 <tab.icon
                   className={cn("h-5 w-5 transition-all", active ? "text-[#004038]" : "text-[#6f7073]")}

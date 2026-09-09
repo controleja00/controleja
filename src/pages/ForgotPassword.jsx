@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Building2, ArrowLeft } from "lucide-react";
+import { ArrowLeft, MailCheck } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -19,22 +20,12 @@ export default function ForgotPassword() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8" style={{ background: "#fbfaf8" }}>
       <div className="w-full max-w-sm">
-        <Link to="/" className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="h-11 w-11 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #004038 0%, #006b5f 100%)" }}>
-            <Building2 className="h-5 w-5 text-[#efefef]" />
-          </div>
-          <div className="leading-none">
-            <p className="font-black text-xl tracking-tight" style={{ color: "#004038" }}>Consuobra</p>
-            <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#6f7073" }}>Obra sob controle</p>
-          </div>
-        </Link>
-        <div className="rounded-2xl p-7 shadow-sm" style={{ background: "#FFFFFF", border: "1.5px solid #efefef" }}>
+        <BrandLogo size="lg" className="justify-center mb-8" />
+        <div className="rounded-2xl p-7" style={{ background: "#FFFFFF", border: "1.5px solid #efefef" }}>
           {sent ? (
             <div className="text-center py-4">
-              <div className="h-14 w-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "#ECFDF5" }}>
-                <svg className="h-7 w-7" style={{ color: "#16A34A" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+              <div className="h-14 w-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "#bee9f4" }}>
+                <MailCheck className="h-7 w-7" style={{ color: "#004038" }} />
               </div>
               <h2 className="text-xl font-black mb-2" style={{ color: "#111917" }}>Verifique seu e-mail</h2>
               <p className="text-sm mb-2" style={{ color: "#3d3e45" }}>Se o e-mail <strong>{email}</strong> estiver cadastrado, você receberá um link para redefinir sua senha.</p>
@@ -53,7 +44,7 @@ export default function ForgotPassword() {
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="seu@email.com" autoComplete="email" required
                     className="w-full h-10 rounded-xl px-3 text-sm outline-none" style={{ border: "1.5px solid #efefef", background: "#fbfaf8", color: "#111917" }} />
                 </div>
-                <button type="submit" disabled={loading || !email} className="w-full h-11 rounded-xl font-bold text-base text-white disabled:opacity-60" style={{ background: "#004038" }}>
+                <button type="submit" disabled={loading || !email} className="w-full h-11 rounded-lg font-bold text-base text-white disabled:opacity-60" style={{ background: "#004038" }}>
                   {loading ? "Enviando..." : "Enviar link de redefinição"}
                 </button>
               </form>

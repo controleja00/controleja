@@ -23,7 +23,7 @@ export default function BrandLogo({ to = "/", size = "md", light = false, classN
   const s = sizeClasses[size] || sizeClasses.md;
   const content = (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <div className={`${s.mark} rounded-2xl shadow-sm overflow-hidden shrink-0`}>
+      <div className={`${s.mark} rounded-2xl overflow-hidden shrink-0`}>
         <BrandMark className="h-full w-full" />
       </div>
       <div className="leading-none min-w-0">
