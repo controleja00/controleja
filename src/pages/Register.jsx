@@ -29,13 +29,22 @@ export default function Register() {
     e.preventDefault(); setError("");
     if (!email || !password) { setError("Preencha todos os campos obrigatórios."); return; }
     if (password !== confirm) { setError("As senhas não coincidem. Verifique e tente novamente."); return; }
-    if (password.length < 6) { setError("A senha deve ter no mínimo 6 caracteres."); return; }
+    if (password.length < 8) { setError("A senha deve ter no mínimo 8 caracteres."); return; }
     setLoading(true);
     try {
       await base44.auth.register({ email, password });
       setStep("otp");
     } catch (err) {
-      setError(err?.message?.includes("already") ? "Este e-mail já está cadastrado. Tente entrar." : (err?.message || "Erro ao criar conta. Tente novamente."));
+      const message = err?.message || "";
+      if (message.includes("already")) {
+        setError("Este e-mail já está cadastrado. Tente entrar.");
+      } else if (message.toLowerCase().includes("password")) {
+        setError("A senha deve ter no mínimo 8 caracteres.");
+      } else if (message.toLowerCase().includes("app not found")) {
+        setError("Não foi possível conectar ao cadastro agora. Atualize a página e tente novamente.");
+      } else {
+        setError(message || "Erro ao criar conta. Tente novamente.");
+      }
     } finally { setLoading(false); }
   };
 
@@ -85,9 +94,9 @@ export default function Register() {
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="seu@email.com" autoComplete="email" required className={inputClass} style={inputStyle} />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1.5" style={{ color: "#111917" }}>Senha * <span className="font-normal text-xs" style={{ color: "#6f7073" }}>(mínimo 6 caracteres)</span></label>
+                  <label className="block text-sm font-semibold mb-1.5" style={{ color: "#111917" }}>Senha * <span className="font-normal text-xs" style={{ color: "#6f7073" }}>(mínimo 8 caracteres)</span></label>
                   <div className="relative">
-                    <input type={showPass ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mínimo 6 caracteres" required className={`${inputClass} pr-10`} style={inputStyle} />
+                    <input type={showPass ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mínimo 8 caracteres" required className={`${inputClass} pr-10`} style={inputStyle} />
                     <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "#6f7073" }}>
                       {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
