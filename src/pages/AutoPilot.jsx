@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 const CATEGORY_CONFIG = {
   financeiro: { icon: DollarSign, bg: "bg-red-50", border: "border-red-200", text: "text-red-700", iconBg: "bg-red-500", label: "Financeiro" },
   documento: { icon: FileText, bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", iconBg: "bg-amber-500", label: "Documentos" },
-  obra: { icon: Building2, bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-700", iconBg: "bg-blue-500", label: "Obras" },
+  obra: { icon: Building2, bg: "bg-secondary", border: "border-border", text: "text-primary", iconBg: "bg-secondary0", label: "Obras" },
   empreiteiro: { icon: Users, bg: "bg-violet-50", border: "border-violet-200", text: "text-violet-700", iconBg: "bg-violet-500", label: "Empreiteiros" },
   medicao: { icon: CheckCircle2, bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-700", iconBg: "bg-emerald-500", label: "Medições" },
   estoque: { icon: ShoppingCart, bg: "bg-orange-50", border: "border-orange-200", text: "text-orange-700", iconBg: "bg-orange-500", label: "Materiais" },
@@ -21,7 +21,7 @@ const URGENCY = {
   critico: { label: "CRÍTICO", bg: "bg-red-500" },
   urgente: { label: "URGENTE", bg: "bg-orange-500" },
   importante: { label: "IMPORTANTE", bg: "bg-amber-500" },
-  atenção: { label: "ATENÇÃO", bg: "bg-blue-500" },
+  atenção: { label: "ATENÇÃO", bg: "bg-secondary0" },
 };
 
 function buildActionItems(data) {
@@ -288,7 +288,7 @@ Gere análise detalhada com linguagem de gerente de obras experiente.`,
         {/* Metrics */}
         <div className="grid grid-cols-4 gap-2 mb-4">
           {[
-            { label: "Obras ativas", value: projects.filter(p => p.status === "Em andamento").length, color: "text-blue-300" },
+            { label: "Obras ativas", value: projects.filter(p => p.status === "Em andamento").length, color: "text-[#8096bc]" },
             { label: "Pendências", value: items.length, color: criticalCount > 0 ? "text-red-300" : "text-white" },
             { label: "Críticos", value: criticalCount, color: "text-red-400" },
             { label: "Saldo", value: `${saldo >= 0 ? "+" : "-"}R$${Math.abs(saldo / 1000).toFixed(0)}k`, color: saldo >= 0 ? "text-emerald-300" : "text-red-300" },
@@ -434,7 +434,7 @@ Gere análise detalhada com linguagem de gerente de obras experiente.`,
         <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-3">Acesso Rápido</p>
         <div className="grid grid-cols-2 gap-2.5">
           {[
-            { to: "/measurements/new", label: "Nova Medição", icon: CheckCircle2, color: "from-blue-500 to-blue-600" },
+            { to: "/measurements/new", label: "Nova Medição", icon: CheckCircle2, color: "from-[#8096bc] to-[#1f3258]" },
             { to: "/cash-flow", label: "Fluxo de Caixa", icon: DollarSign, color: "from-emerald-500 to-green-600" },
             { to: "/alerts", label: "Central de Alertas", icon: Bell, color: "from-red-500 to-rose-600" },
             { to: "/ai-assistant", label: "Assistente IA", icon: Sparkles, color: "from-violet-500 to-purple-600" },

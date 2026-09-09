@@ -63,7 +63,7 @@ export default function ProjKPIs({ project, measurements, subs, documents, onEdi
       <KPI
         label="Já Executado"
         value={fmt(totalMeasured)}
-        color="text-blue-600"
+        color="text-primary"
         icon={DollarSign}
         sub={`${budget > 0 ? Math.round((totalMeasured / budget) * 100) : 0}% do orçamento`}
       />

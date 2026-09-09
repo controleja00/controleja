@@ -13,7 +13,7 @@ import PageHeader from "../components/PageHeader";
 const SERVICE_TYPES = ["Terraplenagem", "Drenagem", "Pavimentação", "Demolição", "Alvenaria", "Acabamento", "Estrutura", "Instalações", "Limpeza pós-obra", "Locação de Equipamento", "Outro"];
 
 const statusColor = {
-  "Aberta": "bg-blue-50 text-blue-700",
+  "Aberta": "bg-secondary text-primary",
   "Em análise": "bg-amber-50 text-amber-700",
   "Proposta recebida": "bg-purple-50 text-purple-700",
   "Contratado": "bg-emerald-50 text-emerald-700",
@@ -21,7 +21,7 @@ const statusColor = {
 };
 
 const statusDot = {
-  "Aberta": "bg-blue-500",
+  "Aberta": "bg-secondary0",
   "Em análise": "bg-amber-500",
   "Proposta recebida": "bg-purple-500",
   "Contratado": "bg-emerald-500",
@@ -138,7 +138,7 @@ export default function Hiring() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: "Total", value: stats.total, color: "text-foreground" },
-            { label: "Abertas", value: stats.abertas, color: "text-blue-600" },
+            { label: "Abertas", value: stats.abertas, color: "text-primary" },
             { label: "Em Análise", value: stats.emAnalise, color: "text-amber-600" },
             { label: "Contratadas", value: stats.contratadas, color: "text-emerald-600" },
           ].map(s => (

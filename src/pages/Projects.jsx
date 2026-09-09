@@ -31,7 +31,7 @@ export default function Projects() {
   if (loading) return <div className="flex items-center justify-center h-96"><div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" /></div>;
 
   const statusColor = {
-    "Em andamento": "bg-blue-50 text-blue-700",
+    "Em andamento": "bg-secondary text-primary",
     "Atrasada": "bg-red-50 text-red-700",
     "Concluída": "bg-emerald-50 text-emerald-700",
     "Paralisada": "bg-gray-100 text-gray-700",

@@ -161,7 +161,7 @@ Gere um score contratual de 0 a 100 (100 = totalmente seguro para o subempreitei
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border shrink-0 ${riskColor[c.risk_level] || ""}`}>{c.risk_level}</span>
                       </div>
                       <p className="text-xs text-muted-foreground mb-1">{c.description}</p>
-                      {c.recommendation && <p className="text-xs text-blue-700 flex items-start gap-1.5"><CheckCircle2 className="h-3 w-3 shrink-0 mt-0.5 text-blue-500" />{c.recommendation}</p>}
+                      {c.recommendation && <p className="text-xs text-primary flex items-start gap-1.5"><CheckCircle2 className="h-3 w-3 shrink-0 mt-0.5 text-primary" />{c.recommendation}</p>}
                     </div>
                   ))}
                 </div>
@@ -184,9 +184,9 @@ Gere um score contratual de 0 a 100 (100 = totalmente seguro para o subempreitei
             </div>
 
             {result.legal_recommendation && (
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex gap-3">
-                <Scale className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
-                <p className="text-sm text-blue-800">{result.legal_recommendation}</p>
+              <div className="bg-secondary border border-border rounded-xl p-4 flex gap-3">
+                <Scale className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <p className="text-sm text-primary">{result.legal_recommendation}</p>
               </div>
             )}
           </div>

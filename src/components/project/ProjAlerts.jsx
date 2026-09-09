@@ -7,14 +7,14 @@ const severityColor = {
   "Crítica": "border-l-red-500 bg-red-50/50",
   "Alta": "border-l-orange-500 bg-orange-50/50",
   "Média": "border-l-amber-500 bg-amber-50/50",
-  "Baixa": "border-l-blue-500 bg-blue-50/50",
+  "Baixa": "border-l-blue-500 bg-secondary/50",
 };
 
 const severityBadge = {
   "Crítica": "bg-red-100 text-red-700",
   "Alta": "bg-orange-100 text-orange-700",
   "Média": "bg-amber-100 text-amber-700",
-  "Baixa": "bg-blue-100 text-blue-700",
+  "Baixa": "bg-secondary text-primary",
 };
 
 export default function ProjAlerts({ project, subs, measurements, documents }) {

@@ -40,15 +40,15 @@ export default function ProjClientPortal({ project }) {
         </div>
       )}
       {draftCount > 0 && (
-        <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-2xl px-4 py-3">
-          <Bell className="h-4 w-4 text-blue-500 shrink-0" />
-          <p className="text-sm text-blue-700 font-medium">{draftCount} relatório(s) aguardando revisão e publicação.</p>
+        <div className="flex items-center gap-3 bg-secondary border border-border rounded-2xl px-4 py-3">
+          <Bell className="h-4 w-4 text-primary shrink-0" />
+          <p className="text-sm text-primary font-medium">{draftCount} relatório(s) aguardando revisão e publicação.</p>
         </div>
       )}
 
       {/* Mobile quick action */}
       {!showUpload && (
-        <button onClick={() => { setShowUpload(true); setTab("upload"); }} className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl text-white font-bold text-base shadow-lg active:scale-95 transition-transform" style={{ background: "linear-gradient(135deg, #004038 0%, #006b5f 100%)" }}>
+        <button onClick={() => { setShowUpload(true); setTab("upload"); }} className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl text-white font-bold text-base shadow-lg active:scale-95 transition-transform" style={{ background: "linear-gradient(135deg, #1f3258 0%, #435b89 100%)" }}>
           <Camera className="h-5 w-5" />
           Enviar fotos do dia
         </button>
@@ -61,7 +61,7 @@ export default function ProjClientPortal({ project }) {
           </TabsTrigger>
           <TabsTrigger value="relatorios" className="text-xs rounded-lg py-2">
             <FileText className="h-3.5 w-3.5 mr-1" />Relatórios
-            {draftCount > 0 && <span className="ml-1 h-4 w-4 bg-blue-500 text-white text-[10px] font-black rounded-full flex items-center justify-center">{draftCount}</span>}
+            {draftCount > 0 && <span className="ml-1 h-4 w-4 bg-secondary0 text-white text-[10px] font-black rounded-full flex items-center justify-center">{draftCount}</span>}
           </TabsTrigger>
           <TabsTrigger value="config" className="text-xs rounded-lg py-2">
             <Settings className="h-3.5 w-3.5 mr-1" />Link

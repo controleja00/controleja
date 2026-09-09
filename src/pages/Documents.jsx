@@ -5,17 +5,46 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus, Search, FileText, Upload, AlertTriangle, CheckCircle2, Clock, X } from "lucide-react";
+import { Plus, Search, FileText, Upload, AlertTriangle, CheckCircle2, Clock, X, ExternalLink } from "lucide-react";
 import PageHeader from "../components/PageHeader";
 
 const DOC_TYPES = ["Contrato", "Nota Fiscal", "Alvará", "ART/RRT", "Comprovante", "Certidão Negativa", "Seguro", "Documento de Equipe", "Documento de Subempreiteiro", "Outro"];
 
-const statusConfig = {
-  "Aprovado": { bg: "bg-emerald-50", text: "text-emerald-700", icon: CheckCircle2 },
-  "Pendente": { bg: "bg-amber-50", text: "text-amber-700", icon: Clock },
-  "Vencido": { bg: "bg-red-50", text: "text-red-700", icon: AlertTriangle },
-  "Reprovado": { bg: "bg-red-50", text: "text-red-700", icon: X },
+const palette = {
+  ink: "#172441",
+  navy: "#1f3258",
+  steel: "#8096bc",
+  soft: "#e7ebf4",
+  canvas: "#f6f8fc",
+  line: "#e1e5ed",
+  text: "#424c62",
+  muted: "#778096",
 };
+
+const statusConfig = {
+  Aprovado: { bg: "#edf2f8", text: palette.navy, icon: CheckCircle2 },
+  Pendente: { bg: "#f1f3f7", text: palette.text, icon: Clock },
+  Vencido: { bg: "#fff1f2", text: "#9f1239", icon: AlertTriangle },
+  Reprovado: { bg: "#f3f4f6", text: "#4b5563", icon: X },
+};
+
+function Loading() {
+  return (
+    <div className="flex h-64 items-center justify-center" style={{ background: palette.canvas }}>
+      <div className="h-8 w-8 animate-spin rounded-full border-2" style={{ borderColor: palette.line, borderTopColor: palette.navy }} />
+    </div>
+  );
+}
+
+function Stat({ label, value, icon: Icon, tone }) {
+  return (
+    <div className="rounded-2xl border p-4" style={{ background: tone, borderColor: "rgba(23,36,65,0.08)" }}>
+      <Icon className="mb-3 h-5 w-5" style={{ color: palette.navy }} />
+      <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: palette.muted }}>{label}</p>
+      <p className="mt-1 text-2xl font-black" style={{ color: palette.ink }}>{value}</p>
+    </div>
+  );
+}
 
 export default function Documents() {
   const [docs, setDocs] = useState([]);
@@ -30,12 +59,12 @@ export default function Documents() {
   const [fileName, setFileName] = useState("");
 
   const load = () => {
-    base44.auth.me().then(me => Promise.all([
+    base44.auth.me().then((me) => Promise.all([
       base44.entities.Document.filter({ created_by_id: me.id }, "-created_date"),
       base44.entities.Project.filter({ created_by_id: me.id }),
     ]).then(([d, p]) => {
       setDocs(d);
-      setProjects(p.filter(proj => proj.status !== "Arquivada"));
+      setProjects(p.filter((proj) => proj.status !== "Arquivada"));
       setLoading(false);
     }));
   };
@@ -52,10 +81,10 @@ export default function Documents() {
     setUploading(false);
   };
 
-  const setField = (k, v) => setForm(p => ({ ...p, [k]: v }));
+  const setField = (k, v) => setForm((prev) => ({ ...prev, [k]: v }));
 
   const handleProjectChange = (projId) => {
-    const proj = projects.find(p => p.id === projId);
+    const proj = projects.find((p) => p.id === projId);
     setField("project_id", projId);
     setField("project_name", proj?.name || "");
   };
@@ -74,103 +103,116 @@ export default function Documents() {
     load();
   };
 
-  const filtered = docs.filter(d => {
-    const matchSearch = !search || d.type?.toLowerCase().includes(search.toLowerCase()) || d.name?.toLowerCase().includes(search.toLowerCase()) || d.project_name?.toLowerCase().includes(search.toLowerCase());
-    const matchProject = filterProject === "all" || d.project_id === filterProject;
+  const filtered = docs.filter((doc) => {
+    const term = search.toLowerCase();
+    const matchSearch = !term || doc.type?.toLowerCase().includes(term) || doc.name?.toLowerCase().includes(term) || doc.project_name?.toLowerCase().includes(term);
+    const matchProject = filterProject === "all" || doc.project_id === filterProject;
     return matchSearch && matchProject;
   });
 
-  if (loading) return (
-    <div className="flex items-center justify-center h-64">
-      <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
-    </div>
-  );
+  if (loading) return <Loading />;
 
-  const pendingCount = docs.filter(d => d.status === "Pendente" || d.status === "Vencido").length;
+  const pendingCount = docs.filter((doc) => doc.status === "Pendente" || doc.status === "Vencido").length;
+  const approvedCount = docs.filter((doc) => doc.status === "Aprovado").length;
+  const expiredCount = docs.filter((doc) => doc.status === "Vencido").length;
 
   return (
-    <div>
-      <PageHeader title="Documentos" subtitle={`${docs.length} documentos${pendingCount > 0 ? ` · ${pendingCount} pendentes` : ""}`}>
-        <Button onClick={() => setOpen(true)} className="bg-blue-600 hover:bg-blue-700">
-          <Plus className="h-4 w-4 mr-1.5" />Enviar Documento
+    <div className="min-h-screen" style={{ background: palette.canvas }}>
+      <PageHeader title="Documentos" subtitle="Contratos, notas, certidões e arquivos vinculados às obras.">
+        <Button onClick={() => setOpen(true)}>
+          <Plus className="h-4 w-4" />Enviar documento
         </Button>
       </PageHeader>
 
-      <div className="p-4 sm:p-6 space-y-4">
-        {/* Filtros */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input placeholder="Buscar documento..." className="pl-9" value={search} onChange={e => setSearch(e.target.value)} />
-          </div>
-          <Select value={filterProject} onValueChange={setFilterProject}>
-            <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder="Filtrar por obra" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todas as obras</SelectItem>
-              {projects.map(p => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
-            </SelectContent>
-          </Select>
+      <div className="space-y-5 p-4 sm:p-6">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <Stat label="Arquivos" value={docs.length} icon={FileText} tone="#e7ebf4" />
+          <Stat label="Pendentes" value={pendingCount} icon={Clock} tone="#d6ddea" />
+          <Stat label="Aprovados" value={approvedCount} icon={CheckCircle2} tone="#edf2f8" />
+          <Stat label="Vencidos" value={expiredCount} icon={AlertTriangle} tone="#f1f3f7" />
         </div>
 
-        {/* Tabela */}
+        <section className="rounded-2xl border bg-white p-4" style={{ borderColor: palette.line }}>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" style={{ color: palette.muted }} />
+              <Input placeholder="Buscar por documento, obra ou tipo..." className="pl-9" value={search} onChange={(e) => setSearch(e.target.value)} />
+            </div>
+            <Select value={filterProject} onValueChange={setFilterProject}>
+              <SelectTrigger className="w-full sm:w-56">
+                <SelectValue placeholder="Filtrar por obra" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas as obras</SelectItem>
+                {projects.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+        </section>
+
         {filtered.length === 0 ? (
-          <div className="bg-white border border-gray-100 rounded-2xl p-12 text-center">
-            <FileText className="h-10 w-10 text-gray-300 mx-auto mb-3" />
-            <p className="font-bold text-gray-600 mb-1">Nenhum documento encontrado</p>
-            <p className="text-sm text-gray-400 mb-4">
-              {docs.length === 0 ? "Você ainda não enviou nenhum documento." : "Tente ajustar o filtro ou a busca."}
+          <section className="rounded-2xl border bg-white px-4 py-12 text-center" style={{ borderColor: palette.line }}>
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: palette.soft }}>
+              <FileText className="h-7 w-7" style={{ color: palette.navy }} />
+            </div>
+            <p className="font-black" style={{ color: palette.ink }}>Nenhum documento encontrado</p>
+            <p className="mt-1 text-sm" style={{ color: palette.muted }}>
+              {docs.length === 0 ? "Envie o primeiro documento para organizar a obra." : "Ajuste a busca ou troque o filtro de obra."}
             </p>
             {docs.length === 0 && (
-              <Button onClick={() => setOpen(true)} className="bg-blue-600 hover:bg-blue-700">
-                <Upload className="h-4 w-4 mr-1.5" />Enviar primeiro documento
+              <Button onClick={() => setOpen(true)} className="mt-5">
+                <Upload className="h-4 w-4" />Enviar primeiro documento
               </Button>
             )}
-          </div>
+          </section>
         ) : (
-          <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+          <section className="overflow-hidden rounded-2xl border bg-white" style={{ borderColor: palette.line }}>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100 bg-gray-50">
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500">Documento</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 hidden sm:table-cell">Obra</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 hidden md:table-cell">Vencimento</th>
-                    <th className="text-center px-4 py-3 font-semibold text-gray-500">Status</th>
-                    <th className="text-center px-4 py-3 font-semibold text-gray-500">Ações</th>
+                  <tr style={{ background: "#eef2f8", borderBottom: `1px solid ${palette.line}` }}>
+                    <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest" style={{ color: palette.muted }}>Documento</th>
+                    <th className="hidden px-4 py-3 text-left text-xs font-bold uppercase tracking-widest sm:table-cell" style={{ color: palette.muted }}>Obra</th>
+                    <th className="hidden px-4 py-3 text-left text-xs font-bold uppercase tracking-widest md:table-cell" style={{ color: palette.muted }}>Vencimento</th>
+                    <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-widest" style={{ color: palette.muted }}>Status</th>
+                    <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-widest" style={{ color: palette.muted }}>Ações</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {filtered.map(d => {
-                    const sc = statusConfig[d.status] || statusConfig["Pendente"];
+                <tbody className="divide-y" style={{ borderColor: palette.line }}>
+                  {filtered.map((doc) => {
+                    const sc = statusConfig[doc.status] || statusConfig.Pendente;
+                    const Icon = sc.icon;
                     return (
-                      <tr key={d.id} className="hover:bg-gray-50 transition-colors">
+                      <tr key={doc.id} className="transition-colors hover:bg-[#f6f8fc]">
                         <td className="px-4 py-3">
-                          <div className="flex items-center gap-2">
-                            <FileText className="h-4 w-4 text-gray-400 shrink-0" />
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style={{ background: palette.soft }}>
+                              <FileText className="h-5 w-5" style={{ color: palette.navy }} />
+                            </div>
                             <div>
-                              <p className="font-medium text-gray-800">{d.name || d.type}</p>
-                              <p className="text-xs text-gray-400">{d.type}</p>
+                              <p className="font-black" style={{ color: palette.ink }}>{doc.name || doc.type}</p>
+                              <p className="text-xs" style={{ color: palette.muted }}>{doc.type}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">{d.project_name || d.subcontractor_name || "—"}</td>
-                        <td className="px-4 py-3 text-gray-500 hidden md:table-cell">
-                          {d.expiry_date ? new Date(d.expiry_date).toLocaleDateString("pt-BR") : "—"}
-                        </td>
+                        <td className="hidden px-4 py-3 sm:table-cell" style={{ color: palette.text }}>{doc.project_name || doc.subcontractor_name || "Sem obra vinculada"}</td>
+                        <td className="hidden px-4 py-3 md:table-cell" style={{ color: palette.text }}>{doc.expiry_date ? new Date(doc.expiry_date).toLocaleDateString("pt-BR") : "Sem vencimento"}</td>
                         <td className="px-4 py-3 text-center">
-                          <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${sc.bg} ${sc.text}`}>{d.status}</span>
+                          <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold" style={{ background: sc.bg, color: sc.text }}>
+                            <Icon className="h-3 w-3" />{doc.status}
+                          </span>
                         </td>
                         <td className="px-4 py-3">
-                          <div className="flex justify-center gap-1">
-                            {d.file_url && (
-                              <a href={d.file_url} target="_blank" rel="noopener noreferrer">
-                                <Button size="sm" variant="ghost" className="h-7 text-xs text-blue-600">Ver</Button>
+                          <div className="flex flex-wrap justify-center gap-1">
+                            {doc.file_url && (
+                              <a href={doc.file_url} target="_blank" rel="noopener noreferrer">
+                                <Button size="sm" variant="ghost" className="h-8 text-xs">
+                                  <ExternalLink className="h-3 w-3" />Ver
+                                </Button>
                               </a>
                             )}
-                            <Button size="sm" variant="ghost" className="h-7 text-xs text-emerald-600" onClick={() => updateStatus(d.id, "Aprovado")}>Aprovar</Button>
-                            <Button size="sm" variant="ghost" className="h-7 text-xs text-red-600" onClick={() => updateStatus(d.id, "Reprovado")}>Reprovar</Button>
+                            <Button size="sm" variant="ghost" className="h-8 text-xs" onClick={() => updateStatus(doc.id, "Aprovado")}>Aprovar</Button>
+                            <Button size="sm" variant="ghost" className="h-8 text-xs" onClick={() => updateStatus(doc.id, "Reprovado")}>Reprovar</Button>
                           </div>
                         </td>
                       </tr>
@@ -179,69 +221,52 @@ export default function Documents() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </section>
         )}
       </div>
 
-      {/* Modal */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Enviar Documento</DialogTitle>
+            <DialogTitle>Enviar documento</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
               <Label className="text-sm font-semibold">Obra *</Label>
               <Select value={form.project_id} onValueChange={handleProjectChange}>
-                <SelectTrigger className="mt-1.5">
-                  <SelectValue placeholder="Selecione a obra" />
-                </SelectTrigger>
-                <SelectContent>
-                  {projects.map(p => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
-                </SelectContent>
+                <SelectTrigger className="mt-1.5"><SelectValue placeholder="Selecione a obra" /></SelectTrigger>
+                <SelectContent>{projects.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div>
-              <Label className="text-sm font-semibold">Tipo de Documento *</Label>
-              <Select value={form.type} onValueChange={v => setField("type", v)}>
-                <SelectTrigger className="mt-1.5">
-                  <SelectValue placeholder="Selecione o tipo" />
-                </SelectTrigger>
-                <SelectContent>
-                  {DOC_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
-                </SelectContent>
+              <Label className="text-sm font-semibold">Tipo de documento *</Label>
+              <Select value={form.type} onValueChange={(v) => setField("type", v)}>
+                <SelectTrigger className="mt-1.5"><SelectValue placeholder="Selecione o tipo" /></SelectTrigger>
+                <SelectContent>{DOC_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div>
               <Label className="text-sm font-semibold">Nome do documento</Label>
-              <Input value={form.name} onChange={e => setField("name", e.target.value)} placeholder="Ex: Contrato de empreitada" className="mt-1.5" />
+              <Input value={form.name} onChange={(e) => setField("name", e.target.value)} placeholder="Ex: Contrato de empreitada" className="mt-1.5" />
             </div>
             <div>
               <Label className="text-sm font-semibold">Arquivo</Label>
-              <div className="mt-1.5">
-                <label className="flex items-center gap-2 border border-dashed border-gray-300 rounded-xl px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors">
-                  <Upload className="h-4 w-4 text-gray-400" />
-                  <span className="text-sm text-gray-500">
-                    {uploading ? "Enviando arquivo..." : fileName || "Escolher arquivo"}
-                  </span>
-                  <input type="file" className="hidden" onChange={handleFile} disabled={uploading} />
-                </label>
-              </div>
+              <label className="mt-1.5 flex cursor-pointer items-center gap-3 rounded-xl border border-dashed px-4 py-3 transition-colors hover:bg-[#f6f8fc]" style={{ borderColor: palette.steel }}>
+                <Upload className="h-4 w-4" style={{ color: palette.navy }} />
+                <span className="text-sm" style={{ color: palette.text }}>{uploading ? "Enviando arquivo..." : fileName || "Escolher arquivo"}</span>
+                <input type="file" className="hidden" onChange={handleFile} disabled={uploading} />
+              </label>
             </div>
             <div>
-              <Label className="text-sm font-semibold">Data de Vencimento</Label>
-              <Input type="date" value={form.expiry_date} onChange={e => setField("expiry_date", e.target.value)} className="mt-1.5" />
+              <Label className="text-sm font-semibold">Data de vencimento</Label>
+              <Input type="date" value={form.expiry_date} onChange={(e) => setField("expiry_date", e.target.value)} className="mt-1.5" />
             </div>
             <div>
               <Label className="text-sm font-semibold">Observações</Label>
-              <Input value={form.notes} onChange={e => setField("notes", e.target.value)} placeholder="Observações opcionais" className="mt-1.5" />
+              <Input value={form.notes} onChange={(e) => setField("notes", e.target.value)} placeholder="Observações opcionais" className="mt-1.5" />
             </div>
-            <Button
-              onClick={save}
-              disabled={!form.project_id || !form.type || uploading}
-              className="w-full bg-blue-600 hover:bg-blue-700"
-            >
-              Salvar Documento
+            <Button onClick={save} disabled={!form.project_id || !form.type || uploading} className="w-full">
+              Salvar documento
             </Button>
           </div>
         </DialogContent>

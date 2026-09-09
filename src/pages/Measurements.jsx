@@ -44,7 +44,7 @@ export default function Measurements() {
 
   if (loading) return <div className="flex items-center justify-center h-96"><div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" /></div>;
 
-  const statusColor = { "Pendente": "bg-amber-50 text-amber-700", "Aprovada": "bg-emerald-50 text-emerald-700", "Rejeitada": "bg-red-50 text-red-700", "Em revisão": "bg-blue-50 text-blue-700" };
+  const statusColor = { "Pendente": "bg-amber-50 text-amber-700", "Aprovada": "bg-emerald-50 text-emerald-700", "Rejeitada": "bg-red-50 text-red-700", "Em revisão": "bg-secondary text-primary" };
 
   return (
     <div>

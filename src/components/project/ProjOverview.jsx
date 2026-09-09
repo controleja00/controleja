@@ -181,7 +181,7 @@ export default function ProjOverview({ project: initialProject, measurements, on
             <Pencil className="h-3 w-3" /> Atualizar
           </Button>
         </div>
-        <ProgressRow label="Progresso Físico" pct={physProgress} color="bg-blue-500" onEdit={() => setShowProgress(true)} />
+        <ProgressRow label="Progresso Físico" pct={physProgress} color="bg-secondary0" onEdit={() => setShowProgress(true)} />
         <ProgressRow label="Progresso Financeiro" pct={finProgress} color="bg-emerald-500" value={`${finProgress}% · ${fmt(totalMeasured)}`} />
         <ProgressRow label="Tempo Decorrido" pct={timeProgress} color={timeRisk ? "bg-red-400" : "bg-amber-400"} value={`${timeProgress}% · ${daysRemaining !== null ? `${daysRemaining} dias` : "—"}`} />
       </div>
@@ -190,7 +190,7 @@ export default function ProjOverview({ project: initialProject, measurements, on
       <div className="grid grid-cols-3 gap-3">
         <div className="bg-card border border-border rounded-xl p-3 text-center">
           <p className="text-xs text-muted-foreground mb-1">Já executado</p>
-          <p className="text-base font-black text-blue-600">{fmt(totalMeasured)}</p>
+          <p className="text-base font-black text-primary">{fmt(totalMeasured)}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-3 text-center">
           <p className="text-xs text-muted-foreground mb-1">Falta gastar</p>

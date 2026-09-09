@@ -138,9 +138,9 @@ Para cada suspeita, classifique o risco como: Baixo, Médio, Alto ou Crítico.`,
           <Textarea placeholder="Descreva a situação específica que deseja investigar..." value={context} onChange={e => setContext(e.target.value)} rows={2} />
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex gap-3">
-          <ShieldAlert className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
-          <p className="text-sm text-blue-800">A IA analisará automaticamente as últimas <strong>{measurements.length} medições</strong> cadastradas em busca de padrões suspeitos, inconsistências e possíveis fraudes.</p>
+        <div className="bg-secondary border border-border rounded-xl p-4 flex gap-3">
+          <ShieldAlert className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+          <p className="text-sm text-primary">A IA analisará automaticamente as últimas <strong>{measurements.length} medições</strong> cadastradas em busca de padrões suspeitos, inconsistências e possíveis fraudes.</p>
         </div>
 
         <Button onClick={analyze} disabled={analyzing || loading} className="w-full" size="lg">

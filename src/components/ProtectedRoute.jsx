@@ -5,9 +5,9 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { BrandMark } from '@/components/BrandLogo';
 
 const DefaultFallback = () => (
-  <div className="fixed inset-0 flex flex-col items-center justify-center gap-3" style={{ background: "#fbfaf8" }}>
+  <div className="fixed inset-0 flex flex-col items-center justify-center gap-3" style={{ background: "#f6f8fc" }}>
     <BrandMark className="h-10 w-10 rounded-2xl" />
-    <div className="w-5 h-5 border-2 border-[#efefef] border-t-[#004038] rounded-full animate-spin" />
+    <div className="w-5 h-5 border-2 border-[#e1e5ed] border-t-[#1f3258] rounded-full animate-spin" />
   </div>
 );
 

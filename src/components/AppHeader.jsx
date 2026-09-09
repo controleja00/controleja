@@ -54,29 +54,29 @@ export default function AppHeader() {
   }, [title]);
 
   return (
-    <header className="sticky top-0 z-30 border-b" style={{ background: "rgba(251,250,248,0.96)", borderColor: "#efefef", backdropFilter: "blur(14px)" }}>
+    <header className="sticky top-0 z-30 border-b" style={{ background: "rgba(251,250,248,0.96)", borderColor: "#e1e5ed", backdropFilter: "blur(14px)" }}>
       <div className="flex items-center h-14 px-4 gap-3">
         {!isRoot ?
         <button
           onClick={() => navigate(-1)}
           className="h-9 w-9 flex items-center justify-center rounded-xl hover:bg-white/10 transition-colors -ml-1">
           
-            <ChevronLeft className="h-5 w-5 text-[#004038]" />
+            <ChevronLeft className="h-5 w-5 text-[#1f3258]" />
           </button> :
 
           <BrandLogo size="sm" to="/dashboard" />
         }
 
-        <h1 className={`flex-1 font-bold text-base text-[#0f161e] ${isRoot ? "hidden sm:block" : ""}`}>
+        <h1 className={`flex-1 font-bold text-base text-[#172441] ${isRoot ? "hidden sm:block" : ""}`}>
           {!isRoot && title}
         </h1>
 
         <div className="flex items-center gap-1 ml-auto">
           <Link
             to="/alerts"
-            className="relative h-9 w-9 flex items-center justify-center rounded-xl hover:bg-[#efefef] transition-colors">
+            className="relative h-9 w-9 flex items-center justify-center rounded-xl hover:bg-[#e1e5ed] transition-colors">
             
-            <Bell className="h-4.5 w-4.5 text-[#004038]" />
+            <Bell className="h-4.5 w-4.5 text-[#1f3258]" />
             {alertCount > 0 &&
             <span className="absolute top-1 right-1 h-4 w-4 bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center shadow-md">
                 {alertCount > 9 ? "9+" : alertCount}

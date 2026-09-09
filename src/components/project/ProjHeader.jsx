@@ -2,7 +2,7 @@ import { Building2, Calendar, Clock, MapPin, User, TrendingUp } from "lucide-rea
 
 const statusConfig = {
   "Em andamento": { color: "bg-emerald-500", label: "Em andamento" },
-  "Planejamento": { color: "bg-blue-500", label: "Planejamento" },
+  "Planejamento": { color: "bg-secondary0", label: "Planejamento" },
   "Atrasada": { color: "bg-red-500", label: "Atrasada" },
   "Paralisada": { color: "bg-gray-500", label: "Paralisada" },
   "Concluída": { color: "bg-purple-500", label: "Concluída" },

@@ -13,7 +13,7 @@ const statusColor = {
   "Ativa": "bg-emerald-50 text-emerald-700",
   "Vencida": "bg-gray-100 text-gray-600",
   "Em reclamação": "bg-red-50 text-red-700",
-  "Encerrada": "bg-blue-50 text-blue-700"
+  "Encerrada": "bg-secondary text-primary"
 };
 
 export default function Guarantees() {

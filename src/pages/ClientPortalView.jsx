@@ -6,8 +6,8 @@ import { Building2, MapPin, Calendar, CheckCircle2, Camera, FileText, ChevronDow
 const fmtDate = (d) => d ? new Date(d + "T12:00:00").toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" }) : "—";
 
 const STATUS_COLOR = {
-  "Planejamento": "#6f7073",
-  "Em andamento": "#006b5f",
+  "Planejamento": "#778096",
+  "Em andamento": "#435b89",
   "Atrasada": "#DC2626",
   "Concluída": "#059669",
   "Paralisada": "#D97706",
@@ -16,35 +16,35 @@ const STATUS_COLOR = {
 function ReportItem({ report }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="rounded-2xl overflow-hidden" style={{ border: "1.5px solid #efefef", background: "#FFFFFF" }}>
+    <div className="rounded-2xl overflow-hidden" style={{ border: "1.5px solid #e1e5ed", background: "#FFFFFF" }}>
       <button onClick={() => setOpen(v => !v)} className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gray-50 transition-colors">
         <div>
-          <p className="font-bold text-sm" style={{ color: "#111917" }}>{fmtDate(report.report_date)}</p>
-          {report.phase && <p className="text-xs mt-0.5" style={{ color: "#6f7073" }}>{report.phase}</p>}
+          <p className="font-bold text-sm" style={{ color: "#172441" }}>{fmtDate(report.report_date)}</p>
+          {report.phase && <p className="text-xs mt-0.5" style={{ color: "#778096" }}>{report.phase}</p>}
         </div>
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold px-2.5 py-1 rounded-full" style={{ background: "#F0FDF4", color: "#059669" }}>Publicado</span>
-          {open ? <ChevronUp className="h-4 w-4" style={{ color: "#6f7073" }} /> : <ChevronDown className="h-4 w-4" style={{ color: "#6f7073" }} />}
+          {open ? <ChevronUp className="h-4 w-4" style={{ color: "#778096" }} /> : <ChevronDown className="h-4 w-4" style={{ color: "#778096" }} />}
         </div>
       </button>
       {open && (
-        <div className="px-4 pb-4 space-y-3" style={{ borderTop: "1.5px solid #fbfaf8" }}>
+        <div className="px-4 pb-4 space-y-3" style={{ borderTop: "1.5px solid #f6f8fc" }}>
           {report.photos?.filter(Boolean).length > 0 && (
             <div className="grid grid-cols-3 gap-2 pt-3">
               {report.photos.slice(0, 6).map((url, i) => (
-                <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="aspect-square rounded-xl overflow-hidden block" style={{ background: "#fbfaf8" }}>
+                <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="aspect-square rounded-xl overflow-hidden block" style={{ background: "#f6f8fc" }}>
                   <img src={url} alt="" className="w-full h-full object-cover" />
                 </a>
               ))}
             </div>
           )}
           {report.observation && (
-            <p className="text-sm leading-relaxed" style={{ color: "#3d3e45" }}>📌 {report.observation}</p>
+            <p className="text-sm leading-relaxed" style={{ color: "#424c62" }}>📌 {report.observation}</p>
           )}
           {report.ai_report && (
-            <div className="rounded-xl p-3" style={{ background: "#fbfaf8" }}>
-              <p className="text-xs font-semibold mb-1" style={{ color: "#004038" }}>Resumo técnico</p>
-              <p className="text-xs leading-relaxed whitespace-pre-wrap" style={{ color: "#3d3e45" }}>{report.ai_report}</p>
+            <div className="rounded-xl p-3" style={{ background: "#f6f8fc" }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: "#1f3258" }}>Resumo técnico</p>
+              <p className="text-xs leading-relaxed whitespace-pre-wrap" style={{ color: "#424c62" }}>{report.ai_report}</p>
             </div>
           )}
         </div>
@@ -80,35 +80,35 @@ export default function ClientPortalView() {
   const { loading, project, config, reports, error } = state;
 
   if (loading) return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ background: "#fbfaf8" }}>
-      <div className="h-12 w-12 rounded-2xl flex items-center justify-center" style={{ background: "#004038" }}>
+    <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ background: "#f6f8fc" }}>
+      <div className="h-12 w-12 rounded-2xl flex items-center justify-center" style={{ background: "#1f3258" }}>
         <Building2 className="h-6 w-6 text-white" />
       </div>
-      <div className="h-5 w-5 rounded-full border-2 border-blue-200 border-t-blue-600 animate-spin" />
-      <p className="text-sm font-medium" style={{ color: "#6f7073" }}>Carregando acompanhamento...</p>
+      <div className="h-5 w-5 rounded-full border-2 border-border border-t-blue-600 animate-spin" />
+      <p className="text-sm font-medium" style={{ color: "#778096" }}>Carregando acompanhamento...</p>
     </div>
   );
 
   if (error || !project) return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center" style={{ background: "#fbfaf8" }}>
-      <div className="h-14 w-14 rounded-2xl flex items-center justify-center" style={{ background: "#efefef" }}>
-        <Building2 className="h-7 w-7" style={{ color: "#6f7073" }} />
+    <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center" style={{ background: "#f6f8fc" }}>
+      <div className="h-14 w-14 rounded-2xl flex items-center justify-center" style={{ background: "#e1e5ed" }}>
+        <Building2 className="h-7 w-7" style={{ color: "#778096" }} />
       </div>
-      <p className="font-bold text-lg" style={{ color: "#111917" }}>Link inválido</p>
-      <p className="text-sm" style={{ color: "#3d3e45" }}>{error || "Este link não existe ou foi revogado pelo responsável da obra."}</p>
+      <p className="font-bold text-lg" style={{ color: "#172441" }}>Link inválido</p>
+      <p className="text-sm" style={{ color: "#424c62" }}>{error || "Este link não existe ou foi revogado pelo responsável da obra."}</p>
     </div>
   );
 
   const progress = project.progress_percent || 0;
-  const statusColor = STATUS_COLOR[project.status] || "#006b5f";
+  const statusColor = STATUS_COLOR[project.status] || "#435b89";
   const lastUpdate = reports[0]?.report_date;
   const phases = project.phases || [];
   const nextPhases = phases.filter(p => (p.status || "") === "Pendente" || (p.executed_qty || 0) < (p.contracted_qty || 1));
 
   return (
-    <div className="min-h-screen pb-12 font-sans" style={{ background: "#fbfaf8" }}>
+    <div className="min-h-screen pb-12 font-sans" style={{ background: "#f6f8fc" }}>
       {/* Hero */}
-      <div style={{ background: "linear-gradient(160deg, #004038 0%, #006b5f 100%)" }} className="px-5 pt-12 pb-8">
+      <div style={{ background: "linear-gradient(160deg, #1f3258 0%, #435b89 100%)" }} className="px-5 pt-12 pb-8">
         <div className="flex items-center gap-2 mb-5">
           <div className="h-7 w-7 rounded-xl flex items-center justify-center" style={{ background: "rgba(255,255,255,0.15)" }}>
             <Building2 className="h-3.5 w-3.5 text-white" />
@@ -126,7 +126,7 @@ export default function ClientPortalView() {
         )}
 
         <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full" style={{ background: "rgba(255,255,255,0.12)" }}>
-          <div className="h-2 w-2 rounded-full" style={{ background: statusColor === "#006b5f" ? "#60A5FA" : statusColor }} />
+          <div className="h-2 w-2 rounded-full" style={{ background: statusColor === "#435b89" ? "#60A5FA" : statusColor }} />
           <span className="text-xs font-semibold text-white">{project.status}</span>
         </div>
 
@@ -137,7 +137,7 @@ export default function ClientPortalView() {
               <p className="text-3xl font-black text-white">{progress}%</p>
             </div>
             <div className="h-3 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.15)" }}>
-              <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${progress}%`, background: progress >= 80 ? "#10B981" : progress >= 50 ? "#60A5FA" : "#bee9f4" }} />
+              <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${progress}%`, background: progress >= 80 ? "#10B981" : progress >= 50 ? "#60A5FA" : "#8096bc" }} />
             </div>
           </div>
         )}
@@ -148,43 +148,43 @@ export default function ClientPortalView() {
         {/* Info cards */}
         <div className="grid grid-cols-2 gap-3">
           {config?.show_deadline && project.expected_end_date && (
-            <div className="rounded-2xl p-4 bg-white" style={{ border: "1.5px solid #efefef" }}>
-              <Calendar className="h-4 w-4 mb-2" style={{ color: "#6f7073" }} />
-              <p className="text-[10px] font-bold uppercase tracking-wide mb-0.5" style={{ color: "#6f7073" }}>Previsão de entrega</p>
-              <p className="text-sm font-bold" style={{ color: "#111917" }}>{fmtDate(project.expected_end_date)}</p>
+            <div className="rounded-2xl p-4 bg-white" style={{ border: "1.5px solid #e1e5ed" }}>
+              <Calendar className="h-4 w-4 mb-2" style={{ color: "#778096" }} />
+              <p className="text-[10px] font-bold uppercase tracking-wide mb-0.5" style={{ color: "#778096" }}>Previsão de entrega</p>
+              <p className="text-sm font-bold" style={{ color: "#172441" }}>{fmtDate(project.expected_end_date)}</p>
             </div>
           )}
           {lastUpdate && (
-            <div className="rounded-2xl p-4 bg-white" style={{ border: "1.5px solid #efefef" }}>
-              <Camera className="h-4 w-4 mb-2" style={{ color: "#6f7073" }} />
-              <p className="text-[10px] font-bold uppercase tracking-wide mb-0.5" style={{ color: "#6f7073" }}>Última atualização</p>
-              <p className="text-sm font-bold" style={{ color: "#111917" }}>{fmtDate(lastUpdate)}</p>
+            <div className="rounded-2xl p-4 bg-white" style={{ border: "1.5px solid #e1e5ed" }}>
+              <Camera className="h-4 w-4 mb-2" style={{ color: "#778096" }} />
+              <p className="text-[10px] font-bold uppercase tracking-wide mb-0.5" style={{ color: "#778096" }}>Última atualização</p>
+              <p className="text-sm font-bold" style={{ color: "#172441" }}>{fmtDate(lastUpdate)}</p>
             </div>
           )}
         </div>
 
         {/* Next steps */}
         {config?.show_next_steps && nextPhases.length > 0 && (
-          <div className="rounded-2xl bg-white p-5" style={{ border: "1.5px solid #efefef" }}>
-            <p className="font-bold text-sm mb-4 flex items-center gap-2" style={{ color: "#111917" }}>
-              <ArrowRight className="h-4 w-4" style={{ color: "#004038" }} />Próximos passos
+          <div className="rounded-2xl bg-white p-5" style={{ border: "1.5px solid #e1e5ed" }}>
+            <p className="font-bold text-sm mb-4 flex items-center gap-2" style={{ color: "#172441" }}>
+              <ArrowRight className="h-4 w-4" style={{ color: "#1f3258" }} />Próximos passos
             </p>
             <div className="space-y-3">
               {nextPhases.slice(0, 5).map((ph, i) => {
                 const pct = ph.contracted_qty > 0 ? Math.round((ph.executed_qty || 0) / ph.contracted_qty * 100) : 0;
                 return (
                   <div key={i} className="flex items-center gap-3">
-                    <div className="h-7 w-7 rounded-full flex items-center justify-center shrink-0 text-xs font-black" style={{ background: pct >= 100 ? "#D1FAE5" : "#fbfaf8", color: pct >= 100 ? "#059669" : "#6f7073" }}>
+                    <div className="h-7 w-7 rounded-full flex items-center justify-center shrink-0 text-xs font-black" style={{ background: pct >= 100 ? "#D1FAE5" : "#f6f8fc", color: pct >= 100 ? "#059669" : "#778096" }}>
                       {pct >= 100 ? <CheckCircle2 className="h-4 w-4" /> : `${i + 1}`}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold truncate" style={{ color: "#111917" }}>{ph.name}</p>
+                      <p className="text-sm font-semibold truncate" style={{ color: "#172441" }}>{ph.name}</p>
                       {ph.contracted_qty > 0 && (
                         <div className="flex items-center gap-2 mt-1">
-                          <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: "#fbfaf8" }}>
-                            <div className="h-full rounded-full" style={{ width: `${Math.min(100, pct)}%`, background: pct >= 100 ? "#10B981" : "#004038" }} />
+                          <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: "#f6f8fc" }}>
+                            <div className="h-full rounded-full" style={{ width: `${Math.min(100, pct)}%`, background: pct >= 100 ? "#10B981" : "#1f3258" }} />
                           </div>
-                          <span className="text-[10px] font-bold shrink-0" style={{ color: "#6f7073" }}>{pct}%</span>
+                          <span className="text-[10px] font-bold shrink-0" style={{ color: "#778096" }}>{pct}%</span>
                         </div>
                       )}
                     </div>
@@ -197,13 +197,13 @@ export default function ClientPortalView() {
 
         {/* Recent photos */}
         {config?.show_photos && reports.some(r => r.photos?.length > 0) && (
-          <div className="rounded-2xl bg-white p-5" style={{ border: "1.5px solid #efefef" }}>
-            <p className="font-bold text-sm mb-3 flex items-center gap-2" style={{ color: "#111917" }}>
-              <Camera className="h-4 w-4" style={{ color: "#004038" }} />Fotos recentes
+          <div className="rounded-2xl bg-white p-5" style={{ border: "1.5px solid #e1e5ed" }}>
+            <p className="font-bold text-sm mb-3 flex items-center gap-2" style={{ color: "#172441" }}>
+              <Camera className="h-4 w-4" style={{ color: "#1f3258" }} />Fotos recentes
             </p>
             <div className="grid grid-cols-3 gap-2">
               {reports.flatMap(r => r.photos || []).slice(0, 9).map((url, i) => (
-                <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="aspect-square rounded-xl overflow-hidden block" style={{ background: "#fbfaf8" }}>
+                <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="aspect-square rounded-xl overflow-hidden block" style={{ background: "#f6f8fc" }}>
                   <img src={url} alt="" className="w-full h-full object-cover" />
                 </a>
               ))}
@@ -214,8 +214,8 @@ export default function ClientPortalView() {
         {/* Reports */}
         {config?.show_reports && reports.length > 0 && (
           <div>
-            <p className="font-bold text-sm mb-3 flex items-center gap-2" style={{ color: "#111917" }}>
-              <FileText className="h-4 w-4" style={{ color: "#004038" }} />Relatórios de acompanhamento
+            <p className="font-bold text-sm mb-3 flex items-center gap-2" style={{ color: "#172441" }}>
+              <FileText className="h-4 w-4" style={{ color: "#1f3258" }} />Relatórios de acompanhamento
             </p>
             <div className="space-y-3">
               {reports.map(r => <ReportItem key={r.id} report={r} />)}
@@ -225,14 +225,14 @@ export default function ClientPortalView() {
 
         {/* Footer */}
         <div className="text-center pt-4">
-          <p className="text-xs" style={{ color: "#6f7073" }}>As informações são atualizadas pela equipe responsável pela obra.</p>
+          <p className="text-xs" style={{ color: "#778096" }}>As informações são atualizadas pela equipe responsável pela obra.</p>
           <div className="flex items-center justify-center gap-1.5 mt-3">
-            <div className="h-5 w-5 rounded-lg flex items-center justify-center" style={{ background: "#004038" }}>
+            <div className="h-5 w-5 rounded-lg flex items-center justify-center" style={{ background: "#1f3258" }}>
               <Building2 className="h-2.5 w-2.5 text-white" />
             </div>
-            <span className="text-xs font-black" style={{ color: "#004038" }}>Consuobra</span>
-            <span className="text-xs" style={{ color: "#efefef" }}>·</span>
-            <span className="text-xs" style={{ color: "#6f7073" }}>Obra sob controle</span>
+            <span className="text-xs font-black" style={{ color: "#1f3258" }}>Consuobra</span>
+            <span className="text-xs" style={{ color: "#e1e5ed" }}>·</span>
+            <span className="text-xs" style={{ color: "#778096" }}>Obra sob controle</span>
           </div>
         </div>
       </div>

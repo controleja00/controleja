@@ -16,12 +16,12 @@ const STEPS = [
 ];
 
 const OBJECTIVES = [
-  { key: "costs", icon: DollarSign, label: "Controlar gastos", bg: "#fde8ce" },
-  { key: "stages", icon: BarChart3, label: "Acompanhar etapas", bg: "#bee9f4" },
-  { key: "docs", icon: FileText, label: "Organizar documentos", bg: "#e5d3f7" },
-  { key: "team", icon: Building2, label: "Controlar equipe", bg: "#fef1e1" },
+  { key: "costs", icon: DollarSign, label: "Controlar gastos", bg: "#d6ddea" },
+  { key: "stages", icon: BarChart3, label: "Acompanhar etapas", bg: "#8096bc" },
+  { key: "docs", icon: FileText, label: "Organizar documentos", bg: "#e7ebf4" },
+  { key: "team", icon: Building2, label: "Controlar equipe", bg: "#eff2f8" },
   { key: "alerts", icon: Bell, label: "Receber alertas de atraso", bg: "#fee2e2" },
-  { key: "reports", icon: Camera, label: "Gerar relatórios", bg: "#c6c4f4" },
+  { key: "reports", icon: Camera, label: "Gerar relatórios", bg: "#9aabcd" },
 ];
 
 export default function Onboarding() {
@@ -59,24 +59,24 @@ export default function Onboarding() {
   const progress = ((step - 1) / (STEPS.length - 1)) * 100;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: "#fbfaf8" }}>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: "#f6f8fc" }}>
       <div className="w-full max-w-md">
         <BrandLogo size="lg" className="justify-center mb-8" />
 
         {/* Progress */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-3">
-            <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: "#efefef" }}>
-              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progress}%`, background: "#004038" }} />
+            <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: "#e1e5ed" }}>
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progress}%`, background: "#1f3258" }} />
             </div>
-            <span className="text-xs font-semibold shrink-0" style={{ color: "#6f7073" }}>{step}/{STEPS.length}</span>
+            <span className="text-xs font-semibold shrink-0" style={{ color: "#778096" }}>{step}/{STEPS.length}</span>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-6" style={{ border: "1.5px solid #efefef" }}>
-          <p className="text-[11px] font-bold uppercase tracking-widest mb-1" style={{ color: "#6f7073" }}>Primeiros passos</p>
-          <h2 className="text-2xl font-black mb-1" style={{ color: "#0f161e" }}>{STEPS[step - 1].title}</h2>
-          <p className="text-sm mb-6" style={{ color: "#3d3e45" }}>{STEPS[step - 1].sub}</p>
+        <div className="bg-white rounded-2xl p-6" style={{ border: "1.5px solid #e1e5ed" }}>
+          <p className="text-[11px] font-bold uppercase tracking-widest mb-1" style={{ color: "#778096" }}>Primeiros passos</p>
+          <h2 className="text-2xl font-black mb-1" style={{ color: "#172441" }}>{STEPS[step - 1].title}</h2>
+          <p className="text-sm mb-6" style={{ color: "#424c62" }}>{STEPS[step - 1].sub}</p>
 
           {/* Step 1: Empresa */}
           {step === 1 && (
@@ -127,7 +127,7 @@ export default function Onboarding() {
           {/* Step 2: Primeira obra */}
           {step === 2 && (
             <div className="space-y-4">
-              <div className="rounded-xl p-3 text-sm mb-2" style={{ background: "#bee9f4", border: "1px solid rgba(15,22,30,0.08)", color: "#004038" }}>
+              <div className="rounded-xl p-3 text-sm mb-2" style={{ background: "#8096bc", border: "1px solid rgba(15,22,30,0.08)", color: "#1f3258" }}>
                 Esta etapa é opcional. Você pode cadastrar obras depois.
               </div>
               <div>
@@ -190,13 +190,13 @@ export default function Onboarding() {
                   onClick={() => set("objective", o.key)}
                   className="w-full text-left border-2 rounded-xl p-3.5 transition-all flex items-center gap-3"
                   style={{
-                    borderColor: data.objective === o.key ? "#004038" : "#efefef",
+                    borderColor: data.objective === o.key ? "#1f3258" : "#e1e5ed",
                     background: data.objective === o.key ? o.bg : "#ffffff",
                   }}
                 >
-                  <o.icon className="h-4 w-4 shrink-0" style={{ color: "#004038" }} />
-                  <span className="text-sm font-semibold" style={{ color: "#0f161e" }}>{o.label}</span>
-                  {data.objective === o.key && <CheckCircle2 className="h-4 w-4 ml-auto" style={{ color: "#004038" }} />}
+                  <o.icon className="h-4 w-4 shrink-0" style={{ color: "#1f3258" }} />
+                  <span className="text-sm font-semibold" style={{ color: "#172441" }}>{o.label}</span>
+                  {data.objective === o.key && <CheckCircle2 className="h-4 w-4 ml-auto" style={{ color: "#1f3258" }} />}
                 </button>
               ))}
             </div>
@@ -205,14 +205,14 @@ export default function Onboarding() {
           {/* Step 4: Tudo pronto */}
           {step === 4 && (
             <div className="py-2 text-center">
-              <div className="h-16 w-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "#bee9f4" }}>
-                <CheckCircle2 className="h-8 w-8" style={{ color: "#004038" }} />
+              <div className="h-16 w-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "#8096bc" }}>
+                <CheckCircle2 className="h-8 w-8" style={{ color: "#1f3258" }} />
               </div>
-              <p className="text-lg font-black mb-2" style={{ color: "#0f161e" }}>Sua conta está pronta!</p>
-              <p className="text-sm mb-6" style={{ color: "#3d3e45" }}>Bem-vindo ao Consuobra. Comece cadastrando ou acompanhando suas obras.</p>
+              <p className="text-lg font-black mb-2" style={{ color: "#172441" }}>Sua conta está pronta!</p>
+              <p className="text-sm mb-6" style={{ color: "#424c62" }}>Bem-vindo ao Consuobra. Comece cadastrando ou acompanhando suas obras.</p>
 
-              <div className="rounded-xl p-4 text-left" style={{ background: "#fef1e1" }}>
-                <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: "#6f7073" }}>Próximos passos</p>
+              <div className="rounded-xl p-4 text-left" style={{ background: "#eff2f8" }}>
+                <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: "#778096" }}>Próximos passos</p>
                 <ul className="space-y-2.5">
                   {[
                     "Cadastrar uma obra",

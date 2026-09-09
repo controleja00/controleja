@@ -45,7 +45,7 @@ export default function EditProgressModal({ open, onClose, project, onSaved }) {
       <DialogContent className="max-w-sm">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-blue-600" /> Progresso Físico da Obra
+            <TrendingUp className="h-5 w-5 text-primary" /> Progresso Físico da Obra
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-5 pt-1">

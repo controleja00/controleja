@@ -18,17 +18,17 @@ import { Button } from "@/components/ui/button";
 import { BrandMark } from "@/components/BrandLogo";
 
 const colors = {
-  ink: "#0f161e",
-  teal: "#004038",
-  graphite: "#3d3e45",
-  muted: "#6f7073",
-  line: "#efefef",
-  canvas: "#fbfaf8",
-  lavender: "#e5d3f7",
-  peach: "#fef1e1",
-  butter: "#fde8ce",
-  sky: "#bee9f4",
-  periwinkle: "#c6c4f4",
+  ink: "#172441",
+  teal: "#1f3258",
+  graphite: "#424c62",
+  muted: "#778096",
+  line: "#e1e5ed",
+  canvas: "#f6f8fc",
+  lavender: "#e7ebf4",
+  peach: "#eff2f8",
+  butter: "#d6ddea",
+  sky: "#8096bc",
+  periwinkle: "#9aabcd",
 };
 
 const getGreeting = () => {
@@ -70,7 +70,7 @@ function KpiCard({ to, icon: Icon, label, value, note, tone }) {
   return (
     <Link
       to={to}
-      className="group rounded-2xl border p-4 transition-colors hover:border-[#004038]"
+      className="group rounded-2xl border p-4 transition-colors hover:border-[#1f3258]"
       style={{ background: tone, borderColor: "rgba(15,22,30,0.08)" }}
     >
       <div className="mb-4 flex items-center justify-between gap-3">
@@ -95,7 +95,7 @@ function ProjectRow({ project, alerts, cashFlow }) {
   const progress = Math.min(100, project.progress_percent || 0);
 
   return (
-    <Link to={`/projects/${project.id}/central`} className="block border-t transition-colors hover:bg-[#fbfaf8]" style={{ borderColor: colors.line }}>
+    <Link to={`/projects/${project.id}/central`} className="block border-t transition-colors hover:bg-[#f6f8fc]" style={{ borderColor: colors.line }}>
       <div className="px-4 py-4">
         <div className="mb-3 flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
@@ -242,7 +242,7 @@ export default function Dashboard() {
             {projects.slice(0, 5).map((project) => (
               <ProjectRow key={project.id} project={project} alerts={alerts} cashFlow={cashFlow} />
             ))}
-            <Link to="/projects/new" className="flex items-center gap-2 border-t px-4 py-4 text-sm font-bold transition-colors hover:bg-[#fef1e1]" style={{ borderColor: colors.line, color: colors.teal }}>
+            <Link to="/projects/new" className="flex items-center gap-2 border-t px-4 py-4 text-sm font-bold transition-colors hover:bg-[#eff2f8]" style={{ borderColor: colors.line, color: colors.teal }}>
               <Plus className="h-4 w-4" />
               Cadastrar nova obra
             </Link>
@@ -287,7 +287,7 @@ export default function Dashboard() {
                   { to: "/documents", icon: FileText, label: "Enviar documento", sub: "Contrato, nota ou certidão" },
                   { to: "/autopilot", icon: TrendingUp, label: "Analisar rotina", sub: "Resumo inteligente das obras" },
                 ].map((item) => (
-                  <Link key={item.to} to={item.to} className="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-[#fbfaf8]">
+                  <Link key={item.to} to={item.to} className="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-[#f6f8fc]">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: colors.peach }}>
                       <item.icon className="h-4 w-4" style={{ color: colors.teal }} />
                     </div>
@@ -335,7 +335,7 @@ function EmptyState({ firstName }) {
             { to: "/measurements", icon: CalendarDays, label: "Avanço físico", desc: "Acompanhe etapas, progresso e histórico de medições.", bg: colors.lavender },
             { to: "/alerts", icon: Bell, label: "Alertas úteis", desc: "Receba pendências importantes antes de virarem problema.", bg: colors.periwinkle },
           ].map((item) => (
-            <Link key={item.to} to={item.to} className="rounded-2xl border p-5 transition-colors hover:border-[#004038]" style={{ background: item.bg, borderColor: "rgba(15,22,30,0.08)" }}>
+            <Link key={item.to} to={item.to} className="rounded-2xl border p-5 transition-colors hover:border-[#1f3258]" style={{ background: item.bg, borderColor: "rgba(15,22,30,0.08)" }}>
               <item.icon className="mb-4 h-5 w-5" style={{ color: colors.teal }} />
               <p className="font-black" style={{ color: colors.ink }}>{item.label}</p>
               <p className="mt-1 text-sm leading-relaxed" style={{ color: colors.graphite }}>{item.desc}</p>

@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 
 const STATUS_STYLE = {
   Rascunho: "bg-gray-100 text-gray-600",
-  Revisado: "bg-blue-100 text-blue-700",
+  Revisado: "bg-secondary text-primary",
   Publicado: "bg-emerald-100 text-emerald-700",
   Oculto: "bg-red-100 text-red-500",
 };
@@ -89,7 +89,7 @@ function ReportCard({ report, onUpdate, onDelete }) {
           {/* Actions */}
           <div className="flex flex-wrap gap-2 pt-1">
             {editing ? (
-              <Button size="sm" onClick={() => save({ ai_report: text, status: "Revisado" })} disabled={saving} className="h-8 text-xs gap-1 bg-blue-600 hover:bg-blue-700">
+              <Button size="sm" onClick={() => save({ ai_report: text, status: "Revisado" })} disabled={saving} className="h-8 text-xs gap-1 bg-primary hover:bg-[#172441]">
                 {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : "Salvar"}
               </Button>
             ) : (

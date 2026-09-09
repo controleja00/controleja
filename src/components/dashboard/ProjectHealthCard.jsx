@@ -21,7 +21,7 @@ const healthStyles = {
 
 const statusColor = {
   "Em andamento": "text-emerald-600",
-  "Planejamento": "text-blue-600",
+  "Planejamento": "text-primary",
   "Atrasada": "text-red-600",
   "Concluída": "text-gray-500",
   "Paralisada": "text-red-700",

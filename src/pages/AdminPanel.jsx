@@ -22,7 +22,7 @@ export default function AdminPanel() {
   const unreadAlerts = alerts.filter(a => !a.is_read && !a.is_resolved);
 
   const metrics = [
-    { label: "Total de Obras", value: projects.length, sub: `${activeProjects.length} em andamento`, icon: Building2, color: "text-blue-600", bg: "bg-blue-50" },
+    { label: "Total de Obras", value: projects.length, sub: `${activeProjects.length} em andamento`, icon: Building2, color: "text-primary", bg: "bg-secondary" },
     { label: "Subempreiteiros", value: subs.length, sub: `${blockedSubs.length} bloqueados`, icon: Users, color: "text-purple-600", bg: "bg-purple-50" },
     { label: "Medições", value: measurements.length, sub: `${pendingMeasurements.length} pendentes`, icon: Ruler, color: "text-amber-600", bg: "bg-amber-50" },
     { label: "Receita Realizada", value: `R$ ${(totalRevenue / 1000).toFixed(0)}k`, sub: `Despesas: R$ ${(totalExpenses / 1000).toFixed(0)}k`, icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
@@ -76,7 +76,7 @@ export default function AdminPanel() {
                       <p className="text-xs font-bold text-foreground">{p.progress_percent || 0}%</p>
                       <p className="text-[10px] text-muted-foreground">{p.totalMeas} medições</p>
                     </div>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.status === "Em andamento" ? "bg-blue-50 text-blue-700" : p.status === "Concluída" ? "bg-emerald-50 text-emerald-700" : p.status === "Atrasada" ? "bg-red-50 text-red-700" : "bg-gray-100 text-gray-600"}`}>{p.status}</span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.status === "Em andamento" ? "bg-secondary text-primary" : p.status === "Concluída" ? "bg-emerald-50 text-emerald-700" : p.status === "Atrasada" ? "bg-red-50 text-red-700" : "bg-gray-100 text-gray-600"}`}>{p.status}</span>
                   </div>
                 </div>
               ))}

@@ -61,7 +61,7 @@ export default function ProjSubs({ subs, measurements, documents }) {
               <span className={`px-2 py-1 rounded-full ${pending > 0 ? "bg-amber-50 text-amber-700" : "bg-muted text-muted-foreground"}`}>
                 <FileText className="inline h-3 w-3 mr-1" />{pending} medição(ões) pendente(s)
               </span>
-              <span className="px-2 py-1 rounded-full bg-blue-50 text-blue-700">
+              <span className="px-2 py-1 rounded-full bg-secondary text-primary">
                 R$ {totalExecuted.toLocaleString("pt-BR")} executado
               </span>
               {expiredDocs > 0 && (

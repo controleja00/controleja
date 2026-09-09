@@ -115,7 +115,7 @@ Gere:
               <p className="text-xs text-muted-foreground mt-0.5">Prob. de Atraso</p>
             </div>
             <div className="bg-card border border-border rounded-xl p-4 text-center">
-              <p className="text-3xl font-black text-blue-600">{analysis.cost_overrun_probability}%</p>
+              <p className="text-3xl font-black text-primary">{analysis.cost_overrun_probability}%</p>
               <p className="text-xs text-muted-foreground mt-0.5">Prob. Estouro</p>
             </div>
           </div>

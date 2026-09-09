@@ -66,10 +66,10 @@ const AuthenticatedApp = () => {
 
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center gap-3" style={{ background: "#fbfaf8" }}>
+      <div className="fixed inset-0 flex flex-col items-center justify-center gap-3" style={{ background: "#f6f8fc" }}>
         <BrandMark className="h-14 w-14 rounded-2xl" />
-        <div className="w-6 h-6 border-[3px] border-[#efefef] border-t-[#004038] rounded-full animate-spin" />
-        <p className="text-sm font-semibold" style={{ color: "#6f7073" }}>Carregando suas obras...</p>
+        <div className="w-6 h-6 border-[3px] border-[#e1e5ed] border-t-[#1f3258] rounded-full animate-spin" />
+        <p className="text-sm font-semibold" style={{ color: "#778096" }}>Carregando suas obras...</p>
       </div>
     );
   }

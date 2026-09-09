@@ -81,7 +81,7 @@ Seja objetivo e técnico. Ao final, adicione a nota: "⚠️ Esta análise é ge
   );
 
   const phases = project.phases?.map(p => p.name).filter(Boolean) || [];
-  const inputCls = "w-full rounded-xl px-3 py-2 text-sm outline-none border border-gray-200 bg-gray-50 focus:border-blue-400 transition-colors";
+  const inputCls = "w-full rounded-xl px-3 py-2 text-sm outline-none border border-gray-200 bg-gray-50 focus:border-primary transition-colors";
 
   return (
     <div className="space-y-5">
@@ -107,8 +107,8 @@ Seja objetivo e técnico. Ao final, adicione a nota: "⚠️ Esta análise é ge
       {/* Photo Upload */}
       <div>
         <label className="text-xs font-semibold text-gray-600 mb-2 block">Fotos do dia</label>
-        <label className="flex flex-col items-center justify-center gap-2 h-28 border-2 border-dashed border-blue-200 rounded-2xl cursor-pointer hover:bg-blue-50 transition-colors bg-white">
-          {uploading ? <Loader2 className="h-6 w-6 text-blue-400 animate-spin" /> : <Camera className="h-7 w-7 text-blue-300" />}
+        <label className="flex flex-col items-center justify-center gap-2 h-28 border-2 border-dashed border-border rounded-2xl cursor-pointer hover:bg-secondary transition-colors bg-white">
+          {uploading ? <Loader2 className="h-6 w-6 text-[#8096bc] animate-spin" /> : <Camera className="h-7 w-7 text-[#8096bc]" />}
           <span className="text-sm text-gray-400">{uploading ? "Enviando..." : "Toque para adicionar fotos"}</span>
           <input type="file" accept="image/*" multiple className="hidden" onChange={e => handleFiles(e.target.files)} disabled={uploading} />
         </label>
@@ -133,12 +133,12 @@ Seja objetivo e técnico. Ao final, adicione a nota: "⚠️ Esta análise é ge
       </div>
 
       {/* Visibility */}
-      <div className="flex items-center justify-between bg-blue-50 rounded-xl px-4 py-3 border border-blue-100">
+      <div className="flex items-center justify-between bg-secondary rounded-xl px-4 py-3 border border-border">
         <div>
           <p className="text-sm font-semibold text-gray-800">Visível para o cliente</p>
           <p className="text-xs text-gray-500">Fotos e observação aparecem no portal</p>
         </div>
-        <button onClick={() => set("visible_to_client", !form.visible_to_client)} className={`h-7 w-12 rounded-full transition-colors ${form.visible_to_client ? "bg-blue-600" : "bg-gray-300"}`}>
+        <button onClick={() => set("visible_to_client", !form.visible_to_client)} className={`h-7 w-12 rounded-full transition-colors ${form.visible_to_client ? "bg-primary" : "bg-gray-300"}`}>
           <div className={`h-5 w-5 bg-white rounded-full shadow transition-all mx-1 ${form.visible_to_client ? "translate-x-5" : "translate-x-0"}`} />
         </button>
       </div>
@@ -165,7 +165,7 @@ Seja objetivo e técnico. Ao final, adicione a nota: "⚠️ Esta análise é ge
         <Button onClick={() => save("Rascunho")} disabled={saving} variant="outline" className="flex-1">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Salvar Rascunho"}
         </Button>
-        <Button onClick={() => save("Publicado")} disabled={saving} className="flex-1 bg-blue-600 hover:bg-blue-700 gap-1.5">
+        <Button onClick={() => save("Publicado")} disabled={saving} className="flex-1 bg-primary hover:bg-[#172441] gap-1.5">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Publicar para Cliente"}
         </Button>
       </div>

@@ -7,7 +7,7 @@ const iconMap = { alert: AlertCircle, purchase: ShoppingCart, team: Users, finan
 const urgencyConfig = {
   urgente: { bg: "bg-red-50", border: "border-red-200", text: "text-red-700", badge: "bg-red-500", label: "URGENTE" },
   importante: { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", badge: "bg-amber-500", label: "IMPORTANTE" },
-  atenção: { bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-700", badge: "bg-blue-500", label: "ATENÇÃO" },
+  atenção: { bg: "bg-secondary", border: "border-border", text: "text-primary", badge: "bg-secondary0", label: "ATENÇÃO" },
 };
 
 export default function DecisionCenter({ data }) {

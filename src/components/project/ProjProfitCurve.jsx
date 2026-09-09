@@ -126,7 +126,7 @@ export default function ProjProfitCurve({ project, measurements }) {
             <span className="font-bold">{fmt(totalMeasured)}</span>
           </div>
           <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-blue-500 rounded-full" style={{ width: `${physProgress}%` }} />
+            <div className="h-full bg-secondary0 rounded-full" style={{ width: `${physProgress}%` }} />
           </div>
         </div>
         <div>

@@ -15,7 +15,7 @@ const getBadge = (rank) => {
 };
 
 const getLevel = (score) => {
-  if (score >= 90) return { label: "Diamante", color: "bg-blue-100 text-blue-700", icon: "💎" };
+  if (score >= 90) return { label: "Diamante", color: "bg-secondary text-primary", icon: "💎" };
   if (score >= 75) return { label: "Platina", color: "bg-purple-100 text-purple-700", icon: "🏆" };
   if (score >= 60) return { label: "Ouro", color: "bg-yellow-100 text-yellow-700", icon: "⭐" };
   if (score >= 40) return { label: "Prata", color: "bg-gray-100 text-gray-700", icon: "🥈" };
@@ -96,7 +96,7 @@ export default function Ranking() {
         <div className="bg-card border border-border rounded-xl p-5">
           <h3 className="font-semibold text-sm mb-4 flex items-center gap-2"><Award className="h-4 w-4 text-primary" />Níveis de Certificação</h3>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-            {[{ l: "Bronze", c: "bg-amber-100 text-amber-700", i: "🥉", d: "Score 0–39" }, { l: "Prata", c: "bg-gray-100 text-gray-700", i: "🥈", d: "Score 40–59" }, { l: "Ouro", c: "bg-yellow-100 text-yellow-700", i: "⭐", d: "Score 60–74" }, { l: "Platina", c: "bg-purple-100 text-purple-700", i: "🏆", d: "Score 75–89" }, { l: "Diamante", c: "bg-blue-100 text-blue-700", i: "💎", d: "Score 90–100" }].map(n => (
+            {[{ l: "Bronze", c: "bg-amber-100 text-amber-700", i: "🥉", d: "Score 0–39" }, { l: "Prata", c: "bg-gray-100 text-gray-700", i: "🥈", d: "Score 40–59" }, { l: "Ouro", c: "bg-yellow-100 text-yellow-700", i: "⭐", d: "Score 60–74" }, { l: "Platina", c: "bg-purple-100 text-purple-700", i: "🏆", d: "Score 75–89" }, { l: "Diamante", c: "bg-secondary text-primary", i: "💎", d: "Score 90–100" }].map(n => (
               <div key={n.l} className={`rounded-lg p-3 text-center ${n.c}`}>
                 <p className="text-xl">{n.i}</p>
                 <p className="text-xs font-bold mt-1">{n.l}</p>

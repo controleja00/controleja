@@ -31,7 +31,7 @@ function getPhaseStatus(phase, progress) {
 
 const STATUS_CONFIG = {
   "Concluída":    { bar: "bg-emerald-500", badge: "bg-emerald-100 text-emerald-700", dot: "bg-emerald-500", label: "Concluída" },
-  "Em andamento": { bar: "bg-blue-500",    badge: "bg-blue-100 text-blue-700",       dot: "bg-blue-500",    label: "Em andamento" },
+  "Em andamento": { bar: "bg-secondary0",    badge: "bg-secondary text-primary",       dot: "bg-secondary0",    label: "Em andamento" },
   "Atenção":      { bar: "bg-amber-400",   badge: "bg-amber-100 text-amber-700",     dot: "bg-amber-400",   label: "Atenção" },
   "Atrasada":     { bar: "bg-red-500",     badge: "bg-red-100 text-red-700",         dot: "bg-red-500",     label: "Atrasada" },
   "Pendente":     { bar: "bg-slate-300",   badge: "bg-slate-100 text-slate-500",     dot: "bg-slate-300",   label: "Pendente" },
@@ -104,7 +104,7 @@ function PhaseCard({ phase, measurements, idx }) {
             </div>
             <div className="bg-card rounded-xl p-3 border border-border">
               <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wide">Executado</p>
-              <p className="text-sm font-black mt-0.5 text-blue-600">{Number(phase.executed_qty || 0).toLocaleString("pt-BR")} <span className="text-xs font-normal text-muted-foreground">{phase.unit}</span></p>
+              <p className="text-sm font-black mt-0.5 text-primary">{Number(phase.executed_qty || 0).toLocaleString("pt-BR")} <span className="text-xs font-normal text-muted-foreground">{phase.unit}</span></p>
             </div>
             <div className="bg-card rounded-xl p-3 border border-border">
               <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wide">Medições</p>
@@ -262,7 +262,7 @@ Seja objetivo e use linguagem técnica-operacional.`,
               <span className="text-[11px] text-white/70">{completedPhases} concluídas</span>
             </div>
             <div className="flex items-center justify-end gap-1.5">
-              <div className="h-2 w-2 rounded-full bg-blue-400" />
+              <div className="h-2 w-2 rounded-full bg-[#8096bc]" />
               <span className="text-[11px] text-white/70">{inProgressPhases} em andamento</span>
             </div>
             {atrasadas > 0 && (
@@ -281,7 +281,7 @@ Seja objetivo e use linguagem técnica-operacional.`,
             const status = getPhaseStatus(phase, prog);
             const colors = {
               "Concluída": "bg-emerald-400",
-              "Em andamento": "bg-blue-400",
+              "Em andamento": "bg-[#8096bc]",
               "Atrasada": "bg-red-400",
               "Pendente": "bg-white/10",
               "Atenção": "bg-amber-400"
@@ -371,7 +371,7 @@ Seja objetivo e use linguagem técnica-operacional.`,
               {aiAnalysis.fases?.map((fa, i) => {
                 const prodConfig = {
                   "Acima da meta": { icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-50" },
-                  "Na meta": { icon: Minus, color: "text-blue-600", bg: "bg-blue-50" },
+                  "Na meta": { icon: Minus, color: "text-primary", bg: "bg-secondary" },
                   "Abaixo da meta": { icon: TrendingDown, color: "text-amber-600", bg: "bg-amber-50" },
                   "Parada": { icon: AlertTriangle, color: "text-red-600", bg: "bg-red-50" },
                 }[fa.status_produtividade] || { icon: Minus, color: "text-slate-500", bg: "bg-slate-50" };

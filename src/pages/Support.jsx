@@ -48,9 +48,9 @@ export default function Support() {
       <div className="p-4 sm:p-6 space-y-6 max-w-4xl">
         {/* Canais */}
         <div className="grid sm:grid-cols-2 gap-4">
-          <div className="bg-white rounded-2xl p-5 flex gap-4 items-start" style={{ border: "1.5px solid #efefef" }}>
-            <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#fef1e1" }}>
-              <MessageSquare className="h-5 w-5" style={{ color: "#004038" }} />
+          <div className="bg-white rounded-2xl p-5 flex gap-4 items-start" style={{ border: "1.5px solid #e1e5ed" }}>
+            <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#eff2f8" }}>
+              <MessageSquare className="h-5 w-5" style={{ color: "#1f3258" }} />
             </div>
             <div>
               <p className="font-bold text-sm text-gray-900">WhatsApp</p>
@@ -58,23 +58,23 @@ export default function Support() {
               <p className="text-xs text-gray-400 mt-1">Estamos configurando o canal de atendimento via WhatsApp.</p>
             </div>
           </div>
-          <a href="mailto:suporte@consuobra.com.br" className="bg-white rounded-2xl p-5 flex gap-4 items-start transition-all hover:border-[#004038]" style={{ border: "1.5px solid #efefef" }}>
-            <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#e5d3f7" }}>
-              <Mail className="h-5 w-5" style={{ color: "#004038" }} />
+          <a href="mailto:suporte@consuobra.com.br" className="bg-white rounded-2xl p-5 flex gap-4 items-start transition-all hover:border-[#1f3258]" style={{ border: "1.5px solid #e1e5ed" }}>
+            <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#e7ebf4" }}>
+              <Mail className="h-5 w-5" style={{ color: "#1f3258" }} />
             </div>
             <div>
               <p className="font-bold text-sm text-gray-900">E-mail</p>
               <p className="text-xs text-gray-500 mt-0.5">Resposta em até 24h</p>
-              <p className="text-xs mt-1 font-medium" style={{ color: "#004038" }}>suporte@consuobra.com.br</p>
+              <p className="text-xs mt-1 font-medium" style={{ color: "#1f3258" }}>suporte@consuobra.com.br</p>
             </div>
           </a>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-5">
           {/* Formulário */}
-          <div className="bg-white rounded-2xl p-6" style={{ border: "1.5px solid #efefef" }}>
+          <div className="bg-white rounded-2xl p-6" style={{ border: "1.5px solid #e1e5ed" }}>
             <h2 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <BookOpen className="h-4 w-4" style={{ color: "#004038" }} />Abrir chamado
+              <BookOpen className="h-4 w-4" style={{ color: "#1f3258" }} />Abrir chamado
             </h2>
             {sent ? (
               <div className="flex flex-col items-center justify-center py-8 gap-3 text-center">
@@ -123,9 +123,9 @@ export default function Support() {
           </div>
 
           {/* FAQ */}
-          <div className="bg-white rounded-2xl p-6" style={{ border: "1.5px solid #efefef" }}>
+          <div className="bg-white rounded-2xl p-6" style={{ border: "1.5px solid #e1e5ed" }}>
             <h2 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Zap className="h-4 w-4" style={{ color: "#004038" }} />Perguntas frequentes
+              <Zap className="h-4 w-4" style={{ color: "#1f3258" }} />Perguntas frequentes
             </h2>
             <div className="space-y-2">
               {faqs.map(faq => (

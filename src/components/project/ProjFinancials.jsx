@@ -121,7 +121,7 @@ export default function ProjFinancials({ project, measurements }) {
       {/* Main KPIs */}
       <div className="grid grid-cols-2 gap-3">
         <MetricCard label="Saldo Real" value={fmt(saldoReal)} sub={`Cap. inicial: ${fmt(initialCapital)}`} color={saldoReal >= 0 ? "text-emerald-600" : "text-red-600"} icon={DollarSign} highlight={saldoReal >= 0} />
-        <MetricCard label="Capital Disponível" value={fmt(capitalDisponivel)} sub={`Após compromissos`} color={capitalDisponivel >= 0 ? "text-blue-600" : "text-red-600"} icon={capitalDisponivel >= 0 ? TrendingUp : TrendingDown} />
+        <MetricCard label="Capital Disponível" value={fmt(capitalDisponivel)} sub={`Após compromissos`} color={capitalDisponivel >= 0 ? "text-primary" : "text-red-600"} icon={capitalDisponivel >= 0 ? TrendingUp : TrendingDown} />
         <MetricCard label="Lucro Real" value={fmt(lucroReal)} sub={`Margem: ${margemReal}%`} color={lucroReal >= 0 ? "text-emerald-600" : "text-red-600"} icon={TrendingUp} />
         <MetricCard label="Lucro Previsto" value={fmt(lucroprevisto)} sub={`Margem: ${margemPrevista}%`} color="text-primary" icon={TrendingUp} />
       </div>
@@ -138,7 +138,7 @@ export default function ProjFinancials({ project, measurements }) {
               <span>Medições aprovadas</span><span>{fmt(totalMeasured)}</span>
             </div>
             <div className="h-2 bg-slate-100 rounded-full">
-              <div className="h-2 bg-blue-500 rounded-full" style={{ width: `${Math.min(100, contractedValue > 0 ? (totalMeasured / contractedValue) * 100 : 0)}%` }} />
+              <div className="h-2 bg-secondary0 rounded-full" style={{ width: `${Math.min(100, contractedValue > 0 ? (totalMeasured / contractedValue) * 100 : 0)}%` }} />
             </div>
           </div>
           <div>

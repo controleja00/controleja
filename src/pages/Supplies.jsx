@@ -22,7 +22,7 @@ const statusColor = {
   "Em falta": "bg-red-50 text-red-700",
   "Baixo estoque": "bg-amber-50 text-amber-700",
   "Disponível": "bg-emerald-50 text-emerald-700",
-  "Pedido realizado": "bg-blue-50 text-blue-700",
+  "Pedido realizado": "bg-secondary text-primary",
   "Entregue": "bg-purple-50 text-purple-700",
 };
 
@@ -168,9 +168,9 @@ Seja prático e específico.`,
         </Button>
 
         {aiSuggestions && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-3">
-            <p className="text-sm font-semibold text-blue-800">Análise de Suprimentos por IA</p>
-            <p className="text-sm text-blue-700">{aiSuggestions.summary}</p>
+          <div className="bg-secondary border border-border rounded-xl p-4 space-y-3">
+            <p className="text-sm font-semibold text-primary">Análise de Suprimentos por IA</p>
+            <p className="text-sm text-primary">{aiSuggestions.summary}</p>
             {aiSuggestions.urgent_purchases?.length > 0 && (
               <div>
                 <p className="text-xs font-bold text-red-700 mb-1">🚨 Compras Urgentes</p>
@@ -182,7 +182,7 @@ Seja prático e específico.`,
               </div>
             )}
             {aiSuggestions.recommendations?.length > 0 && (
-              <ul className="space-y-1">{aiSuggestions.recommendations.map((r, i) => <li key={i} className="text-xs text-blue-700 flex items-start gap-1.5"><span>→</span>{r}</li>)}</ul>
+              <ul className="space-y-1">{aiSuggestions.recommendations.map((r, i) => <li key={i} className="text-xs text-primary flex items-start gap-1.5"><span>→</span>{r}</li>)}</ul>
             )}
           </div>
         )}

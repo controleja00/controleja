@@ -5,7 +5,7 @@ const statusColor = {
   "Aprovada": "bg-emerald-50 text-emerald-700",
   "Pendente": "bg-amber-50 text-amber-700",
   "Rejeitada": "bg-red-50 text-red-700",
-  "Em revisão": "bg-blue-50 text-blue-700",
+  "Em revisão": "bg-secondary text-primary",
 };
 
 export default function ProjMeasurements({ measurements, project, onRefresh, modalOpen, setModalOpen }) {

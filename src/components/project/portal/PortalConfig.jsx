@@ -52,7 +52,7 @@ export default function PortalConfig({ project, onUpdate }) {
 
   if (loading) return <div className="flex justify-center py-8"><Loader2 className="h-5 w-5 animate-spin text-gray-300" /></div>;
 
-  const toggleStyle = (on) => `h-6 w-11 rounded-full transition-colors shrink-0 ${on ? "bg-blue-600" : "bg-gray-200"}`;
+  const toggleStyle = (on) => `h-6 w-11 rounded-full transition-colors shrink-0 ${on ? "bg-primary" : "bg-gray-200"}`;
   const thumb = (on) => `h-4 w-4 bg-white rounded-full shadow transition-all mx-1 ${on ? "translate-x-5" : "translate-x-0"}`;
 
   const SwitchRow = ({ label, sub, field }) => (
@@ -92,7 +92,7 @@ export default function PortalConfig({ project, onUpdate }) {
 
         <div className="flex gap-2 flex-wrap">
           {!config?.active ? (
-            <Button onClick={generate} disabled={saving} className="gap-1.5 bg-blue-600 hover:bg-blue-700 text-sm">
+            <Button onClick={generate} disabled={saving} className="gap-1.5 bg-primary hover:bg-[#172441] text-sm">
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
               Ativar Portal
             </Button>
@@ -128,11 +128,11 @@ export default function PortalConfig({ project, onUpdate }) {
       </div>
 
       {/* Security note */}
-      <div className="flex items-start gap-3 bg-blue-50 rounded-2xl border border-blue-100 p-4">
-        <Shield className="h-5 w-5 text-blue-500 mt-0.5 shrink-0" />
+      <div className="flex items-start gap-3 bg-secondary rounded-2xl border border-border p-4">
+        <Shield className="h-5 w-5 text-primary mt-0.5 shrink-0" />
         <div>
-          <p className="text-sm font-semibold text-blue-800">Link seguro por token único</p>
-          <p className="text-xs text-blue-600 mt-0.5">O cliente acessa apenas esta obra. Ao revogar, o link antigo deixa de funcionar imediatamente.</p>
+          <p className="text-sm font-semibold text-primary">Link seguro por token único</p>
+          <p className="text-xs text-primary mt-0.5">O cliente acessa apenas esta obra. Ao revogar, o link antigo deixa de funcionar imediatamente.</p>
         </div>
       </div>
     </div>

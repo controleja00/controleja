@@ -223,7 +223,7 @@ Inclua obrigatoriamente:
 
         {/* AI General Insight */}
         {matches?.general_insight && (
-          <div className="bg-gradient-to-r from-primary/5 to-blue-50 border border-primary/20 rounded-xl p-5">
+          <div className="bg-gradient-to-r from-primary/5 to-secondary border border-primary/20 rounded-xl p-5">
             <div className="flex items-center gap-2 mb-3">
               <Zap className="h-4 w-4 text-primary" />
               <p className="font-semibold text-sm text-primary">Análise Inteligente da IA</p>
@@ -231,7 +231,7 @@ Inclua obrigatoriamente:
             <p className="text-sm text-foreground mb-3">{matches.general_insight}</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {matches.best_cost_benefit && <div className="bg-white/70 rounded-lg p-3"><p className="text-[10px] font-bold text-emerald-700 uppercase mb-1">Melhor Custo-Benefício</p><p className="text-sm font-medium">{matches.best_cost_benefit}</p></div>}
-              {matches.lowest_risk && <div className="bg-white/70 rounded-lg p-3"><p className="text-[10px] font-bold text-blue-700 uppercase mb-1">Menor Risco</p><p className="text-sm font-medium">{matches.lowest_risk}</p></div>}
+              {matches.lowest_risk && <div className="bg-white/70 rounded-lg p-3"><p className="text-[10px] font-bold text-primary uppercase mb-1">Menor Risco</p><p className="text-sm font-medium">{matches.lowest_risk}</p></div>}
               {matches.market_budget_suggestion && <div className="bg-white/70 rounded-lg p-3"><p className="text-[10px] font-bold text-purple-700 uppercase mb-1">Sugestão de Budget</p><p className="text-sm font-medium">{matches.market_budget_suggestion}</p></div>}
             </div>
           </div>
