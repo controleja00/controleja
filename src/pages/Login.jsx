@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Eye, EyeOff } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import { redirectToGoogleAuth } from "@/lib/googleAuthRedirect";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -87,7 +88,7 @@ export default function Login() {
             <div className="flex-1 h-px" style={{ background: "#efefef" }} />
           </div>
 
-          <button type="button" onClick={() => base44.auth.loginWithProvider("google", getSafeNext())}
+          <button type="button" onClick={() => redirectToGoogleAuth(getSafeNext())}
             className="w-full h-11 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-colors hover:bg-gray-50"
             style={{ border: "1.5px solid #efefef", background: "#FFFFFF", color: "#111917" }}>
             <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Eye, EyeOff } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import { redirectToGoogleAuth } from "@/lib/googleAuthRedirect";
 
 const Logo = () => (
   <BrandLogo size="lg" className="justify-center mb-8" />
@@ -60,7 +61,7 @@ export default function Register() {
   const handleGoogleRegister = () => {
     setError("");
     try {
-      base44.auth.loginWithProvider("google", "/onboarding");
+      redirectToGoogleAuth("/onboarding");
     } catch {
       setError("Não foi possível iniciar o cadastro pelo Google. Tente novamente ou crie a conta usando e-mail e senha.");
     }
