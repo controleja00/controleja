@@ -71,8 +71,8 @@ export default function Register() {
     setError("");
     try {
       redirectToGoogleAuth("/onboarding");
-    } catch {
-      setError("Não foi possível iniciar o cadastro pelo Google. Tente novamente ou crie a conta usando e-mail e senha.");
+    } catch (err) {
+      setError(err?.message || "Não foi possível iniciar o cadastro pelo Google. Tente novamente ou crie a conta usando e-mail e senha.");
     }
   };
 

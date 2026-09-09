@@ -26,6 +26,15 @@ export default function Login() {
     return (next && next.startsWith("/") && !next.startsWith("//")) ? next : "/dashboard";
   };
 
+  const handleGoogleLogin = () => {
+    setError("");
+    try {
+      redirectToGoogleAuth(getSafeNext());
+    } catch (err) {
+      setError(err?.message || "Não foi possível iniciar o login pelo Google. Entre usando e-mail e senha.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) { setError("Preencha e-mail e senha."); return; }
@@ -88,7 +97,7 @@ export default function Login() {
             <div className="flex-1 h-px" style={{ background: "#e1e5ed" }} />
           </div>
 
-          <button type="button" onClick={() => redirectToGoogleAuth(getSafeNext())}
+          <button type="button" onClick={handleGoogleLogin}
             className="w-full h-11 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors hover:bg-[#f6f8fc]"
             style={{ border: "1.5px solid #e1e5ed", background: "#FFFFFF", color: "#172441" }}>
             <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
