@@ -68,7 +68,7 @@ const AuthenticatedApp = () => {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-50 gap-3">
         <BrandMark className="h-14 w-14 rounded-2xl shadow-lg" />
-        <div className="w-6 h-6 border-[3px] border-[#DCE6E1] border-t-[#E5A936] rounded-full animate-spin" />
+        <div className="w-6 h-6 border-[3px] border-[#efefef] border-t-[#004038] rounded-full animate-spin" />
         <p className="text-sm text-gray-400 font-semibold">Carregando suas obras...</p>
       </div>
     );

@@ -65,7 +65,7 @@ export default function Onboarding() {
           <div className="h-10 w-10 rounded-2xl bg-blue-600 flex items-center justify-center">
             <Building2 className="h-5 w-5 text-white" />
           </div>
-          <span className="font-black text-xl" style={{ color: "#123C34" }}>Consuobra</span>
+          <span className="font-black text-xl" style={{ color: "#004038" }}>Consuobra</span>
         </div>
 
         {/* Progress */}

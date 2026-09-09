@@ -14,12 +14,12 @@ const faqs = [
 
 const NavLogo = () => (
   <Link to="/" className="flex items-center gap-2.5">
-    <div className="h-9 w-9 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #123C34 0%, #1F6F61 100%)" }}>
-      <Building2 className="h-4 w-4 text-[#DCE6E1]" />
+    <div className="h-9 w-9 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #004038 0%, #006b5f 100%)" }}>
+      <Building2 className="h-4 w-4 text-[#efefef]" />
     </div>
     <div className="leading-none">
-      <span className="font-black text-lg tracking-tight" style={{ color: "#123C34" }}>Consuobra</span>
-      <p className="text-[9px] font-semibold uppercase tracking-widest hidden sm:block" style={{ color: "#81928B" }}>Obra sob controle</p>
+      <span className="font-black text-lg tracking-tight" style={{ color: "#004038" }}>Consuobra</span>
+      <p className="text-[9px] font-semibold uppercase tracking-widest hidden sm:block" style={{ color: "#6f7073" }}>Obra sob controle</p>
     </div>
   </Link>
 );
@@ -47,17 +47,17 @@ export default function PublicSupport() {
     finally { setSending(false); }
   };
 
-  const inputStyle = { border: "1.5px solid #DCE6E1", background: "#F3F6F2", color: "#111917" };
+  const inputStyle = { border: "1.5px solid #efefef", background: "#fbfaf8", color: "#111917" };
   const inputClass = "w-full h-10 rounded-xl px-3 text-sm outline-none transition-all mt-1.5";
 
   return (
-    <div className="min-h-screen font-sans" style={{ background: "#F3F6F2" }}>
-      <nav className="sticky top-0 z-50 border-b" style={{ background: "rgba(244,246,250,0.97)", borderColor: "#DCE6E1", backdropFilter: "blur(12px)" }}>
+    <div className="min-h-screen font-sans" style={{ background: "#fbfaf8" }}>
+      <nav className="sticky top-0 z-50 border-b" style={{ background: "rgba(244,246,250,0.97)", borderColor: "#efefef", backdropFilter: "blur(12px)" }}>
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <NavLogo />
           <div className="flex items-center gap-2">
-            <Link to="/login" className="text-sm font-medium px-3 py-1.5" style={{ color: "#52615B" }}>Entrar</Link>
-            <Link to="/register" className="text-sm font-bold px-4 py-2 rounded-xl text-white shadow-md" style={{ background: "#123C34" }}>Criar conta</Link>
+            <Link to="/login" className="text-sm font-medium px-3 py-1.5" style={{ color: "#3d3e45" }}>Entrar</Link>
+            <Link to="/register" className="text-sm font-bold px-4 py-2 rounded-xl text-white shadow-md" style={{ background: "#004038" }}>Criar conta</Link>
           </div>
         </div>
       </nav>
@@ -65,43 +65,43 @@ export default function PublicSupport() {
       <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-black mb-3" style={{ color: "#111917" }}>Suporte</h1>
-          <p className="text-lg" style={{ color: "#52615B" }}>Precisa de ajuda com o Consuobra? Estamos aqui.</p>
+          <p className="text-lg" style={{ color: "#3d3e45" }}>Precisa de ajuda com o Consuobra? Estamos aqui.</p>
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 mb-12">
           <a href="mailto:suporte@consuobra.com.br" className="flex gap-4 items-start rounded-2xl p-5 transition-all" style={{ background: "rgba(27,47,85,0.06)", border: "1.5px solid rgba(27,47,85,0.15)" }}>
-            <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#123C34" }}>
+            <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#004038" }}>
               <Mail className="h-5 w-5 text-white" />
             </div>
             <div>
               <p className="font-bold" style={{ color: "#111917" }}>E-mail</p>
-              <p className="text-sm" style={{ color: "#52615B" }}>Resposta em até 24 horas úteis</p>
-              <p className="text-sm font-semibold mt-1" style={{ color: "#123C34" }}>suporte@consuobra.com.br</p>
+              <p className="text-sm" style={{ color: "#3d3e45" }}>Resposta em até 24 horas úteis</p>
+              <p className="text-sm font-semibold mt-1" style={{ color: "#004038" }}>suporte@consuobra.com.br</p>
             </div>
           </a>
-          <div className="flex gap-4 items-start rounded-2xl p-5" style={{ background: "#FFFFFF", border: "1.5px solid #DCE6E1" }}>
-            <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#DCE6E1" }}>
-              <MessageSquare className="h-5 w-5" style={{ color: "#81928B" }} />
+          <div className="flex gap-4 items-start rounded-2xl p-5" style={{ background: "#FFFFFF", border: "1.5px solid #efefef" }}>
+            <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#efefef" }}>
+              <MessageSquare className="h-5 w-5" style={{ color: "#6f7073" }} />
             </div>
             <div>
               <p className="font-bold" style={{ color: "#111917" }}>WhatsApp</p>
-              <p className="text-sm" style={{ color: "#52615B" }}>Em breve disponível</p>
-              <p className="text-xs mt-1" style={{ color: "#81928B" }}>Estamos configurando o atendimento via WhatsApp.</p>
+              <p className="text-sm" style={{ color: "#3d3e45" }}>Em breve disponível</p>
+              <p className="text-xs mt-1" style={{ color: "#6f7073" }}>Estamos configurando o atendimento via WhatsApp.</p>
             </div>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          <div className="rounded-2xl p-6 shadow-sm bg-white" style={{ border: "1.5px solid #DCE6E1" }}>
+          <div className="rounded-2xl p-6 shadow-sm bg-white" style={{ border: "1.5px solid #efefef" }}>
             <h2 className="font-bold mb-5 flex items-center gap-2" style={{ color: "#111917" }}>
-              <BookOpen className="h-4 w-4" style={{ color: "#123C34" }} />Enviar mensagem
+              <BookOpen className="h-4 w-4" style={{ color: "#004038" }} />Enviar mensagem
             </h2>
             {sent ? (
               <div className="flex flex-col items-center justify-center py-8 gap-3 text-center">
                 <CheckCircle2 className="h-10 w-10 text-emerald-500" />
                 <p className="font-bold" style={{ color: "#111917" }}>Mensagem enviada!</p>
-                <p className="text-sm" style={{ color: "#52615B" }}>Nossa equipe responderá em até 24 horas no e-mail informado.</p>
-                <button onClick={() => { setSent(false); setForm({ name: "", email: "", category: "", message: "" }); }} className="mt-1 text-sm font-semibold px-4 py-2 rounded-xl border" style={{ borderColor: "#DCE6E1", color: "#123C34" }}>
+                <p className="text-sm" style={{ color: "#3d3e45" }}>Nossa equipe responderá em até 24 horas no e-mail informado.</p>
+                <button onClick={() => { setSent(false); setForm({ name: "", email: "", category: "", message: "" }); }} className="mt-1 text-sm font-semibold px-4 py-2 rounded-xl border" style={{ borderColor: "#efefef", color: "#004038" }}>
                   Enviar outra mensagem
                 </button>
               </div>
@@ -127,7 +127,7 @@ export default function PublicSupport() {
                   <label className="text-sm font-semibold" style={{ color: "#111917" }}>Mensagem *</label>
                   <textarea value={form.message} onChange={e => set("message", e.target.value)} placeholder="Descreva sua dúvida ou problema..." rows={4} className="w-full rounded-xl px-3 py-2 text-sm outline-none mt-1.5 resize-none" style={inputStyle} />
                 </div>
-                <button onClick={send} disabled={sending || !form.email || !form.message} className="w-full h-11 rounded-xl font-bold text-white disabled:opacity-60" style={{ background: "#123C34" }}>
+                <button onClick={send} disabled={sending || !form.email || !form.message} className="w-full h-11 rounded-xl font-bold text-white disabled:opacity-60" style={{ background: "#004038" }}>
                   {sending ? "Enviando..." : "Enviar mensagem"}
                 </button>
               </div>
@@ -136,15 +136,15 @@ export default function PublicSupport() {
 
           <div>
             <h2 className="font-bold mb-5 flex items-center gap-2" style={{ color: "#111917" }}>
-              <Zap className="h-4 w-4" style={{ color: "#123C34" }} />Perguntas frequentes
+              <Zap className="h-4 w-4" style={{ color: "#004038" }} />Perguntas frequentes
             </h2>
             <div className="space-y-2">
               {faqs.map(faq => (
-                <details key={faq.q} className="group rounded-xl" style={{ border: "1.5px solid #DCE6E1" }}>
+                <details key={faq.q} className="group rounded-xl" style={{ border: "1.5px solid #efefef" }}>
                   <summary className="px-4 py-3 text-sm font-semibold cursor-pointer list-none flex items-center justify-between hover:bg-gray-50 rounded-xl transition-colors" style={{ color: "#111917" }}>
-                    {faq.q}<span className="group-open:rotate-180 transition-transform text-xs ml-2 shrink-0" style={{ color: "#81928B" }}>▾</span>
+                    {faq.q}<span className="group-open:rotate-180 transition-transform text-xs ml-2 shrink-0" style={{ color: "#6f7073" }}>▾</span>
                   </summary>
-                  <p className="px-4 pb-3 text-sm leading-relaxed" style={{ color: "#52615B" }}>{faq.a}</p>
+                  <p className="px-4 pb-3 text-sm leading-relaxed" style={{ color: "#3d3e45" }}>{faq.a}</p>
                 </details>
               ))}
             </div>
@@ -152,17 +152,17 @@ export default function PublicSupport() {
         </div>
       </div>
 
-      <footer className="py-8 mt-4" style={{ background: "#101A18" }}>
-        <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm" style={{ color: "#668078" }}>
+      <footer className="py-8 mt-4" style={{ background: "#0f161e" }}>
+        <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm" style={{ color: "#6f7073" }}>
           <div>
             <span className="font-black text-white">Consuobra</span>
-            <p className="text-[11px] mt-0.5" style={{ color: "#668078" }}>Uma solução do Obra sob controle</p>
+            <p className="text-[11px] mt-0.5" style={{ color: "#6f7073" }}>Uma solução do Obra sob controle</p>
           </div>
           <div className="flex gap-5">
             <Link to="/privacy" className="hover:text-white transition-colors">Privacidade</Link>
             <Link to="/terms" className="hover:text-white transition-colors">Termos</Link>
           </div>
-          <p className="text-xs" style={{ color: "#81928B" }}>© 2026 Consuobra · Obra sob controle · LGPD · Brasil</p>
+          <p className="text-xs" style={{ color: "#6f7073" }}>© 2026 Consuobra · Obra sob controle · LGPD · Brasil</p>
         </div>
       </footer>
     </div>

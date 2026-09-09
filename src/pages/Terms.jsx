@@ -5,24 +5,24 @@ import { Building2, ArrowLeft } from "lucide-react";
 export default function Terms() {
   useEffect(() => { document.title = "Termos de Uso | Consuobra"; }, []);
   return (
-    <div className="min-h-screen font-sans" style={{ background: "#F3F6F2" }}>
-      <nav className="border-b sticky top-0 z-50" style={{ background: "rgba(244,246,250,0.97)", borderColor: "#DCE6E1", backdropFilter: "blur(12px)" }}>
+    <div className="min-h-screen font-sans" style={{ background: "#fbfaf8" }}>
+      <nav className="border-b sticky top-0 z-50" style={{ background: "rgba(244,246,250,0.97)", borderColor: "#efefef", backdropFilter: "blur(12px)" }}>
         <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg flex items-center justify-center" style={{ background: "#123C34" }}>
-              <Building2 className="h-3.5 w-3.5 text-[#DCE6E1]" />
+            <div className="h-7 w-7 rounded-lg flex items-center justify-center" style={{ background: "#004038" }}>
+              <Building2 className="h-3.5 w-3.5 text-[#efefef]" />
             </div>
-            <span className="font-black text-base" style={{ color: "#123C34" }}>Consuobra</span>
+            <span className="font-black text-base" style={{ color: "#004038" }}>Consuobra</span>
           </Link>
-          <Link to="/" className="text-sm flex items-center gap-1 hover:underline" style={{ color: "#52615B" }}>
+          <Link to="/" className="text-sm flex items-center gap-1 hover:underline" style={{ color: "#3d3e45" }}>
             <ArrowLeft className="h-3.5 w-3.5" />Voltar
           </Link>
         </div>
       </nav>
       <div className="max-w-3xl mx-auto px-4 py-12">
-        <p className="text-sm mb-2" style={{ color: "#81928B" }}>Última atualização: 4 de junho de 2026</p>
+        <p className="text-sm mb-2" style={{ color: "#6f7073" }}>Última atualização: 4 de junho de 2026</p>
         <h1 className="text-3xl font-black mb-8" style={{ color: "#111917" }}>Termos de Uso</h1>
-        <div className="space-y-8 text-sm leading-relaxed" style={{ color: "#52615B" }}>
+        <div className="space-y-8 text-sm leading-relaxed" style={{ color: "#3d3e45" }}>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#111917" }}>1. Aceitação dos termos</h2>
             <p>Ao acessar ou usar o Consuobra, você concorda com estes Termos de Uso. Se não concordar, não utilize o serviço.</p>

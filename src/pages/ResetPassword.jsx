@@ -26,21 +26,21 @@ export default function ResetPassword() {
     finally { setLoading(false); }
   };
 
-  const inputStyle = { border: "1.5px solid #DCE6E1", background: "#F3F6F2", color: "#111917" };
+  const inputStyle = { border: "1.5px solid #efefef", background: "#fbfaf8", color: "#111917" };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8" style={{ background: "#F3F6F2" }}>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8" style={{ background: "#fbfaf8" }}>
       <div className="w-full max-w-sm">
         <Link to="/" className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="h-11 w-11 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #123C34 0%, #1F6F61 100%)" }}>
-            <Building2 className="h-5 w-5 text-[#DCE6E1]" />
+          <div className="h-11 w-11 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #004038 0%, #006b5f 100%)" }}>
+            <Building2 className="h-5 w-5 text-[#efefef]" />
           </div>
           <div className="leading-none">
-            <p className="font-black text-xl tracking-tight" style={{ color: "#123C34" }}>Consuobra</p>
-            <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#81928B" }}>Obra sob controle</p>
+            <p className="font-black text-xl tracking-tight" style={{ color: "#004038" }}>Consuobra</p>
+            <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#6f7073" }}>Obra sob controle</p>
           </div>
         </Link>
-        <div className="rounded-2xl p-7 shadow-sm" style={{ background: "#FFFFFF", border: "1.5px solid #DCE6E1" }}>
+        <div className="rounded-2xl p-7 shadow-sm" style={{ background: "#FFFFFF", border: "1.5px solid #efefef" }}>
           {done ? (
             <div className="text-center py-4">
               <div className="h-14 w-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "#ECFDF5" }}>
@@ -49,15 +49,15 @@ export default function ResetPassword() {
                 </svg>
               </div>
               <h2 className="text-xl font-black mb-2" style={{ color: "#111917" }}>Senha redefinida!</h2>
-              <p className="text-sm mb-6" style={{ color: "#52615B" }}>Sua senha foi alterada com sucesso. Você já pode entrar com a nova senha.</p>
+              <p className="text-sm mb-6" style={{ color: "#3d3e45" }}>Sua senha foi alterada com sucesso. Você já pode entrar com a nova senha.</p>
               <Link to="/login">
-                <button className="w-full h-11 rounded-xl font-bold text-white" style={{ background: "#123C34" }}>Ir para o login</button>
+                <button className="w-full h-11 rounded-xl font-bold text-white" style={{ background: "#004038" }}>Ir para o login</button>
               </Link>
             </div>
           ) : (
             <>
               <h1 className="text-2xl font-black mb-1" style={{ color: "#111917" }}>Redefinir senha</h1>
-              <p className="text-sm mb-6" style={{ color: "#52615B" }}>Escolha uma nova senha segura para sua conta.</p>
+              <p className="text-sm mb-6" style={{ color: "#3d3e45" }}>Escolha uma nova senha segura para sua conta.</p>
               {!resetToken && (
                 <div className="text-sm rounded-xl px-4 py-3 mb-4" style={{ background: "#FEF2F2", border: "1px solid #FECACA", color: "#DC2626" }}>
                   Link inválido. <Link to="/forgot-password" className="font-bold underline">Solicite um novo link.</Link>
@@ -70,7 +70,7 @@ export default function ResetPassword() {
                   <div className="relative">
                     <input type={showPass ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mínimo 6 caracteres"
                       className="w-full h-10 rounded-xl px-3 pr-10 text-sm outline-none" style={inputStyle} />
-                    <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "#81928B" }}>
+                    <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "#6f7073" }}>
                       {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
@@ -80,11 +80,11 @@ export default function ResetPassword() {
                   <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Repita a nova senha"
                     className="w-full h-10 rounded-xl px-3 text-sm outline-none" style={inputStyle} />
                 </div>
-                <button type="submit" disabled={loading || !password || !confirm || !resetToken} className="w-full h-11 rounded-xl font-bold text-base text-white disabled:opacity-60" style={{ background: "#123C34" }}>
+                <button type="submit" disabled={loading || !password || !confirm || !resetToken} className="w-full h-11 rounded-xl font-bold text-base text-white disabled:opacity-60" style={{ background: "#004038" }}>
                   {loading ? "Salvando..." : "Redefinir senha"}
                 </button>
               </form>
-              <Link to="/forgot-password" className="text-xs hover:underline flex items-center justify-center mt-4" style={{ color: "#81928B" }}>
+              <Link to="/forgot-password" className="text-xs hover:underline flex items-center justify-center mt-4" style={{ color: "#6f7073" }}>
                 Solicitar novo link
               </Link>
             </>

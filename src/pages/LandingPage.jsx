@@ -1,254 +1,203 @@
 import { useEffect } from "react";
-import { Building2, CheckCircle2, DollarSign, FileText, Bell, ArrowRight, Shield, BarChart3, HardHat } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  BarChart3,
+  Bell,
+  Building2,
+  CheckCircle2,
+  ClipboardCheck,
+  DollarSign,
+  FileText,
+  HardHat,
+  Shield,
+} from "lucide-react";
 import BrandLogo, { BrandMark } from "@/components/BrandLogo";
 
-const benefits = [
-  { icon: Building2, color: "bg-[#1F6F61] text-[#B8D8CC]", title: "Controle de Obras", desc: "Acompanhe o andamento de cada obra, etapas, responsáveis e prazos em tempo real." },
-  { icon: DollarSign, color: "bg-emerald-700 text-emerald-200", title: "Controle de Gastos", desc: "Registre despesas, compare com o orçamento e saiba exatamente onde está gastando." },
-  { icon: FileText, color: "bg-[#123C34] text-[#B8D8CC]", title: "Documentos Organizados", desc: "Contratos, alvarás, notas fiscais e certidões em um só lugar, com alertas de vencimento." },
-  { icon: Bell, color: "bg-red-800 text-red-200", title: "Alertas Inteligentes", desc: "Receba avisos de atrasos, documentos vencendo e obras sem atualização." },
-  { icon: BarChart3, color: "bg-[#1F6F61] text-[#B8D8CC]", title: "Relatórios Simples", desc: "Gere relatórios em PDF com progresso, gastos e documentos em um clique." },
-  { icon: Shield, color: "bg-[#101A18] text-[#668078]", title: "Segurança LGPD", desc: "Seus dados protegidos com criptografia TLS/SSL e conformidade total com a LGPD." },
+const features = [
+  { icon: Building2, bg: "#e5d3f7", title: "Obras em andamento", desc: "Veja progresso, prazo, responsáveis e etapas críticas em uma tela simples." },
+  { icon: DollarSign, bg: "#fef1e1", title: "Custos sob controle", desc: "Acompanhe gastos, receitas contratadas e saldo disponível por obra." },
+  { icon: FileText, bg: "#fde8ce", title: "Documentos organizados", desc: "Contratos, notas e arquivos importantes sem conversa perdida no WhatsApp." },
+  { icon: Bell, bg: "#bee9f4", title: "Alertas práticos", desc: "Receba avisos de atraso, documento vencendo e obra sem atualização." },
+  { icon: BarChart3, bg: "#c6c4f4", title: "Relatórios claros", desc: "Gere acompanhamento para você e para o cliente com menos retrabalho." },
+  { icon: Shield, bg: "#ffffff", title: "Operação segura", desc: "Base para LGPD, acesso por usuário e evolução para estrutura própria." },
 ];
 
 const steps = [
-  { num: "1", label: "Crie sua conta", desc: "Grátis, sem cartão" },
-  { num: "2", label: "Cadastre sua obra", desc: "Nome, endereço, prazo" },
-  { num: "3", label: "Registre etapas e gastos", desc: "Acompanhe tudo" },
-  { num: "4", label: "Gere relatórios", desc: "PDF com um clique" },
+  "Cadastre a obra",
+  "Registre etapas, fotos e gastos",
+  "Acompanhe alertas e progresso",
+  "Compartilhe relatórios com o cliente",
 ];
 
-const NavLogo = () => (
-  <BrandLogo size="md" />
-);
-
-const Footer = () => (
-  <footer style={{ background: "#101A18" }} className="text-[#668078] py-10">
-    <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-5 text-sm">
-      <div>
-        <div className="flex items-center gap-2 mb-1">
-          <BrandMark className="h-6 w-6 rounded-lg" />
-          <span className="font-black text-white">Consuobra</span>
+function ProductPreview() {
+  return (
+    <div className="rounded-2xl border bg-white p-4" style={{ borderColor: "#efefef" }}>
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <BrandMark className="h-8 w-8 rounded-xl" />
+          <div>
+            <p className="text-sm font-bold" style={{ color: "#0f161e" }}>Residencial Primavera</p>
+            <p className="text-xs" style={{ color: "#6f7073" }}>Central da obra</p>
+          </div>
         </div>
-        <p className="text-[11px] text-[#668078]">Obra sob controle, do campo ao financeiro</p>
+        <span className="rounded-lg px-3 py-1 text-xs font-bold text-white" style={{ background: "#004038" }}>68%</span>
       </div>
-      <div className="flex gap-6">
-        <Link to="/plans" className="hover:text-white transition-colors">Planos</Link>
-        <Link to="/privacy" className="hover:text-white transition-colors">Privacidade</Link>
-        <Link to="/terms" className="hover:text-white transition-colors">Termos</Link>
-        <Link to="/support" className="hover:text-white transition-colors">Suporte</Link>
+
+      <div className="grid grid-cols-2 gap-3">
+        {[
+          ["Receita", "R$ 420k", "#004038"],
+          ["Gastos", "R$ 188k", "#1d0953"],
+          ["Fotos hoje", "14", "#3d3e45"],
+          ["Alertas", "2", "#004038"],
+        ].map(([label, value, color]) => (
+          <div key={label} className="rounded-2xl p-4" style={{ background: "#fbfaf8" }}>
+            <p className="text-xs" style={{ color: "#6f7073" }}>{label}</p>
+            <p className="mt-1 text-2xl font-bold" style={{ color }}>{value}</p>
+          </div>
+        ))}
       </div>
-      <p className="text-xs text-[#81928B]">© 2026 Consuobra · Obra sob controle · LGPD · Brasil</p>
+
+      <div className="mt-4 space-y-2">
+        {[
+          ["Fundação concluída", 100],
+          ["Alvenaria em execução", 72],
+          ["Instalações pendentes", 24],
+        ].map(([name, pct]) => (
+          <div key={name} className="rounded-2xl border p-3" style={{ borderColor: "#efefef" }}>
+            <div className="mb-2 flex items-center justify-between">
+              <p className="text-sm font-bold" style={{ color: "#0f161e" }}>{name}</p>
+              <p className="text-xs font-bold" style={{ color: "#004038" }}>{pct}%</p>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full" style={{ background: "#efefef" }}>
+              <div className="h-full rounded-full" style={{ width: `${pct}%`, background: "#004038" }} />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-  </footer>
-);
+  );
+}
 
 export default function LandingPage() {
-  useEffect(() => { document.title = "Consuobra | Controle de Obras, Gastos e Documentos"; }, []);
+  useEffect(() => { document.title = "Consuobra | Gestão Simples e Inteligente de Obras"; }, []);
+
   return (
-    <div className="min-h-screen font-sans" style={{ background: "#F3F6F2" }}>
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b" style={{ background: "rgba(244,246,250,0.97)", borderColor: "#DCE6E1", backdropFilter: "blur(12px)" }}>
-        <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <NavLogo />
+    <div className="min-h-screen font-sans" style={{ background: "#fbfaf8", color: "#0f161e" }}>
+      <nav className="sticky top-0 z-50 border-b" style={{ background: "rgba(251,250,248,0.94)", borderColor: "#efefef", backdropFilter: "blur(14px)" }}>
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+          <BrandLogo size="md" />
           <div className="flex items-center gap-2">
-            <Link to="/plans" className="hidden sm:block text-sm font-medium px-3 py-1.5 transition-colors" style={{ color: "#52615B" }}>Planos</Link>
-            <Link to="/login" className="text-sm font-medium px-3 py-1.5 transition-colors" style={{ color: "#52615B" }}>Entrar</Link>
-            <Link to="/register" className="text-sm font-bold px-4 py-2 rounded-xl transition-colors text-white flex items-center gap-1.5 shadow-md" style={{ background: "#123C34" }}>
-              <span className="hidden sm:inline">Criar conta grátis</span>
-              <span className="sm:hidden">Criar conta</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+            <Link to="/plans" className="hidden px-3 py-2 text-sm font-bold sm:block" style={{ color: "#004038" }}>Planos</Link>
+            <Link to="/login" className="px-3 py-2 text-sm font-bold" style={{ color: "#004038" }}>Entrar</Link>
+            <Link to="/register" className="rounded-lg px-4 py-2 text-sm font-bold text-white" style={{ background: "#004038" }}>Criar conta</Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section style={{ background: "linear-gradient(135deg, #101A18 0%, #123C34 58%, #1F6F61 100%)" }} className="relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: "linear-gradient(#DCE6E1 1px, transparent 1px), linear-gradient(90deg, #DCE6E1 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-        <div className="relative max-w-5xl mx-auto px-4 pt-16 pb-20">
-          <div className="inline-flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full mb-6 border" style={{ background: "rgba(229,169,54,0.12)", borderColor: "rgba(229,169,54,0.35)", color: "#F3DCA4" }}>
-            <HardHat className="h-3.5 w-3.5" /> Para construtores, engenheiros e gestores de obra
+      <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:py-24">
+        <div>
+          <div className="mb-6 inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-xs font-bold" style={{ background: "#e5d3f7", color: "#1d0953" }}>
+            <HardHat className="h-4 w-4" /> Plataforma para construtores que precisam de clareza
           </div>
-          <h1 className="text-4xl sm:text-5xl font-black leading-tight mb-5 max-w-3xl" style={{ color: "#FFFFFF" }}>
-            Sua obra sob controle, sem depender de planilhas soltas.
+          <h1 className="max-w-3xl text-5xl font-bold leading-[1.08] sm:text-6xl" style={{ color: "#0f161e" }}>
+            Controle a obra inteira sem perder o dia organizando informação.
           </h1>
-          <p className="text-lg mb-9 max-w-xl leading-relaxed" style={{ color: "#B8D8CC" }}>
-            A Consuobra centraliza progresso, gastos, documentos, fotos, relatórios e alertas para construtores enxergarem a obra com clareza todos os dias.
+          <p className="mt-6 max-w-xl text-lg leading-[1.56]" style={{ color: "#3d3e45" }}>
+            A Consuobra reúne progresso, gastos, documentos, fotos e relatórios em uma rotina simples para quem vive obra de verdade.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 mb-10">
-            <Link to="/register" className="inline-flex items-center justify-center gap-2 font-bold text-base px-8 py-4 rounded-xl transition-colors shadow-lg text-[#101A18]" style={{ background: "#E5A936" }}>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Link to="/register" className="inline-flex items-center justify-center gap-2 rounded-lg px-6 py-4 text-base font-bold text-white" style={{ background: "#004038" }}>
               Criar conta grátis <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link to="/login" className="inline-flex items-center justify-center gap-2 font-semibold text-base px-8 py-4 rounded-xl transition-all border text-white" style={{ borderColor: "rgba(167,182,210,0.4)", background: "rgba(167,182,210,0.08)" }}>
-              Entrar
+            <Link to="/login" className="inline-flex items-center justify-center rounded-lg border px-6 py-4 text-base font-bold" style={{ borderColor: "#004038", color: "#004038" }}>
+              Entrar na plataforma
             </Link>
           </div>
-          <div className="flex flex-wrap gap-5 text-sm" style={{ color: "#B8D8CC" }}>
-            {["Sem cartão de crédito", "Grátis para começar", "100% em português", "Funciona no celular"].map(t => (
-              <span key={t} className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />{t}
+          <div className="mt-7 flex flex-wrap gap-5 text-sm" style={{ color: "#6f7073" }}>
+            {["Sem cartão para começar", "Funciona no celular", "Relatórios para clientes", "Feito para obra"].map((item) => (
+              <span key={item} className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4" style={{ color: "#004038" }} /> {item}
               </span>
             ))}
           </div>
         </div>
+        <ProductPreview />
       </section>
 
-      {/* Dashboard mockup */}
-      <section className="py-12 px-4" style={{ background: "#F3F6F2" }}>
-        <div className="max-w-4xl mx-auto">
-          <div className="rounded-2xl overflow-hidden shadow-2xl border" style={{ borderColor: "#DCE6E1" }}>
-            <div className="px-5 py-3 flex items-center gap-3" style={{ background: "#123C34" }}>
-              <Building2 className="h-4 w-4" style={{ color: "#B8D8CC" }} />
-              <span className="font-bold text-sm" style={{ color: "#DCE6E1" }}>Consuobra — Dashboard</span>
-              <div className="ml-auto flex gap-1.5">
-                <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
-                <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-                <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
-              </div>
+      <section className="border-y" style={{ borderColor: "#efefef", background: "#ffffff" }}>
+        <div className="mx-auto grid max-w-6xl gap-4 px-4 py-10 sm:grid-cols-4">
+          {[
+            ["menos planilhas", "Tudo centralizado"],
+            ["mais clareza", "Progresso visível"],
+            ["menos atraso", "Alertas no painel"],
+            ["mais confiança", "Cliente informado"],
+          ].map(([top, bottom]) => (
+            <div key={top}>
+              <p className="text-3xl font-bold" style={{ color: "#1d0953" }}>{top}</p>
+              <p className="mt-1 text-sm" style={{ color: "#6f7073" }}>{bottom}</p>
             </div>
-            <div className="p-5 bg-white">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-                {[
-                  { label: "Obras ativas", val: "3", color: "#123C34" },
-                  { label: "Gastos do mês", val: "R$ 48k", color: "#16A34A" },
-                  { label: "Documentos", val: "12", color: "#1F6F61" },
-                  { label: "Alertas", val: "2", color: "#DC2626" },
-                ].map(k => (
-                  <div key={k.label} className="border rounded-xl p-3" style={{ borderColor: "#DCE6E1", background: "#F3F6F2" }}>
-                    <p className="text-xs mb-1" style={{ color: "#81928B" }}>{k.label}</p>
-                    <p className="text-xl font-black" style={{ color: k.color }}>{k.val}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="space-y-2">
-                {[
-                  { name: "Residencial Primavera", status: "Em andamento", pct: 65 },
-                  { name: "Galpão Industrial Norte", status: "Atrasada", pct: 40 },
-                  { name: "Reforma Comercial Centro", status: "Concluída", pct: 100 },
-                ].map(p => (
-                  <div key={p.name} className="flex items-center gap-3 border rounded-xl px-4 py-3 bg-white" style={{ borderColor: "#DCE6E1" }}>
-                    <Building2 className="h-4 w-4 shrink-0" style={{ color: "#81928B" }} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold truncate" style={{ color: "#111917" }}>{p.name}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: "#DCE6E1" }}>
-                          <div className="h-full rounded-full" style={{ width: `${p.pct}%`, background: p.status === "Concluída" ? "#16A34A" : p.status === "Atrasada" ? "#DC2626" : "#123C34" }} />
-                        </div>
-                        <span className="text-xs shrink-0" style={{ color: "#81928B" }}>{p.pct}%</span>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0" style={{
-                      background: p.status === "Em andamento" ? "rgba(27,47,85,0.1)" : p.status === "Atrasada" ? "rgba(220,38,38,0.1)" : "rgba(22,163,74,0.1)",
-                      color: p.status === "Em andamento" ? "#123C34" : p.status === "Atrasada" ? "#DC2626" : "#16A34A"
-                    }}>{p.status}</span>
-                  </div>
-                ))}
-              </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-20">
+        <p className="mb-3 text-xs font-bold uppercase" style={{ color: "#6f7073" }}>O que muda na rotina</p>
+        <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <h2 className="max-w-2xl text-4xl font-bold leading-tight" style={{ color: "#0f161e" }}>Uma central leve para controlar o que normalmente fica espalhado.</h2>
+          <p className="max-w-sm text-base leading-[1.56]" style={{ color: "#3d3e45" }}>A interface foi pensada para registrar rápido no campo e analisar com calma no escritório.</p>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature) => (
+            <div key={feature.title} className="rounded-2xl p-8" style={{ background: feature.bg, border: feature.bg === "#ffffff" ? "1px solid #efefef" : "none" }}>
+              <feature.icon className="mb-6 h-7 w-7" style={{ color: "#004038" }} />
+              <h3 className="text-2xl font-bold leading-tight" style={{ color: "#0f161e" }}>{feature.title}</h3>
+              <p className="mt-3 text-base leading-[1.56]" style={{ color: "#3d3e45" }}>{feature.desc}</p>
             </div>
-          </div>
-          <p className="text-center text-sm mt-4" style={{ color: "#81928B" }}>Dashboard real do Consuobra — visualize tudo em um só lugar</p>
+          ))}
         </div>
       </section>
 
-      {/* Benefícios */}
-      <section className="py-20 px-4" style={{ background: "#FFFFFF" }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-black mb-3" style={{ color: "#111917" }}>Por que usar o Consuobra?</h2>
-            <p className="max-w-lg mx-auto" style={{ color: "#52615B" }}>Tudo que você precisa para controlar suas obras no dia a dia, sem complicação.</p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {benefits.map(b => (
-              <div key={b.title} className="border rounded-2xl p-6 hover:shadow-md transition-all" style={{ borderColor: "#DCE6E1", background: "#FFFFFF" }}>
-                <div className={`h-10 w-10 rounded-xl flex items-center justify-center mb-4 ${b.color}`}>
-                  <b.icon className="h-5 w-5" />
-                </div>
-                <h3 className="font-bold mb-2" style={{ color: "#111917" }}>{b.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: "#52615B" }}>{b.desc}</p>
+      <section className="px-4 py-20" style={{ background: "#fef1e1" }}>
+        <div className="mx-auto max-w-6xl">
+          <p className="mb-3 text-xs font-bold uppercase" style={{ color: "#6f7073" }}>Como começa</p>
+          <h2 className="max-w-2xl text-4xl font-bold leading-tight" style={{ color: "#0f161e" }}>Quatro passos para colocar sua primeira obra no controle.</h2>
+          <div className="mt-10 grid gap-4 sm:grid-cols-4">
+            {steps.map((step, index) => (
+              <div key={step} className="rounded-2xl bg-white p-6">
+                <span className="mb-8 flex h-10 w-10 items-center justify-center rounded-2xl text-sm font-bold text-white" style={{ background: "#004038" }}>{index + 1}</span>
+                <p className="text-xl font-bold leading-tight" style={{ color: "#0f161e" }}>{step}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Como funciona */}
-      <section className="py-16 px-4" style={{ background: "#101A18" }}>
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-black text-white mb-3">Como funciona?</h2>
-          <p className="mb-10" style={{ color: "#B8D8CC" }}>Em 4 passos simples você começa a controlar suas obras.</p>
-          <div className="grid sm:grid-cols-4 gap-6">
-            {steps.map((s, i) => (
-              <div key={s.num} className="relative">
-                {i < steps.length - 1 && (
-                  <div className="hidden sm:block absolute top-6 left-[60%] w-full h-0.5" style={{ background: "rgba(167,182,210,0.25)" }} />
-                )}
-                <div className="h-12 w-12 rounded-full flex items-center justify-center mx-auto mb-3 font-black text-lg shadow-md" style={{ background: "#DCE6E1", color: "#123C34" }}>{s.num}</div>
-                <p className="font-bold text-sm text-white">{s.label}</p>
-                <p className="text-xs mt-1" style={{ color: "#668078" }}>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Para quem */}
-      <section className="py-20 px-4" style={{ background: "#F3F6F2" }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-black mb-3" style={{ color: "#111917" }}>Para quem é o Consuobra?</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 gap-5">
-            {[
-              { icon: HardHat, title: "Construtores autônomos", desc: "Controle suas obras sem planilha. Tudo no celular, simples e rápido." },
-              { icon: Building2, title: "Pequenas construtoras", desc: "Gerencie várias obras, equipes e fornecedores em um único painel." },
-              { icon: FileText, title: "Engenheiros e Arquitetos", desc: "Organize projetos, documentos, etapas e entregas com precisão." },
-              { icon: BarChart3, title: "Gestores de obra", desc: "Relatórios, alertas e decisões baseadas em dados reais da obra." },
-            ].map(u => (
-              <div key={u.title} className="flex gap-4 border rounded-2xl p-6 hover:shadow-md transition-all bg-white" style={{ borderColor: "#DCE6E1" }}>
-                <div className="h-11 w-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#F3F6F2", color: "#123C34" }}><u.icon className="h-5 w-5" /></div>
-                <div>
-                  <h3 className="font-bold mb-1" style={{ color: "#111917" }}>{u.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: "#52615B" }}>{u.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Segurança */}
-      <section className="py-10 px-4 border-y" style={{ background: "#FFFFFF", borderColor: "#DCE6E1" }}>
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-          <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 mx-auto sm:mx-0" style={{ background: "#123C34" }}>
-            <Shield className="h-6 w-6 text-[#DCE6E1]" />
-          </div>
+      <section className="mx-auto max-w-6xl px-4 py-20">
+        <div className="grid gap-6 rounded-2xl p-8 sm:grid-cols-[1fr_auto] sm:items-center" style={{ background: "#004038" }}>
           <div>
-            <p className="font-bold mb-1" style={{ color: "#111917" }}>Seus dados são seus. Sempre.</p>
-            <p className="text-sm" style={{ color: "#52615B" }}>
-              Seus dados são usados apenas para organizar e controlar suas obras. Conformidade total com a LGPD.{" "}
-              <Link to="/privacy" className="hover:underline font-medium" style={{ color: "#123C34" }}>Política de Privacidade</Link>
-              {" "}·{" "}
-              <Link to="/terms" className="hover:underline font-medium" style={{ color: "#123C34" }}>Termos de Uso</Link>
-            </p>
+            <ClipboardCheck className="mb-5 h-8 w-8 text-white" />
+            <h2 className="max-w-2xl text-4xl font-bold leading-tight text-white">Comece com uma obra. Escale quando sua operação pedir.</h2>
+            <p className="mt-4 max-w-xl text-base leading-[1.56]" style={{ color: "#bee9f4" }}>A Consuobra foi criada para ser simples no primeiro dia e útil quando sua empresa crescer.</p>
           </div>
-        </div>
-      </section>
-
-      {/* CTA Final */}
-      <section className="py-20 px-4 text-center" style={{ background: "#F3F6F2" }}>
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-black mb-3" style={{ color: "#111917" }}>Comece controlando sua primeira obra</h2>
-          <p className="text-lg mb-8" style={{ color: "#52615B" }}>Grátis, sem cartão de crédito e sem complicação.</p>
-          <Link to="/register" className="inline-flex items-center gap-2 font-bold text-lg px-10 py-4 rounded-xl transition-colors shadow-lg text-white" style={{ background: "#123C34" }}>
-            Criar conta grátis <ArrowRight className="h-5 w-5" />
+          <Link to="/register" className="inline-flex items-center justify-center rounded-lg bg-white px-6 py-4 text-base font-bold" style={{ color: "#004038" }}>
+            Criar conta grátis
           </Link>
-          <p className="text-xs mt-4" style={{ color: "#81928B" }}>Sem cartão de crédito · Cancele quando quiser · Suporte em português</p>
         </div>
       </section>
 
-      <Footer />
+      <footer className="border-t" style={{ borderColor: "#efefef", background: "#ffffff" }}>
+        <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-10 sm:flex-row sm:items-center sm:justify-between">
+          <BrandLogo size="sm" />
+          <div className="flex gap-5 text-sm font-bold" style={{ color: "#004038" }}>
+            <Link to="/plans">Planos</Link>
+            <Link to="/privacy">Privacidade</Link>
+            <Link to="/terms">Termos</Link>
+            <Link to="/support">Suporte</Link>
+          </div>
+          <p className="text-xs" style={{ color: "#6f7073" }}>© 2026 Consuobra · LGPD · Brasil</p>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -9,12 +9,12 @@ const sizeClasses = {
 export function BrandMark({ className = "" }) {
   return (
     <svg viewBox="0 0 64 64" aria-hidden="true" className={className}>
-      <rect width="64" height="64" rx="16" fill="#123C34" />
-      <path d="M16 34L32 20l16 14" fill="none" stroke="#DCE6E1" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M22 32v14h20V32" fill="none" stroke="#DCE6E1" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M25 42h14" stroke="#E5A936" strokeWidth="4.5" strokeLinecap="round" />
-      <path d="M49 18l-7 7-4-4" fill="none" stroke="#E5A936" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M14 50h36" stroke="#668078" strokeWidth="3" strokeLinecap="round" />
+      <rect width="64" height="64" rx="16" fill="#004038" />
+      <path d="M16 34L32 20l16 14" fill="none" stroke="#efefef" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M22 32v14h20V32" fill="none" stroke="#efefef" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M25 42h14" stroke="#d5ff4d" strokeWidth="4.5" strokeLinecap="round" />
+      <path d="M49 18l-7 7-4-4" fill="none" stroke="#00f5dc" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 50h36" stroke="#bee9f4" strokeWidth="3" strokeLinecap="round" />
     </svg>
   );
 }
@@ -27,8 +27,8 @@ export default function BrandLogo({ to = "/", size = "md", light = false, classN
         <BrandMark className="h-full w-full" />
       </div>
       <div className="leading-none min-w-0">
-        <p className={`${s.name} font-black tracking-tight ${light ? "text-white" : "text-[#123C34]"}`}>Consuobra</p>
-        <p className={`${s.tag} font-semibold uppercase tracking-widest ${light ? "text-white/45" : "text-[#668078]"}`}>Obra sob controle</p>
+        <p className={`${s.name} font-black tracking-tight ${light ? "text-white" : "text-[#004038]"}`}>Consuobra</p>
+        <p className={`${s.tag} font-semibold uppercase tracking-widest ${light ? "text-white/55" : "text-[#6f7073]"}`}>Obra sob controle</p>
       </div>
     </div>
   );
