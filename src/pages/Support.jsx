@@ -21,18 +21,25 @@ export default function Support() {
   const [form, setForm] = useState({ subject: "", category: "", message: "" });
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
   const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
 
   const send = async () => {
+    setError("");
     setSending(true);
-    await base44.integrations.Core.SendEmail({
-      to: "suporte@consuobra.com.br",
-      subject: `[Suporte Consuobra] ${form.category}: ${form.subject}`,
-      body: `Categoria: ${form.category}\nAssunto: ${form.subject}\n\nMensagem:\n${form.message}`,
-    });
-    setSending(false);
-    setSent(true);
+    try {
+      await base44.integrations.Core.SendEmail({
+        to: "suporte@consuobra.com.br",
+        subject: `[Suporte Consuobra] ${form.category}: ${form.subject}`,
+        body: `Categoria: ${form.category}\nAssunto: ${form.subject}\n\nMensagem:\n${form.message}`,
+      });
+      setSent(true);
+    } catch {
+      setError("Erro ao enviar o chamado. Tente novamente ou envie um e-mail diretamente para suporte@consuobra.com.br.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -80,6 +87,11 @@ export default function Support() {
               </div>
             ) : (
               <div className="space-y-4">
+                {error && (
+                  <div className="text-sm rounded-xl px-4 py-3 bg-red-50 border border-red-100 text-red-600">
+                    {error}
+                  </div>
+                )}
                 <div>
                   <Label className="text-sm font-semibold text-gray-700">Categoria</Label>
                   <Select value={form.category} onValueChange={v => set("category", v)}>

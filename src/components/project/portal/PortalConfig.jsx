@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Copy, Link2, RefreshCw, Shield, Eye, EyeOff, CheckCircle2, Loader2 } from "lucide-react";
+import { Copy, Link2, RefreshCw, Shield, Eye, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 
 const genToken = () => Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 

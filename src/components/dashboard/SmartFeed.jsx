@@ -1,4 +1,4 @@
-import { CheckCircle2, AlertTriangle, DollarSign, Ruler, Clock } from "lucide-react";
+import { AlertTriangle, DollarSign, Ruler, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";

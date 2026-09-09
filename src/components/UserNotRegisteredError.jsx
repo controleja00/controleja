@@ -1,20 +1,12 @@
-import { Link } from 'react-router-dom';
-import { Building2, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import BrandLogo from '@/components/BrandLogo';
 
 export default function UserNotRegisteredError() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4" style={{ background: "#fbfaf8" }}>
       <div className="max-w-sm w-full">
-        <div className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="h-11 w-11 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #004038 0%, #006b5f 100%)" }}>
-            <Building2 className="h-5 w-5 text-[#efefef]" />
-          </div>
-          <div className="leading-none">
-            <p className="font-black text-xl tracking-tight" style={{ color: "#004038" }}>Consuobra</p>
-            <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#6f7073" }}>Obra sob controle</p>
-          </div>
-        </div>
+        <BrandLogo size="lg" className="justify-center mb-8" />
 
         <div className="rounded-2xl p-7 shadow-sm" style={{ background: "#FFFFFF", border: "1.5px solid #efefef" }}>
           <div className="flex items-center justify-center w-14 h-14 rounded-full mx-auto mb-5" style={{ background: "#FEF3C7" }}>

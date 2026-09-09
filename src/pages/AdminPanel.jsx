@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import PageHeader from "../components/PageHeader";
-import { Users, Building2, BarChart3, DollarSign, TrendingUp, AlertTriangle, CheckCircle2, Clock, Ruler } from "lucide-react";
+import { Users, Building2, DollarSign, TrendingUp, AlertTriangle, CheckCircle2, Ruler } from "lucide-react";
 
 const PLAN_PRICES = { starter: 497, professional: 997 };
 

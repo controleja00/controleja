@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Camera, FileText, Settings, Bell, Plus, Loader2, AlertTriangle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Camera, FileText, Settings, Bell, Loader2, AlertTriangle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DailyPhotoUpload from "./portal/DailyPhotoUpload";
 import ReportList from "./portal/ReportList";

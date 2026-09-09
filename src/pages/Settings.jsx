@@ -3,10 +3,9 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageHeader from "../components/PageHeader";
-import { User, Building2, Shield, Bell, CreditCard, LogOut, CheckCircle2 } from "lucide-react";
+import { User, Building2, Shield, CreditCard, LogOut, CheckCircle2 } from "lucide-react";
 
 export default function Settings() {
   const [user, setUser] = useState(null);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
-import { Trophy, Medal, Star, Award } from "lucide-react";
+import { Trophy, Medal, Award } from "lucide-react";
 import ScoreBadge from "../components/ScoreBadge";
 import PageHeader from "../components/PageHeader";
 

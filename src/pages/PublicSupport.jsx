@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Building2, Mail, MessageSquare, CheckCircle2, BookOpen, Zap } from "lucide-react";
+import { Mail, MessageSquare, CheckCircle2, BookOpen, Zap } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 const faqs = [
   { q: "Como criar uma conta no Consuobra?", a: 'Clique em "Criar conta grátis" na página inicial, preencha seu e-mail e senha e confirme seu e-mail. É rápido e gratuito.' },
@@ -13,15 +14,7 @@ const faqs = [
 ];
 
 const NavLogo = () => (
-  <Link to="/" className="flex items-center gap-2.5">
-    <div className="h-9 w-9 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #004038 0%, #006b5f 100%)" }}>
-      <Building2 className="h-4 w-4 text-[#efefef]" />
-    </div>
-    <div className="leading-none">
-      <span className="font-black text-lg tracking-tight" style={{ color: "#004038" }}>Consuobra</span>
-      <p className="text-[9px] font-semibold uppercase tracking-widest hidden sm:block" style={{ color: "#6f7073" }}>Obra sob controle</p>
-    </div>
-  </Link>
+  <BrandLogo size="md" />
 );
 
 export default function PublicSupport() {
@@ -52,7 +45,7 @@ export default function PublicSupport() {
 
   return (
     <div className="min-h-screen font-sans" style={{ background: "#fbfaf8" }}>
-      <nav className="sticky top-0 z-50 border-b" style={{ background: "rgba(244,246,250,0.97)", borderColor: "#efefef", backdropFilter: "blur(12px)" }}>
+      <nav className="sticky top-0 z-50 border-b" style={{ background: "rgba(251,250,248,0.94)", borderColor: "#efefef", backdropFilter: "blur(14px)" }}>
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <NavLogo />
           <div className="flex items-center gap-2">
@@ -69,7 +62,7 @@ export default function PublicSupport() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 mb-12">
-          <a href="mailto:suporte@consuobra.com.br" className="flex gap-4 items-start rounded-2xl p-5 transition-all" style={{ background: "rgba(27,47,85,0.06)", border: "1.5px solid rgba(27,47,85,0.15)" }}>
+          <a href="mailto:suporte@consuobra.com.br" className="flex gap-4 items-start rounded-2xl p-5 transition-all" style={{ background: "#e5d3f7", border: "1.5px solid #e5d3f7" }}>
             <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#004038" }}>
               <Mail className="h-5 w-5 text-white" />
             </div>
@@ -156,13 +149,13 @@ export default function PublicSupport() {
         <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm" style={{ color: "#6f7073" }}>
           <div>
             <span className="font-black text-white">Consuobra</span>
-            <p className="text-[11px] mt-0.5" style={{ color: "#6f7073" }}>Uma solução do Obra sob controle</p>
+            <p className="text-[11px] mt-0.5" style={{ color: "#6f7073" }}>Obra sob controle, do campo ao financeiro</p>
           </div>
           <div className="flex gap-5">
             <Link to="/privacy" className="hover:text-white transition-colors">Privacidade</Link>
             <Link to="/terms" className="hover:text-white transition-colors">Termos</Link>
           </div>
-          <p className="text-xs" style={{ color: "#6f7073" }}>© 2026 Consuobra · Obra sob controle · LGPD · Brasil</p>
+          <p className="text-xs" style={{ color: "#6f7073" }}>© 2026 Consuobra · LGPD · Brasil</p>
         </div>
       </footer>
     </div>

@@ -2,8 +2,7 @@ import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
 import {
-  ChevronDown, ChevronUp, Sparkles, AlertTriangle, CheckCircle2,
-  Clock, Loader2, Edit3, TrendingUp, TrendingDown, Minus
+  ChevronDown, ChevronUp, Sparkles, AlertTriangle, CheckCircle2, Loader2, Edit3, TrendingUp, TrendingDown, Minus
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";

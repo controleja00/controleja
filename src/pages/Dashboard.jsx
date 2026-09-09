@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
 import {
-  Building2, AlertTriangle, CheckCircle2, Clock, DollarSign, FileText,
-  Plus, ArrowRight, Bell, Camera, BarChart3, ChevronRight, TrendingUp
+  Building2, AlertTriangle, DollarSign, FileText,
+  Plus, ArrowRight, Bell, BarChart3
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

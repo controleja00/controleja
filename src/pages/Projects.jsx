@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
-import { Plus, Search, Cpu, Archive, MoreVertical, AlertTriangle, CheckCircle2, Clock, TrendingUp } from "lucide-react";
+import { Plus, Search, Cpu, Archive, MoreVertical, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";

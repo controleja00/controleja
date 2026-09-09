@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AlertTriangle, Archive, Trash2, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export default function ProjDeleteDialog({ project, open, onOpenChange, onArchived }) {
   const navigate = useNavigate();

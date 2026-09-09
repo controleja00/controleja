@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Building2, CheckCircle2, ArrowRight } from "lucide-react";
+import { CheckCircle2, ArrowRight } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 const plans = [
   {
@@ -37,22 +38,14 @@ const plans = [
 ];
 
 const NavLogo = () => (
-  <Link to="/" className="flex items-center gap-2.5">
-    <div className="h-9 w-9 rounded-xl flex items-center justify-center shadow-md" style={{ background: "linear-gradient(135deg, #004038 0%, #006b5f 100%)" }}>
-      <Building2 className="h-4 w-4 text-[#efefef]" />
-    </div>
-    <div className="leading-none">
-      <span className="font-black text-lg tracking-tight" style={{ color: "#004038" }}>Consuobra</span>
-      <p className="text-[9px] font-semibold uppercase tracking-widest hidden sm:block" style={{ color: "#6f7073" }}>Obra sob controle</p>
-    </div>
-  </Link>
+  <BrandLogo size="md" />
 );
 
 export default function Plans() {
   useEffect(() => { document.title = "Planos | Consuobra"; }, []);
   return (
     <div className="min-h-screen font-sans" style={{ background: "#fbfaf8" }}>
-      <nav className="sticky top-0 z-50 border-b" style={{ background: "rgba(244,246,250,0.97)", borderColor: "#efefef", backdropFilter: "blur(12px)" }}>
+      <nav className="sticky top-0 z-50 border-b" style={{ background: "rgba(251,250,248,0.94)", borderColor: "#efefef", backdropFilter: "blur(14px)" }}>
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <NavLogo />
           <div className="flex items-center gap-2">
@@ -75,7 +68,7 @@ export default function Plans() {
       <section className="max-w-5xl mx-auto px-4 pb-20">
         <div className="grid md:grid-cols-3 gap-6">
           {plans.map(plan => (
-            <div key={plan.name} className="relative rounded-2xl p-7 flex flex-col bg-white" style={{ border: plan.highlight ? "2px solid #004038" : "1.5px solid #efefef", boxShadow: plan.highlight ? "0 8px 32px rgba(27,47,85,0.15)" : "none" }}>
+            <div key={plan.name} className="relative rounded-2xl p-7 flex flex-col bg-white" style={{ border: plan.highlight ? "2px solid #004038" : "1.5px solid #efefef" }}>
               {plan.tag && (
                 <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-[11px] font-bold uppercase tracking-wide px-3 py-1 rounded-full whitespace-nowrap text-white" style={{ background: "#004038" }}>{plan.tag}</span>
               )}
@@ -85,7 +78,7 @@ export default function Plans() {
               </div>
               <div className="mb-6">
                 <span className="text-4xl font-black" style={{ color: "#004038" }}>{plan.price}</span>
-                {plan.period && <span className="text-sm ml-2" style={{ color: "#6f7073" }}>{plan.period}</span>}
+                {plan.period && <span className="text-sm ml-2" style={{ color: "#6f7073" }}> {plan.period}</span>}
               </div>
               <ul className="space-y-3 flex-1 mb-7">
                 {plan.features.map(f => (
@@ -122,14 +115,14 @@ export default function Plans() {
         <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm" style={{ color: "#6f7073" }}>
           <div>
             <span className="font-black text-white">Consuobra</span>
-            <p className="text-[11px] mt-0.5" style={{ color: "#6f7073" }}>Uma solução do Obra sob controle</p>
+            <p className="text-[11px] mt-0.5" style={{ color: "#6f7073" }}>Obra sob controle, do campo ao financeiro</p>
           </div>
           <div className="flex gap-5">
             <Link to="/privacy" className="hover:text-white transition-colors">Privacidade</Link>
             <Link to="/terms" className="hover:text-white transition-colors">Termos</Link>
             <Link to="/support" className="hover:text-white transition-colors">Suporte</Link>
           </div>
-          <p className="text-xs" style={{ color: "#6f7073" }}>© 2026 Consuobra · Obra sob controle · LGPD</p>
+          <p className="text-xs" style={{ color: "#6f7073" }}>© 2026 Consuobra · LGPD</p>
         </div>
       </footer>
     </div>

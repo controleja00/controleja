@@ -2,7 +2,7 @@
  * ProjProfitCurve — Curva de Lucro da Obra
  * Mostra receita, custo previsto, custo projetado, lucro e margem.
  */
-import { TrendingUp, TrendingDown, AlertTriangle, DollarSign, Target, BarChart3 } from "lucide-react";
+import { AlertTriangle, BarChart3 } from "lucide-react";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 
 const fmt = (v) => {

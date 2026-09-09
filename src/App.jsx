@@ -137,7 +137,6 @@ const AuthenticatedApp = () => {
           <Route path="/guarantees" element={<Guarantees />} />
           <Route path="/recommendations" element={<Recommendations />} />
           <Route path="/autopilot" element={<AutoPilot />} />
-          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Route>
 

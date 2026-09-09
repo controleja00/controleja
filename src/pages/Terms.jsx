@@ -1,19 +1,15 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Building2, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function Terms() {
   useEffect(() => { document.title = "Termos de Uso | Consuobra"; }, []);
   return (
     <div className="min-h-screen font-sans" style={{ background: "#fbfaf8" }}>
-      <nav className="border-b sticky top-0 z-50" style={{ background: "rgba(244,246,250,0.97)", borderColor: "#efefef", backdropFilter: "blur(12px)" }}>
+      <nav className="border-b sticky top-0 z-50" style={{ background: "rgba(251,250,248,0.94)", borderColor: "#efefef", backdropFilter: "blur(14px)" }}>
         <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg flex items-center justify-center" style={{ background: "#004038" }}>
-              <Building2 className="h-3.5 w-3.5 text-[#efefef]" />
-            </div>
-            <span className="font-black text-base" style={{ color: "#004038" }}>Consuobra</span>
-          </Link>
+          <BrandLogo size="sm" />
           <Link to="/" className="text-sm flex items-center gap-1 hover:underline" style={{ color: "#3d3e45" }}>
             <ArrowLeft className="h-3.5 w-3.5" />Voltar
           </Link>
@@ -29,7 +25,7 @@ export default function Terms() {
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#111917" }}>2. Descrição do serviço</h2>
-            <p>O Consuobra é uma plataforma para controle de obras, gastos, etapas, documentos, fotos, equipes, alertas e relatórios na construção civil, desenvolvida pelo Obra sob controle. O acesso é fornecido mediante cadastro gratuito (plano Inicial) ou assinatura paga (planos Profissional e Empresa).</p>
+            <p>A Consuobra é uma plataforma para controle de obras, gastos, etapas, documentos, fotos, equipes, alertas e relatórios na construção civil. O acesso é fornecido mediante cadastro gratuito (plano Inicial) ou assinatura paga (planos Profissional e Empresa).</p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#111917" }}>3. Plano gratuito e assinaturas pagas</h2>
@@ -53,7 +49,7 @@ export default function Terms() {
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#111917" }}>5. Propriedade intelectual</h2>
-            <p>Todo o código, design e funcionalidades do Consuobra são de propriedade exclusiva do Obra sob controle. Os dados inseridos pelos usuários permanecem de propriedade do usuário.</p>
+            <p>Todo o código, design e funcionalidades da Consuobra são de propriedade exclusiva da Consuobra. Os dados inseridos pelos usuários permanecem de propriedade do usuário.</p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#111917" }}>6. Limitação de responsabilidade</h2>
@@ -73,7 +69,7 @@ export default function Terms() {
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#111917" }}>10. Contato</h2>
-            <p><strong>suporte@consuobra.com.br</strong><br />Consuobra — Obra sob controle — São Paulo, SP — Brasil</p>
+            <p><strong>suporte@consuobra.com.br</strong><br />Consuobra — São Paulo, SP — Brasil</p>
           </section>
         </div>
       </div>

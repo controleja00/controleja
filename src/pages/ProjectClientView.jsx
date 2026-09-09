@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { CheckCircle2, Clock, AlertTriangle, Camera, TrendingUp, DollarSign, Calendar, MapPin, ChevronRight } from "lucide-react";
+import { CheckCircle2, AlertTriangle, Camera, DollarSign, Calendar, MapPin } from "lucide-react";
 
 const getHealthInfo = (project, alerts, cashFlow) => {
   const critical = alerts.filter(a => a.related_id === project?.id && a.severity === "Crítica").length;

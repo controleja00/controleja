@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
 import {
-  TrendingUp, TrendingDown, DollarSign, CheckCircle2, Clock,
+  TrendingUp, TrendingDown, DollarSign, Clock,
   AlertTriangle, ArrowUpRight, ArrowDownRight, Loader2
 } from "lucide-react";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { cn } from "@/lib/utils";
 
 const fmt = (v) => {

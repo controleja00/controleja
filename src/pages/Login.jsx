@@ -19,6 +19,12 @@ export default function Login() {
     window.location.href = (next && next.startsWith("/") && !next.startsWith("//")) ? next : "/dashboard";
   };
 
+  const getSafeNext = () => {
+    const params = new URLSearchParams(window.location.search);
+    const next = params.get("next");
+    return (next && next.startsWith("/") && !next.startsWith("//")) ? next : "/dashboard";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) { setError("Preencha e-mail e senha."); return; }
@@ -81,7 +87,7 @@ export default function Login() {
             <div className="flex-1 h-px" style={{ background: "#efefef" }} />
           </div>
 
-          <button type="button" onClick={() => base44.auth.loginWithProvider("google", "/dashboard")}
+          <button type="button" onClick={() => base44.auth.loginWithProvider("google", getSafeNext())}
             className="w-full h-11 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-colors hover:bg-gray-50"
             style={{ border: "1.5px solid #efefef", background: "#FFFFFF", color: "#111917" }}>
             <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">

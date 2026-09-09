@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, ShieldAlert, Loader2, Upload, CheckCircle2, XCircle } from "lucide-react";
+import { AlertTriangle, ShieldAlert, Loader2, Upload, CheckCircle2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import PageHeader from "../components/PageHeader";
 

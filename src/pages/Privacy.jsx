@@ -1,19 +1,15 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Building2, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function Privacy() {
   useEffect(() => { document.title = "Política de Privacidade | Consuobra"; }, []);
   return (
     <div className="min-h-screen font-sans" style={{ background: "#fbfaf8" }}>
-      <nav className="border-b sticky top-0 z-50" style={{ background: "rgba(244,246,250,0.97)", borderColor: "#efefef", backdropFilter: "blur(12px)" }}>
+      <nav className="border-b sticky top-0 z-50" style={{ background: "rgba(251,250,248,0.94)", borderColor: "#efefef", backdropFilter: "blur(14px)" }}>
         <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg flex items-center justify-center" style={{ background: "#004038" }}>
-              <Building2 className="h-3.5 w-3.5 text-[#efefef]" />
-            </div>
-            <span className="font-black text-base" style={{ color: "#004038" }}>Consuobra</span>
-          </Link>
+          <BrandLogo size="sm" />
           <Link to="/" className="text-sm flex items-center gap-1 hover:underline" style={{ color: "#3d3e45" }}>
             <ArrowLeft className="h-3.5 w-3.5" />Voltar
           </Link>
@@ -25,7 +21,7 @@ export default function Privacy() {
         <div className="space-y-8 text-sm leading-relaxed" style={{ color: "#3d3e45" }}>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#111917" }}>1. Introdução</h2>
-            <p>O Consuobra, uma solução do Obra sob controle, está comprometido em proteger a privacidade dos seus usuários. Esta Política descreve como coletamos, usamos e protegemos suas informações, em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
+            <p>A Consuobra está comprometida em proteger a privacidade dos seus usuários. Esta Política descreve como coletamos, usamos e protegemos suas informações, em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#111917" }}>2. Dados que coletamos</h2>
@@ -78,7 +74,7 @@ export default function Privacy() {
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#111917" }}>8. Contato</h2>
-            <p>Encarregado de Dados (DPO): <strong>suporte@consuobra.com.br</strong><br />Consuobra — Obra sob controle — São Paulo, SP — Brasil</p>
+            <p>Encarregado de Dados (DPO): <strong>suporte@consuobra.com.br</strong><br />Consuobra — São Paulo, SP — Brasil</p>
           </section>
         </div>
       </div>

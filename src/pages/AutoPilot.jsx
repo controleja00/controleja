@@ -3,10 +3,9 @@ import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
 import {
   Zap, AlertTriangle, DollarSign, FileText, Users, Building2,
-  CheckCircle2, Clock, TrendingDown, ShoppingCart, ArrowRight,
+  CheckCircle2, ShoppingCart,
   Loader2, Sparkles, RefreshCw, Bell, ChevronRight, Play
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const CATEGORY_CONFIG = {
