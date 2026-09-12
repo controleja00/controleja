@@ -21,11 +21,23 @@ export default function HiringDetail() {
   const [generatedContract, setGeneratedContract] = useState(null);
 
   useEffect(() => {
-    Promise.all([
+    base44.auth.me().then((me) => Promise.all([
       base44.entities.HiringRequest.get(id),
-      base44.entities.Subcontractor.list(),
-    ]).then(([r, s]) => { setRequest(r); setSubcontractors(s); setLoading(false); });
-  }, [id]);
+      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
+    ]).then(([r, s]) => {
+      if (r?.created_by_id && r.created_by_id !== me.id) {
+        setLoading(false);
+        navigate("/hiring");
+        return;
+      }
+      setRequest(r);
+      setSubcontractors(s);
+      setLoading(false);
+    })).catch(() => {
+      setRequest(null);
+      setLoading(false);
+    });
+  }, [id, navigate]);
 
   const runAIMatch = async () => {
     setAiLoading(true);

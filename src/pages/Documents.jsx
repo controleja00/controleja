@@ -7,8 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus, Search, FileText, Upload, AlertTriangle, CheckCircle2, Clock, X, ExternalLink } from "lucide-react";
 import PageHeader from "../components/PageHeader";
+import { OWN_TEAM_ID, OWN_TEAM_NAME, isOwnTeam } from "@/lib/workActors";
 
-const DOC_TYPES = ["Contrato", "Nota Fiscal", "Alvará", "ART/RRT", "Comprovante", "Certidão Negativa", "Seguro", "Documento de Equipe", "Documento de Subempreiteiro", "Outro"];
+const DOC_TYPES = ["CNPJ", "Contrato Social", "Certidão Negativa", "Seguro", "ASO", "NR-18", "NR-35", "EPIs", "Comprovante Fiscal", "Contrato Assinado", "Nota Fiscal", "ART/RRT", "Outro"];
 
 const palette = {
   ink: "#172441",
@@ -49,22 +50,27 @@ function Stat({ label, value, icon: Icon, tone }) {
 export default function Documents() {
   const [docs, setDocs] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [subs, setSubs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filterProject, setFilterProject] = useState("all");
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({ project_id: "", project_name: "", type: "", name: "", expiry_date: "", notes: "", status: "Pendente" });
+  const [form, setForm] = useState({ project_id: "", project_name: "", subcontractor_id: "", subcontractor_name: "", type: "", name: "", expiry_date: "", notes: "", status: "Pendente" });
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
   const [fileName, setFileName] = useState("");
+  const [error, setError] = useState("");
 
   const load = () => {
     base44.auth.me().then((me) => Promise.all([
       base44.entities.Document.filter({ created_by_id: me.id }, "-created_date"),
       base44.entities.Project.filter({ created_by_id: me.id }),
-    ]).then(([d, p]) => {
+      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
+    ]).then(([d, p, s]) => {
       setDocs(d);
       setProjects(p.filter((proj) => proj.status !== "Arquivada"));
+      setSubs(s);
       setLoading(false);
     }));
   };
@@ -76,8 +82,14 @@ export default function Documents() {
     if (!file) return;
     setUploading(true);
     setFileName(file.name);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    setFileUrl(file_url);
+    setError("");
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      setFileUrl(file_url);
+    } catch {
+      setError("Não foi possível enviar o arquivo. Tente novamente.");
+      setFileName("");
+    }
     setUploading(false);
   };
 
@@ -85,17 +97,42 @@ export default function Documents() {
 
   const handleProjectChange = (projId) => {
     const proj = projects.find((p) => p.id === projId);
-    setField("project_id", projId);
-    setField("project_name", proj?.name || "");
+    setForm((prev) => ({
+      ...prev,
+      project_id: projId,
+      project_name: proj?.name || "",
+      subcontractor_id: "",
+      subcontractor_name: "",
+    }));
+  };
+
+  const handleSubcontractorChange = (subId) => {
+    const sub = subs.find((s) => s.id === subId);
+    setForm((prev) => ({
+      ...prev,
+      subcontractor_id: subId,
+      subcontractor_name: isOwnTeam(subId) ? OWN_TEAM_NAME : sub?.company_name || "",
+    }));
   };
 
   const save = async () => {
-    await base44.entities.Document.create({ ...form, file_url: fileUrl });
-    setOpen(false);
-    setForm({ project_id: "", project_name: "", type: "", name: "", expiry_date: "", notes: "", status: "Pendente" });
-    setFileUrl("");
-    setFileName("");
-    load();
+    if (!form.subcontractor_id || !form.type) {
+      setError("Selecione o responsável e o tipo de documento.");
+      return;
+    }
+    setError("");
+    setSaving(true);
+    try {
+      await base44.entities.Document.create({ ...form, file_url: fileUrl });
+      setOpen(false);
+      setForm({ project_id: "", project_name: "", subcontractor_id: "", subcontractor_name: "", type: "", name: "", expiry_date: "", notes: "", status: "Pendente" });
+      setFileUrl("");
+      setFileName("");
+      load();
+    } catch {
+      setError("Não foi possível salvar o documento. Confira os campos e tente novamente.");
+    }
+    setSaving(false);
   };
 
   const updateStatus = async (docId, status) => {
@@ -115,6 +152,11 @@ export default function Documents() {
   const pendingCount = docs.filter((doc) => doc.status === "Pendente" || doc.status === "Vencido").length;
   const approvedCount = docs.filter((doc) => doc.status === "Aprovado").length;
   const expiredCount = docs.filter((doc) => doc.status === "Vencido").length;
+  const selectedProject = projects.find((p) => p.id === form.project_id);
+  const linkedSubIds = selectedProject?.subcontractor_ids || [];
+  const availableSubs = selectedProject && linkedSubIds.length > 0
+    ? subs.filter((s) => linkedSubIds.includes(s.id))
+    : subs;
 
   return (
     <div className="min-h-screen" style={{ background: palette.canvas }}>
@@ -232,11 +274,24 @@ export default function Documents() {
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label className="text-sm font-semibold">Obra *</Label>
+              <Label className="text-sm font-semibold">Obra</Label>
               <Select value={form.project_id} onValueChange={handleProjectChange}>
-                <SelectTrigger className="mt-1.5"><SelectValue placeholder="Selecione a obra" /></SelectTrigger>
+                <SelectTrigger className="mt-1.5"><SelectValue placeholder="Selecione a obra, se houver" /></SelectTrigger>
                 <SelectContent>{projects.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}</SelectContent>
               </Select>
+            </div>
+            <div>
+              <Label className="text-sm font-semibold">Responsável / vínculo *</Label>
+              <Select value={form.subcontractor_id} onValueChange={handleSubcontractorChange}>
+                <SelectTrigger className="mt-1.5"><SelectValue placeholder="Selecione o vínculo do documento" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={OWN_TEAM_ID}>{OWN_TEAM_NAME}</SelectItem>
+                  {availableSubs.map((s) => <SelectItem key={s.id} value={s.id}>{s.company_name}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              {selectedProject && availableSubs.length === 0 && (
+                <p className="mt-1 text-xs" style={{ color: palette.muted }}>Nenhum empreiteiro vinculado a esta obra. Use obra geral ou vincule empreiteiros depois.</p>
+              )}
             </div>
             <div>
               <Label className="text-sm font-semibold">Tipo de documento *</Label>
@@ -265,9 +320,12 @@ export default function Documents() {
               <Label className="text-sm font-semibold">Observações</Label>
               <Input value={form.notes} onChange={(e) => setField("notes", e.target.value)} placeholder="Observações opcionais" className="mt-1.5" />
             </div>
-            <Button onClick={save} disabled={!form.project_id || !form.type || uploading} className="w-full">
-              Salvar documento
+            <Button onClick={save} disabled={!form.subcontractor_id || !form.type || uploading || saving} className="w-full">
+              {saving ? "Salvando..." : "Salvar documento"}
             </Button>
+            {error && (
+              <p className="rounded-xl px-3 py-2 text-sm" style={{ background: "#fff1f2", color: "#9f1239", border: "1px solid #fecdd3" }}>{error}</p>
+            )}
           </div>
         </DialogContent>
       </Dialog>

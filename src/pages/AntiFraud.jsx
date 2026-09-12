@@ -16,17 +16,21 @@ export default function AntiFraud() {
 
   useEffect(() => {
     setLoading(true);
-    base44.entities.Measurement.list("-created_date", 50).then(d => {
+    base44.auth.me().then((me) => base44.entities.Measurement.filter({ created_by_id: me.id }, "-created_date", 50)).then(d => {
       setMeasurements(d);
       setLoading(false);
-    });
+    }).catch(() => setLoading(false));
   }, []);
 
   const handleFiles = async (e) => {
     const files = Array.from(e.target.files);
     setLoading(true);
-    const urls = await Promise.all(files.map(f => base44.integrations.Core.UploadFile({ file: f }).then(r => r.file_url)));
-    setPhotos(prev => [...prev, ...urls]);
+    try {
+      const urls = await Promise.all(files.map(f => base44.integrations.Core.UploadFile({ file: f }).then(r => r.file_url)));
+      setPhotos(prev => [...prev, ...urls]);
+    } catch {
+      setResult({ overall_risk: "Erro", fraud_probability: 0, anomalies: [], summary: "Não foi possível enviar uma ou mais fotos. Tente novamente." });
+    }
     setLoading(false);
   };
 

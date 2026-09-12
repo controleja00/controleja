@@ -49,15 +49,21 @@ export default function ProjectForm() {
   const isEdit = id && id !== "new";
   const [step, setStep] = useState(isEdit ? 2 : 1);
   const [saving, setSaving] = useState(false);
+  const [subs, setSubs] = useState([]);
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState({
     name: "", address: "", client: "", technical_responsible: "",
     start_date: "", expected_end_date: "", status: "Planejamento",
-    budget: "", description: "", project_type: "", progress_method: "Físico (quantidade)",
+    budget: "", contracted_value: "", initial_capital: "", description: "", project_type: "", progress_method: "Físico (quantidade)",
+    subcontractor_ids: [],
     phases: []
   });
 
   useEffect(() => {
+    base44.auth.me().then((me) => {
+      base44.entities.Subcontractor.filter({ created_by_id: me.id }).then(setSubs);
+    });
     if (isEdit) {
       Promise.all([base44.entities.Project.get(id), base44.auth.me()]).then(([data, me]) => {
         if (!data || data.created_by_id !== me.id) {
@@ -71,6 +77,16 @@ export default function ProjectForm() {
 
   const set = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
 
+  const toggleSubcontractor = (subId) => {
+    setForm(prev => {
+      const ids = prev.subcontractor_ids || [];
+      return {
+        ...prev,
+        subcontractor_ids: ids.includes(subId) ? ids.filter(id => id !== subId) : [...ids, subId],
+      };
+    });
+  };
+
   const selectType = (type) => {
     const template = getTemplate(type).map(p => ({ ...p, executed_qty: 0, status: "Pendente" }));
     setForm(prev => ({ ...prev, project_type: type, phases: template }));
@@ -81,11 +97,23 @@ export default function ProjectForm() {
   const weightValid = Math.abs(totalWeight - 100) < 0.5;
 
   const save = async () => {
+    setError("");
     setSaving(true);
-    const data = { ...form, budget: Number(form.budget) || 0 };
-    if (isEdit) await base44.entities.Project.update(id, data);
-    else await base44.entities.Project.create(data);
-    navigate("/projects");
+    const data = {
+      ...form,
+      budget: Number(form.budget) || 0,
+      contracted_value: Number(form.contracted_value) || 0,
+      initial_capital: Number(form.initial_capital) || 0,
+      subcontractor_ids: form.subcontractor_ids || [],
+    };
+    try {
+      if (isEdit) await base44.entities.Project.update(id, data);
+      else await base44.entities.Project.create(data);
+      navigate("/projects");
+    } catch {
+      setError("Não foi possível salvar a obra agora. Verifique os campos e tente novamente.");
+      setSaving(false);
+    }
   };
 
   const canNext2 = form.name && form.address && form.client;
@@ -127,6 +155,11 @@ export default function ProjectForm() {
       </div>
 
       <div className="px-4 py-5 max-w-2xl mx-auto">
+        {error && (
+          <div className="mb-4 rounded-xl px-4 py-3 text-sm" style={{ background: "#fff1f2", color: "#9f1239", border: "1px solid #fecdd3" }}>
+            {error}
+          </div>
+        )}
 
         {/* STEP 1 — Tipo de Obra */}
         {step === 1 && !isEdit && (
@@ -195,7 +228,7 @@ export default function ProjectForm() {
                   <Input className="mt-1" type="date" value={form.expected_end_date} onChange={e => set("expected_end_date", e.target.value)} />
                 </div>
                 <div>
-                  <Label>Orçamento (R$)</Label>
+                  <Label>Orçamento previsto / custo (R$)</Label>
                   <Input className="mt-1" type="number" value={form.budget} onChange={e => set("budget", e.target.value)} />
                 </div>
                 <div>
@@ -205,10 +238,47 @@ export default function ProjectForm() {
                     <SelectContent>{statuses.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
+                <div>
+                  <Label>Receita contratada (R$)</Label>
+                  <Input className="mt-1" type="number" value={form.contracted_value} onChange={e => set("contracted_value", e.target.value)} placeholder="Valor que o cliente contratou" />
+                </div>
+                <div>
+                  <Label>Capital inicial disponível (R$)</Label>
+                  <Input className="mt-1" type="number" value={form.initial_capital} onChange={e => set("initial_capital", e.target.value)} placeholder="Saldo inicial da obra" />
+                </div>
               </div>
               <div>
                 <Label>Descrição</Label>
                 <Textarea className="mt-1" value={form.description} onChange={e => set("description", e.target.value)} rows={3} />
+              </div>
+              <div>
+                <Label>Empreiteiros vinculados</Label>
+                <div className="mt-2 rounded-2xl border p-3" style={{ borderColor: "#e1e5ed", background: "#ffffff" }}>
+                  {subs.length === 0 ? (
+                    <p className="text-xs" style={{ color: "#778096" }}>Nenhum empreiteiro cadastrado ainda. A obra poderá usar equipe própria e receber vínculos depois.</p>
+                  ) : (
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      {subs.map((sub) => {
+                        const selected = (form.subcontractor_ids || []).includes(sub.id);
+                        return (
+                          <button
+                            key={sub.id}
+                            type="button"
+                            onClick={() => toggleSubcontractor(sub.id)}
+                            className="rounded-xl border px-3 py-2 text-left transition-colors"
+                            style={{
+                              borderColor: selected ? "#1f3258" : "#e1e5ed",
+                              background: selected ? "#eff2f8" : "#f6f8fc",
+                            }}
+                          >
+                            <p className="text-xs font-bold" style={{ color: "#172441" }}>{sub.company_name}</p>
+                            <p className="text-[11px]" style={{ color: "#778096" }}>{sub.specialty || "Sem especialidade"}</p>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -303,6 +373,14 @@ export default function ProjectForm() {
                   <div className="bg-muted/50 rounded-lg p-2">
                     <p className="text-muted-foreground">Orçamento</p>
                     <p className="font-semibold">{form.budget ? `R$ ${Number(form.budget).toLocaleString("pt-BR")}` : "—"}</p>
+                  </div>
+                  <div className="bg-muted/50 rounded-lg p-2">
+                    <p className="text-muted-foreground">Receita contratada</p>
+                    <p className="font-semibold">{form.contracted_value ? `R$ ${Number(form.contracted_value).toLocaleString("pt-BR")}` : "—"}</p>
+                  </div>
+                  <div className="bg-muted/50 rounded-lg p-2">
+                    <p className="text-muted-foreground">Capital inicial</p>
+                    <p className="font-semibold">{form.initial_capital ? `R$ ${Number(form.initial_capital).toLocaleString("pt-BR")}` : "—"}</p>
                   </div>
                   <div className="bg-muted/50 rounded-lg p-2">
                     <p className="text-muted-foreground">Início</p>

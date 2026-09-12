@@ -40,7 +40,9 @@ export default function AppHeader() {
   const [alertCount, setAlertCount] = useState(0);
 
   useEffect(() => {
-    base44.entities.Alert.filter({ is_resolved: false }).then((alerts) => {
+    base44.auth.me().then((me) => {
+      return base44.entities.Alert.filter({ is_resolved: false, created_by_id: me.id });
+    }).then((alerts) => {
       setAlertCount(alerts.filter((a) => a.severity === "Crítica" || a.severity === "Alta").length);
     }).catch(() => {});
   }, [path]);
@@ -54,7 +56,7 @@ export default function AppHeader() {
   }, [title]);
 
   return (
-    <header className="sticky top-0 z-30 border-b" style={{ background: "rgba(251,250,248,0.96)", borderColor: "#e1e5ed", backdropFilter: "blur(14px)" }}>
+    <header className="sticky top-0 z-30 border-b" style={{ background: "rgba(246,248,252,0.96)", borderColor: "#e1e5ed", backdropFilter: "blur(14px)" }}>
       <div className="flex items-center h-14 px-4 gap-3">
         {!isRoot ?
         <button

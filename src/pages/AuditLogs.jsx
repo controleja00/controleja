@@ -10,7 +10,9 @@ export default function AuditLogs() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    base44.entities.AuditLog.list("-created_date", 100).then(d => { setLogs(d); setLoading(false); });
+    base44.auth.me().then((me) => base44.entities.AuditLog.filter({ created_by_id: me.id }, "-created_date", 100))
+      .then(d => { setLogs(d); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
   const filtered = logs.filter(l =>

@@ -6,6 +6,7 @@
  * medição → progresso, fases, financeiro, score, alertas, dashboard
  */
 import { base44 } from "@/api/base44Client";
+import { isOwnTeam } from "@/lib/workActors";
 
 /**
  * Aprova uma medição e dispara atualização em cascata:
@@ -88,7 +89,7 @@ export async function approveMeasurement(measurement, { projects = [], allMeasur
   }
 
   // 4. Atualizar score do subempreiteiro (+2 pontos operacional por medição aprovada)
-  if (measurement.subcontractor_id && measurement.subcontractor_id !== "temp") {
+  if (measurement.subcontractor_id && !isOwnTeam(measurement.subcontractor_id)) {
     let sub = null;
     try { sub = await base44.entities.Subcontractor.get(measurement.subcontractor_id); } catch (e) { sub = null; }
     if (sub) {
@@ -138,7 +139,7 @@ export async function rejectMeasurement(measurement) {
   await base44.entities.Measurement.update(measurement.id, { status: "Rejeitada" });
 
   // Leve penalidade no score
-  if (measurement.subcontractor_id && measurement.subcontractor_id !== "temp") {
+  if (measurement.subcontractor_id && !isOwnTeam(measurement.subcontractor_id)) {
     let sub = null;
     try { sub = await base44.entities.Subcontractor.get(measurement.subcontractor_id); } catch (e) { sub = null; }
     if (sub) {

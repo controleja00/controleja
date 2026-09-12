@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, ShieldCheck, AlertCircle, Clock } from "lucide-react";
 import PageHeader from "../components/PageHeader";
+import { OWN_TEAM_ID, OWN_TEAM_NAME, isOwnTeam } from "@/lib/workActors";
 
 const statusColor = {
   "Ativa": "bg-emerald-50 text-emerald-700",
@@ -25,11 +26,13 @@ export default function Guarantees() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ project_id: "", subcontractor_id: "", service: "", completion_date: "", warranty_months: "12", notes: "" });
 
-  const load = () => Promise.all([
-    base44.entities.Guarantee.list("-created_date"),
-    base44.entities.Project.list(),
-    base44.entities.Subcontractor.list()
-  ]).then(([g, p, s]) => { setItems(g); setProjects(p); setSubs(s); setLoading(false); });
+  const load = () => base44.auth.me()
+    .then((me) => Promise.all([
+      base44.entities.Guarantee.filter({ created_by_id: me.id }, "-created_date"),
+      base44.entities.Project.filter({ created_by_id: me.id }),
+      base44.entities.Subcontractor.filter({ created_by_id: me.id })
+    ]))
+    .then(([g, p, s]) => { setItems(g); setProjects(p); setSubs(s); setLoading(false); });
 
   useEffect(() => { load(); }, []);
 
@@ -49,7 +52,7 @@ export default function Guarantees() {
     await base44.entities.Guarantee.create({
       ...form,
       project_name: project?.name || "",
-      subcontractor_name: sub?.company_name || "",
+      subcontractor_name: isOwnTeam(form.subcontractor_id) ? OWN_TEAM_NAME : sub?.company_name || "",
       warranty_months: months,
       warranty_end_date
     });
@@ -83,10 +86,13 @@ export default function Guarantees() {
                 </Select>
               </div>
               <div>
-                <Label>Subempreiteiro</Label>
+                <Label>Responsável</Label>
                 <Select value={form.subcontractor_id} onValueChange={v => set("subcontractor_id", v)}>
-                  <SelectTrigger><SelectValue placeholder="Selecione o subempreiteiro" /></SelectTrigger>
-                  <SelectContent>{subs.map(s => <SelectItem key={s.id} value={s.id}>{s.company_name}</SelectItem>)}</SelectContent>
+                  <SelectTrigger><SelectValue placeholder="Selecione o responsável" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={OWN_TEAM_ID}>{OWN_TEAM_NAME}</SelectItem>
+                    {subs.map(s => <SelectItem key={s.id} value={s.id}>{s.company_name}</SelectItem>)}
+                  </SelectContent>
                 </Select>
               </div>
               <div><Label>Serviço executado</Label><Input value={form.service} onChange={e => set("service", e.target.value)} /></div>

@@ -50,14 +50,14 @@ export default function ProjectDashboard() {
 
     const [allSubs, allMeasurements, allDocuments, allAlerts] = await Promise.all([
       base44.entities.Subcontractor.filter({ created_by_id: me.id }),
-      base44.entities.Measurement.filter({ project_id: id }),
+      base44.entities.Measurement.filter({ project_id: id, created_by_id: me.id }),
       base44.entities.Document.filter({ created_by_id: me.id }),
       base44.entities.Alert.filter({ is_resolved: false, created_by_id: me.id }),
     ]);
 
     const subIds = project.subcontractor_ids || [];
     const subs = allSubs.filter(s => subIds.includes(s.id));
-    const documents = allDocuments.filter(d => subIds.includes(d.subcontractor_id));
+    const documents = allDocuments.filter(d => d.project_id === id || subIds.includes(d.subcontractor_id));
 
     setData({ project, subs, measurements: allMeasurements, documents, alerts: allAlerts });
     setLoading(false);

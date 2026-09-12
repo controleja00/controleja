@@ -13,11 +13,11 @@ export default function RiskPredictor() {
   const [predictions, setPredictions] = useState(null);
 
   useEffect(() => {
-    Promise.all([
-      base44.entities.Project.list(),
-      base44.entities.Subcontractor.list(),
-      base44.entities.Measurement.list(),
-    ]).then(([p, s, m]) => { setProjects(p); setSubs(s); setMeasurements(m); setDataLoading(false); });
+    base44.auth.me().then((me) => Promise.all([
+      base44.entities.Project.filter({ created_by_id: me.id }),
+      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
+      base44.entities.Measurement.filter({ created_by_id: me.id }),
+    ])).then(([p, s, m]) => { setProjects(p); setSubs(s); setMeasurements(m); setDataLoading(false); });
   }, []);
 
   const analyze = async () => {

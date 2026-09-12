@@ -28,7 +28,9 @@ export default function Ranking() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.Subcontractor.list().then(d => { setSubs(d); setLoading(false); });
+    base44.auth.me().then((me) => base44.entities.Subcontractor.filter({ created_by_id: me.id }))
+      .then(d => { setSubs(d); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
   const filtered = [...(filter === "Todos" ? subs : subs.filter(s => s.specialty === filter))]

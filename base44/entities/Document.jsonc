@@ -2,6 +2,18 @@
   "name": "Document",
   "type": "object",
   "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "Obra"
+    },
+    "project_name": {
+      "type": "string",
+      "title": "Nome da Obra"
+    },
+    "name": {
+      "type": "string",
+      "title": "Nome do Documento"
+    },
     "subcontractor_id": {
       "type": "string",
       "title": "Subempreiteiro"

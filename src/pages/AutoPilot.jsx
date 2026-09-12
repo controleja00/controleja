@@ -194,14 +194,15 @@ export default function AutoPilot() {
   const load = async (silent = false) => {
     if (!silent) setLoading(true);
     else setRefreshing(true);
+    const me = await base44.auth.me();
     const [projects, subcontractors, measurements, alerts, documents, cashFlow, supplies] = await Promise.all([
-      base44.entities.Project.list(),
-      base44.entities.Subcontractor.list(),
-      base44.entities.Measurement.list("-created_date", 200),
-      base44.entities.Alert.filter({ is_resolved: false }),
-      base44.entities.Document.list(),
-      base44.entities.CashFlowEntry.list("-due_date", 200),
-      base44.entities.Supply.list(),
+      base44.entities.Project.filter({ created_by_id: me.id }),
+      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
+      base44.entities.Measurement.filter({ created_by_id: me.id }, "-created_date", 200),
+      base44.entities.Alert.filter({ is_resolved: false, created_by_id: me.id }),
+      base44.entities.Document.filter({ created_by_id: me.id }),
+      base44.entities.CashFlowEntry.filter({ created_by_id: me.id }, "-due_date", 200),
+      base44.entities.Supply.filter({ created_by_id: me.id }),
     ]);
     setData({ projects, subcontractors, measurements, alerts, documents, cashFlow, supplies });
     setLoading(false);

@@ -19,7 +19,9 @@ export default function Recommendations() {
   const [form, setForm] = useState({ specialty: "", region: "", budget: "", priority: "melhor custo-benefício" });
 
   useEffect(() => {
-    base44.entities.Subcontractor.list().then(d => { setSubs(d); setLoading(false); });
+    base44.auth.me().then((me) => base44.entities.Subcontractor.filter({ created_by_id: me.id }))
+      .then(d => { setSubs(d); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
   const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
@@ -104,10 +106,10 @@ Para cada recomendação, forneça: ID, nome, score, pontos fortes, pontos de at
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <Label>Especialidade necessária</Label>
-              <Select value={form.specialty} onValueChange={v => set("specialty", v)}>
+              <Select value={form.specialty || "all"} onValueChange={v => set("specialty", v === "all" ? "" : v)}>
                 <SelectTrigger><SelectValue placeholder="Todas" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={null}>Todas</SelectItem>
+                  <SelectItem value="all">Todas</SelectItem>
                   {SPECIALTIES.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
                 </SelectContent>
               </Select>

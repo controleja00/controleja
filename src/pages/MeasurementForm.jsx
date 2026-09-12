@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import PageHeader from "../components/PageHeader";
+import { OWN_TEAM_ID, OWN_TEAM_NAME, isOwnTeam } from "@/lib/workActors";
 
 const units = ["m²", "m³", "metro linear", "diária", "percentual", "unidade"];
 
@@ -33,19 +34,28 @@ export default function MeasurementForm() {
   });
   const [projects, setProjects] = useState([]);
   const [subs, setSubs] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    Promise.all([
-      base44.entities.Project.list(),
-      base44.entities.Subcontractor.list(),
-    ]).then(([p, s]) => {
+    base44.auth.me().then((me) => Promise.all([
+      base44.entities.Project.filter({ created_by_id: me.id }),
+      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
+      isEdit ? base44.entities.Measurement.get(id) : Promise.resolve(null),
+    ]).then(([p, s, measurement]) => {
+      setCurrentUser(me);
       setProjects(p);
       setSubs(s);
-    });
-    if (isEdit) base44.entities.Measurement.get(id).then(setForm);
+      if (measurement) {
+        if (measurement.created_by_id !== me.id) {
+          navigate("/measurements");
+          return;
+        }
+        setForm(measurement);
+      }
+    }));
   }, [id]);
 
   const set = (k, v) => {
@@ -59,8 +69,12 @@ export default function MeasurementForm() {
     const file = e.target.files[0];
     if (!file) return;
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    setForm(prev => ({ ...prev, photos: [...(prev.photos || []), file_url] }));
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      setForm(prev => ({ ...prev, photos: [...(prev.photos || []), file_url] }));
+    } catch {
+      setError("Não foi possível enviar a foto. Tente novamente.");
+    }
     setUploading(false);
   };
 
@@ -75,23 +89,28 @@ export default function MeasurementForm() {
     const data = {
       ...form,
       project_name: proj?.name || "",
-      subcontractor_name: sub?.company_name || "",
+      subcontractor_name: isOwnTeam(form.subcontractor_id) ? OWN_TEAM_NAME : sub?.company_name || "",
       contracted_qty: Number(form.contracted_qty) || 0,
       executed_qty: Number(form.executed_qty) || 0,
       unit_price: Number(form.unit_price) || 0,
       total_value: totalValue,
-      status: "Pendente",
+      status: isEdit ? form.status || "Pendente" : "Pendente",
     };
-    if (isEdit) {
-      await base44.entities.Measurement.update(id, data);
-    } else {
-      await base44.entities.Measurement.create(data);
-    }
-    // Navigate back to project central if came from a project, else to measurements list
-    if (prefilledProjectId) {
-      navigate(`/projects/${prefilledProjectId}/central`);
-    } else {
-      navigate("/measurements");
+    try {
+      if (isEdit) {
+        await base44.entities.Measurement.update(id, data);
+      } else {
+        await base44.entities.Measurement.create(data);
+      }
+      // Navigate back to project central if came from a project, else to measurements list
+      if (prefilledProjectId) {
+        navigate(`/projects/${prefilledProjectId}/central`);
+      } else {
+        navigate("/measurements");
+      }
+    } catch {
+      setError("Não foi possível salvar a medição. Confira os campos e tente novamente.");
+      setSaving(false);
     }
   };
 
@@ -108,6 +127,7 @@ export default function MeasurementForm() {
   const filteredSubs = selectedProject?.subcontractor_ids?.length
     ? subs.filter(s => selectedProject.subcontractor_ids.includes(s.id))
     : subs;
+  const canUseOwnTeam = !!currentUser;
 
   return (
     <div>
@@ -143,6 +163,7 @@ export default function MeasurementForm() {
             <Select value={form.subcontractor_id} onValueChange={v => set("subcontractor_id", v)}>
               <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
               <SelectContent>
+                {canUseOwnTeam && <SelectItem value={OWN_TEAM_ID}>{OWN_TEAM_NAME}</SelectItem>}
                 {filteredSubs.map(s => <SelectItem key={s.id} value={s.id}>{s.company_name}</SelectItem>)}
               </SelectContent>
             </Select>

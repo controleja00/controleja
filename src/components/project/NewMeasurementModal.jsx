@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { OWN_TEAM_ID, OWN_TEAM_NAME, isOwnTeam } from "@/lib/workActors";
 
 const UNITS = ["m²", "m³", "metro linear", "diária", "percentual", "unidade"];
 
@@ -29,7 +30,7 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    base44.entities.Subcontractor.list().then(setSubs);
+    base44.auth.me().then((me) => base44.entities.Subcontractor.filter({ created_by_id: me.id }).then(setSubs));
   }, []);
 
   useEffect(() => {
@@ -54,8 +55,8 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
   };
 
   const save = async () => {
-    if (!form.service || !form.unit) {
-      toast.error("Preencha os campos obrigatórios: Serviço e Unidade.");
+    if (!form.subcontractor_id || !form.service || !form.unit) {
+      toast.error("Preencha os campos obrigatórios: Responsável, Serviço e Unidade.");
       return;
     }
 
@@ -66,7 +67,7 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
         ...form,
         project_id: project.id,
         project_name: project.name,
-        subcontractor_name: sub?.company_name || "",
+        subcontractor_name: isOwnTeam(form.subcontractor_id) ? OWN_TEAM_NAME : sub?.company_name || "",
         contracted_qty: Number(form.contracted_qty) || 0,
         executed_qty: Number(form.executed_qty) || 0,
         unit_price: Number(form.unit_price) || 0,
@@ -126,15 +127,16 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
 
           {/* Empreiteiro */}
           <div>
-            <Label>Empreiteiro</Label>
+            <Label>Responsável pela execução *</Label>
             <Select value={form.subcontractor_id} onValueChange={v => set("subcontractor_id", v)}>
-              <SelectTrigger className="mt-1"><SelectValue placeholder="Selecionar (opcional)" /></SelectTrigger>
+              <SelectTrigger className="mt-1"><SelectValue placeholder="Selecione quem executou" /></SelectTrigger>
               <SelectContent>
+                <SelectItem value={OWN_TEAM_ID}>{OWN_TEAM_NAME}</SelectItem>
                 {filteredSubs.map(s => (
                   <SelectItem key={s.id} value={s.id}>{s.company_name}</SelectItem>
                 ))}
                 {filteredSubs.length === 0 && (
-                  <p className="px-3 py-2 text-xs text-muted-foreground">Nenhum empreiteiro vinculado</p>
+                  <p className="px-3 py-2 text-xs text-muted-foreground">Use equipe propria ou cadastre empreiteiros depois.</p>
                 )}
               </SelectContent>
             </Select>
