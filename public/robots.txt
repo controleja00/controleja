@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://controleja-lovat.vercel.app/sitemap.xml
+Sitemap: https://consuobra.com.br/sitemap.xml

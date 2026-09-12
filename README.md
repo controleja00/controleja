@@ -2,7 +2,7 @@
 
 Aplicativo web para controle de obras, gastos, documentos, fotos, progresso e relatorios.
 
-URL publicada: https://controleja-lovat.vercel.app/
+URL oficial: https://consuobra.com.br/
 
 ## Rodar localmente
 
@@ -57,4 +57,4 @@ VITE_BASE44_APP_BASE_URL=https://prehistoric-smart-build-connect.base44.app
 
 Este projeto esta pronto para publicar o frontend na Vercel, mas ainda usa o backend, autenticacao, banco de dados e arquivos do Base44. Para tirar 100% do Base44 depois, a proxima etapa e migrar backend, login, banco e storage para uma stack propria, como Supabase.
 
-Antes do lancamento oficial com dominio proprio, atualize no `index.html`, `public/robots.txt` e `public/sitemap.xml` as URLs para o dominio final.
+O dominio oficial `consuobra.com.br` deve apontar para a Vercel. O backend, autenticacao, banco de dados e arquivos ainda passam pelo Base44.
