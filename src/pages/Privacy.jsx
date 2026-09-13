@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import { CONTACT_EMAILS } from "@/lib/contact";
 
 export default function Privacy() {
   useEffect(() => { document.title = "Política de Privacidade | Consuobra"; }, []);
@@ -62,7 +63,7 @@ export default function Privacy() {
               <li>Portabilidade dos dados</li>
               <li>Revogar consentimento a qualquer momento</li>
             </ul>
-            <p className="mt-2">Para exercer seus direitos, entre em contato: <strong>suporte@consuobra.com.br</strong></p>
+            <p className="mt-2">Para exercer seus direitos, entre em contato: <strong>{CONTACT_EMAILS.support}</strong></p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>6. Segurança</h2>
@@ -74,7 +75,7 @@ export default function Privacy() {
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>8. Contato</h2>
-            <p>Encarregado de Dados (DPO): <strong>suporte@consuobra.com.br</strong><br />Consuobra — São Paulo, SP — Brasil</p>
+            <p>Encarregado de Dados (DPO): <strong>{CONTACT_EMAILS.support}</strong><br />Consuobra - São Paulo, SP - Brasil</p>
           </section>
         </div>
       </div>

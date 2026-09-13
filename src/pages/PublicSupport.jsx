@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Mail, MessageSquare, CheckCircle2, BookOpen, Zap } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import { CONTACT_EMAILS, CONTACT_LINKS, getSupportRecipient } from "@/lib/contact";
 
 const faqs = [
   { q: "Como criar uma conta no Consuobra?", a: 'Clique em "Criar conta grátis" na página inicial, preencha seu e-mail e senha e confirme seu e-mail. É rápido e gratuito.' },
@@ -31,7 +32,7 @@ export default function PublicSupport() {
     setError(""); setSending(true);
     try {
       await base44.integrations.Core.SendEmail({
-        to: "suporte@consuobra.com.br",
+        to: getSupportRecipient(form.category),
         subject: `[Suporte Consuobra] ${form.category || "Geral"}: ${form.name || form.email}`,
         body: `Nome: ${form.name}\nE-mail: ${form.email}\nCategoria: ${form.category || "Não informada"}\n\nMensagem:\n${form.message}`,
       });
@@ -62,14 +63,14 @@ export default function PublicSupport() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 mb-12">
-          <a href="mailto:suporte@consuobra.com.br" className="flex gap-4 items-start rounded-2xl p-5 transition-all" style={{ background: "#e7ebf4", border: "1.5px solid #e7ebf4" }}>
+          <a href={CONTACT_LINKS.supportEmail} className="flex gap-4 items-start rounded-2xl p-5 transition-all" style={{ background: "#e7ebf4", border: "1.5px solid #e7ebf4" }}>
             <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#1f3258" }}>
               <Mail className="h-5 w-5 text-white" />
             </div>
             <div>
               <p className="font-bold" style={{ color: "#172441" }}>E-mail</p>
               <p className="text-sm" style={{ color: "#424c62" }}>Resposta em até 24 horas úteis</p>
-              <p className="text-sm font-semibold mt-1" style={{ color: "#1f3258" }}>suporte@consuobra.com.br</p>
+              <p className="text-sm font-semibold mt-1" style={{ color: "#1f3258" }}>{CONTACT_EMAILS.support}</p>
             </div>
           </a>
           <div className="flex gap-4 items-start rounded-2xl p-5" style={{ background: "#FFFFFF", border: "1.5px solid #e1e5ed" }}>

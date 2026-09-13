@@ -17,6 +17,9 @@ npm install
 ```bash
 VITE_BASE44_APP_ID=6a14c26bf1186131feba185a
 VITE_BASE44_APP_BASE_URL=https://prehistoric-smart-build-connect.base44.app
+VITE_PUBLIC_WHATSAPP_URL=
+VITE_ASAAS_ESSENTIAL_CHECKOUT_URL=
+VITE_ASAAS_PROFESSIONAL_CHECKOUT_URL=
 ```
 
 3. Rode o app:
@@ -49,6 +52,9 @@ Output Directory: dist
 ```bash
 VITE_BASE44_APP_ID=6a14c26bf1186131feba185a
 VITE_BASE44_APP_BASE_URL=https://prehistoric-smart-build-connect.base44.app
+VITE_PUBLIC_WHATSAPP_URL=
+VITE_ASAAS_ESSENTIAL_CHECKOUT_URL=
+VITE_ASAAS_PROFESSIONAL_CHECKOUT_URL=
 ```
 
 5. Clique em `Deploy`.
@@ -58,3 +64,13 @@ VITE_BASE44_APP_BASE_URL=https://prehistoric-smart-build-connect.base44.app
 Este projeto esta pronto para publicar o frontend na Vercel, mas ainda usa o backend, autenticacao, banco de dados e arquivos do Base44. Para tirar 100% do Base44 depois, a proxima etapa e migrar backend, login, banco e storage para uma stack propria, como Supabase.
 
 O dominio oficial `consuobra.com.br` deve apontar para a Vercel. O backend, autenticacao, banco de dados e arquivos ainda passam pelo Base44.
+
+## E-mails oficiais
+
+O dominio `consuobra.com.br` usa Zoho Mail para e-mails corporativos.
+
+- Caixa principal: `suporte@consuobra.com.br`
+- Alias comercial: `contato@consuobra.com.br`
+- Alias financeiro: `financeiro@consuobra.com.br`
+
+No DNS da Vercel devem ficar ativos os registros MX do Zoho, SPF, DKIM e DMARC. O DMARC pode iniciar com `p=none` para monitoramento e ser endurecido depois que os envios estiverem estáveis.

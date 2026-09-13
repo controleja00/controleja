@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import { CONTACT_EMAILS } from "@/lib/contact";
 
 export default function Terms() {
   useEffect(() => { document.title = "Termos de Uso | Consuobra"; }, []);
@@ -25,14 +26,14 @@ export default function Terms() {
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>2. Descrição do serviço</h2>
-            <p>A Consuobra é uma plataforma para controle de obras, gastos, etapas, documentos, fotos, equipes, alertas e relatórios na construção civil. O acesso é fornecido mediante cadastro gratuito (plano Inicial) ou assinatura paga (planos Profissional e Empresa).</p>
+            <p>A Consuobra é uma plataforma para controle de obras, gastos, etapas, documentos, fotos, equipes, alertas e relatórios na construção civil. O acesso é fornecido mediante cadastro gratuito (plano Gratuito) ou assinatura paga (planos Essencial e Profissional).</p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>3. Plano gratuito e assinaturas pagas</h2>
             <ul className="list-disc pl-5 space-y-1.5">
-              <li>O plano Inicial é gratuito para sempre, sem necessidade de cartão de crédito.</li>
-              <li>Os planos pagos (Profissional e Empresa) são cobrados mensalmente.</li>
-              <li>Não há período de teste com cobrança automática. Você escolhe quando fazer upgrade.</li>
+              <li>O plano Gratuito é gratuito para sempre, sem necessidade de cartão de crédito.</li>
+              <li>Os planos pagos (Essencial e Profissional) são cobrados mensalmente.</li>
+              <li>Novos assinantes podem ter 7 dias de teste grátis quando essa oferta estiver disponível na página de planos.</li>
               <li>Cancelamentos podem ser feitos a qualquer momento nas configurações da conta.</li>
               <li>Não há reembolso proporcional para cancelamentos no meio do ciclo pago.</li>
             </ul>
@@ -69,7 +70,7 @@ export default function Terms() {
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>10. Contato</h2>
-            <p><strong>suporte@consuobra.com.br</strong><br />Consuobra — São Paulo, SP — Brasil</p>
+            <p><strong>{CONTACT_EMAILS.support}</strong><br />Consuobra - São Paulo, SP - Brasil</p>
           </section>
         </div>
       </div>

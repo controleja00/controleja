@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PageHeader from "../components/PageHeader";
 import { MessageSquare, Mail, BookOpen, CheckCircle2, Zap } from "lucide-react";
+import { CONTACT_EMAILS, CONTACT_LINKS, getSupportRecipient } from "@/lib/contact";
 
 const faqs = [
   { q: "Como cadastrar uma nova obra?", a: 'Acesse "Obras" no menu inferior e toque em "Nova Obra". Preencha nome, endereço e cliente para começar.' },
@@ -30,13 +31,13 @@ export default function Support() {
     setSending(true);
     try {
       await base44.integrations.Core.SendEmail({
-        to: "suporte@consuobra.com.br",
+        to: getSupportRecipient(form.category),
         subject: `[Suporte Consuobra] ${form.category}: ${form.subject}`,
         body: `Categoria: ${form.category}\nAssunto: ${form.subject}\n\nMensagem:\n${form.message}`,
       });
       setSent(true);
     } catch {
-      setError("Erro ao enviar o chamado. Tente novamente ou envie um e-mail diretamente para suporte@consuobra.com.br.");
+      setError(`Erro ao enviar o chamado. Tente novamente ou envie um e-mail diretamente para ${CONTACT_EMAILS.support}.`);
     } finally {
       setSending(false);
     }
@@ -58,14 +59,14 @@ export default function Support() {
               <p className="text-xs text-gray-400 mt-1">Estamos configurando o canal de atendimento via WhatsApp.</p>
             </div>
           </div>
-          <a href="mailto:suporte@consuobra.com.br" className="bg-white rounded-2xl p-5 flex gap-4 items-start transition-all hover:border-[#1f3258]" style={{ border: "1.5px solid #e1e5ed" }}>
+          <a href={CONTACT_LINKS.supportEmail} className="bg-white rounded-2xl p-5 flex gap-4 items-start transition-all hover:border-[#1f3258]" style={{ border: "1.5px solid #e1e5ed" }}>
             <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "#e7ebf4" }}>
               <Mail className="h-5 w-5" style={{ color: "#1f3258" }} />
             </div>
             <div>
               <p className="font-bold text-sm text-gray-900">E-mail</p>
               <p className="text-xs text-gray-500 mt-0.5">Resposta em até 24h</p>
-              <p className="text-xs mt-1 font-medium" style={{ color: "#1f3258" }}>suporte@consuobra.com.br</p>
+              <p className="text-xs mt-1 font-medium" style={{ color: "#1f3258" }}>{CONTACT_EMAILS.support}</p>
             </div>
           </a>
         </div>
@@ -142,7 +143,7 @@ export default function Support() {
         </div>
 
         <p className="text-xs text-gray-400 text-center">
-          Consuobra · suporte@consuobra.com.br · Seus dados são protegidos pela LGPD
+          Consuobra · {CONTACT_EMAILS.support} · Seus dados são protegidos pela LGPD
         </p>
       </div>
     </div>
