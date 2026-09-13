@@ -2,40 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
-
-const plans = [
-  {
-    name: "Inicial",
-    price: "Grátis",
-    period: "para sempre",
-    desc: "Perfeito para começar a organizar suas obras.",
-    features: ["1 obra ativa", "Controle de gastos", "Documentos da obra", "Alertas básicos", "Acesso pelo celular"],
-    cta: "Criar conta grátis",
-    ctaTo: "/register",
-    highlight: false,
-  },
-  {
-    name: "Profissional",
-    price: "R$ 97",
-    period: "/mês",
-    desc: "Para construtores com múltiplas obras e equipes.",
-    features: ["Obras ilimitadas", "Relatórios em PDF", "Etapas e medições", "Gestão de equipes", "Documentos avançados", "Alertas de vencimento", "Suporte por e-mail"],
-    cta: "Começar grátis",
-    ctaTo: "/register",
-    highlight: true,
-    tag: "Mais popular",
-  },
-  {
-    name: "Empresa",
-    price: "Sob consulta",
-    period: "",
-    desc: "Para construtoras com múltiplos usuários e obras.",
-    features: ["Tudo do Profissional", "Múltiplos usuários", "Permissões por usuário", "Relatórios avançados", "Integração via API", "Suporte dedicado", "SLA garantido"],
-    cta: "Falar com a equipe",
-    ctaTo: "/support",
-    highlight: false,
-  },
-];
+import { CONSUOBRA_PLANS, TRIAL_DAYS } from "@/lib/plans";
 
 const NavLogo = () => (
   <BrandLogo size="md" />
@@ -57,9 +24,9 @@ export default function Plans() {
 
       <section className="max-w-3xl mx-auto px-4 pt-16 pb-8 text-center">
         <h1 className="text-4xl font-black mb-3" style={{ color: "#172441" }}>Planos simples e transparentes</h1>
-        <p className="text-lg" style={{ color: "#424c62" }}>Comece grátis, sem cartão. Faça upgrade quando precisar de mais.</p>
+        <p className="text-lg" style={{ color: "#424c62" }}>Comece grátis, sem cartão. Planos pagos com {TRIAL_DAYS} dias de teste quando você precisar de mais.</p>
         <div className="flex flex-wrap gap-4 justify-center mt-5 text-sm" style={{ color: "#424c62" }}>
-          {["Sem cartão de crédito", "Sem período de teste obrigatório", "Cancele quando quiser"].map(t => (
+          {["1 obra grátis", `${TRIAL_DAYS} dias de teste nos planos pagos`, "Cancele quando quiser"].map(t => (
             <span key={t} className="flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />{t}</span>
           ))}
         </div>
@@ -67,7 +34,7 @@ export default function Plans() {
 
       <section className="max-w-5xl mx-auto px-4 pb-20">
         <div className="grid md:grid-cols-3 gap-6">
-          {plans.map(plan => (
+          {CONSUOBRA_PLANS.map(plan => (
             <div key={plan.name} className="relative rounded-2xl p-7 flex flex-col bg-white" style={{ border: plan.highlight ? "2px solid #1f3258" : "1.5px solid #e1e5ed" }}>
               {plan.tag && (
                 <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-[11px] font-bold uppercase tracking-wide px-3 py-1 rounded-full whitespace-nowrap text-white" style={{ background: "#1f3258" }}>{plan.tag}</span>

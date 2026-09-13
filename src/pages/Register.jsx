@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { Eye, EyeOff } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { redirectToGoogleAuth } from "@/lib/googleAuthRedirect";
+import { ACTIVE_PLAN_ID } from "@/lib/plans";
 
 const Logo = () => (
   <BrandLogo size="lg" className="justify-center mb-8" />
@@ -55,6 +56,10 @@ export default function Register() {
     try {
       const res = await base44.auth.verifyOtp({ email, otpCode: otp });
       base44.auth.setToken(res.access_token);
+      await base44.auth.updateMe({
+        plan_id: ACTIVE_PLAN_ID,
+        subscription_status: "free",
+      }).catch(() => {});
       window.location.href = "/onboarding";
     } catch {
       setError("Código inválido ou expirado. Verifique o e-mail ou solicite um novo código abaixo.");

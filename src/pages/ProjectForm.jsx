@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ChevronRight, ChevronLeft, CheckCircle2, Building2, HardHat, Layers, Settings2 } from "lucide-react";
 import PhaseEditor, { getTemplate } from "../components/project/PhaseEditor";
 import { cn } from "@/lib/utils";
+import { getPlanById, getUserPlanId } from "@/lib/plans";
 
 const PROJECT_TYPES = [
   { value: "Casa residencial", icon: Building2, desc: "Construção de residência unifamiliar", bg: "#eff2f8" },
@@ -51,6 +52,7 @@ export default function ProjectForm() {
   const [saving, setSaving] = useState(false);
   const [subs, setSubs] = useState([]);
   const [error, setError] = useState("");
+  const [planLimit, setPlanLimit] = useState(null);
 
   const [form, setForm] = useState({
     name: "", address: "", client: "", technical_responsible: "",
@@ -63,6 +65,19 @@ export default function ProjectForm() {
   useEffect(() => {
     base44.auth.me().then((me) => {
       base44.entities.Subcontractor.filter({ created_by_id: me.id }).then(setSubs);
+      if (!isEdit) {
+        const plan = getPlanById(getUserPlanId(me));
+        base44.entities.Project.filter({ created_by_id: me.id }).then((items) => {
+          const activeCount = items.filter((p) => p.status !== "Arquivada").length;
+          if (activeCount >= plan.limits.activeProjects) {
+            setPlanLimit({
+              activeCount,
+              planName: plan.name,
+              limit: plan.limits.activeProjects,
+            });
+          }
+        });
+      }
     });
     if (isEdit) {
       Promise.all([base44.entities.Project.get(id), base44.auth.me()]).then(([data, me]) => {
@@ -155,6 +170,19 @@ export default function ProjectForm() {
       </div>
 
       <div className="px-4 py-5 max-w-2xl mx-auto">
+        {planLimit && (
+          <div className="mb-4 rounded-2xl p-5" style={{ background: "#ffffff", border: "1.5px solid #d6ddea" }}>
+            <p className="text-sm font-black mb-1" style={{ color: "#172441" }}>Limite do plano atingido</p>
+            <p className="text-sm leading-relaxed" style={{ color: "#424c62" }}>
+              Seu plano {planLimit.planName} permite {planLimit.limit} obra ativa. Para cadastrar novas obras, arquive uma obra concluída ou escolha um plano com mais capacidade.
+            </p>
+            <div className="flex gap-2 mt-4">
+              <Button variant="outline" onClick={() => navigate("/projects")}>Voltar para obras</Button>
+              <Button onClick={() => navigate("/plans")}>Ver planos</Button>
+            </div>
+          </div>
+        )}
+
         {error && (
           <div className="mb-4 rounded-xl px-4 py-3 text-sm" style={{ background: "#fff1f2", color: "#9f1239", border: "1px solid #fecdd3" }}>
             {error}
@@ -162,7 +190,7 @@ export default function ProjectForm() {
         )}
 
         {/* STEP 1 — Tipo de Obra */}
-        {step === 1 && !isEdit && (
+        {step === 1 && !isEdit && !planLimit && (
           <div className="space-y-4">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: "#778096" }}>Nova obra</p>
@@ -194,7 +222,7 @@ export default function ProjectForm() {
         )}
 
         {/* STEP 2 — Dados básicos */}
-        {step === 2 && (
+        {step === 2 && !planLimit && (
           <div className="space-y-5">
             <div>
               <h2 className="text-2xl font-black" style={{ color: "#172441" }}>Dados da obra</h2>
@@ -297,7 +325,7 @@ export default function ProjectForm() {
         )}
 
         {/* STEP 3 — Fases */}
-        {step === 3 && (
+        {step === 3 && !planLimit && (
           <div className="space-y-5">
             <div>
               <h2 className="text-2xl font-black" style={{ color: "#172441" }}>Fases da obra</h2>
@@ -343,7 +371,7 @@ export default function ProjectForm() {
         )}
 
         {/* STEP 4 — Revisão */}
-        {step === 4 && (
+        {step === 4 && !planLimit && (
           <div className="space-y-5">
             <div>
               <h2 className="text-2xl font-black" style={{ color: "#172441" }}>Revisão final</h2>

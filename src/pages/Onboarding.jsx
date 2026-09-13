@@ -38,6 +38,18 @@ export default function Onboarding() {
   const set = (k, v) => setData(p => ({ ...p, [k]: v }));
 
   const next = async () => {
+    if (step === 1) {
+      setLoading(true);
+      await base44.auth.updateMe({
+        company_name: data.company_name,
+        company_type: data.company_type,
+        full_name: data.contact_name,
+        phone: data.phone,
+        plan_id: "free",
+        subscription_status: "free",
+      }).catch(() => {});
+      setLoading(false);
+    }
     if (step === 2 && data.project_name) {
       setLoading(true);
       await base44.entities.Project.create({

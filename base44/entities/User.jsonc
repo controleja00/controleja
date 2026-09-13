@@ -7,6 +7,66 @@
         "admin",
         "user"
       ]
+    },
+    "full_name": {
+      "type": "string",
+      "description": "User full name"
+    },
+    "phone": {
+      "type": "string",
+      "description": "User phone or WhatsApp"
+    },
+    "company_name": {
+      "type": "string",
+      "description": "Company or professional name"
+    },
+    "company_type": {
+      "type": "string",
+      "description": "Company type or professional profile"
+    },
+    "cnpj": {
+      "type": "string",
+      "description": "Brazilian company document when available"
+    },
+    "plan_id": {
+      "type": "string",
+      "description": "Current Consuobra plan",
+      "enum": [
+        "free",
+        "essential",
+        "professional"
+      ],
+      "default": "free"
+    },
+    "subscription_status": {
+      "type": "string",
+      "description": "Current billing status",
+      "enum": [
+        "free",
+        "trialing",
+        "active",
+        "past_due",
+        "canceled"
+      ],
+      "default": "free"
+    },
+    "trial_ends_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Trial expiration date for paid plans"
+    },
+    "billing_provider": {
+      "type": "string",
+      "description": "Payment processor used for this account",
+      "enum": [
+        "asaas",
+        "mercado_pago",
+        "stripe"
+      ]
+    },
+    "billing_customer_id": {
+      "type": "string",
+      "description": "Customer id in the payment provider"
     }
   },
   "required": [

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageHeader from "../components/PageHeader";
 import { User, Building2, Shield, CreditCard, LogOut, CheckCircle2 } from "lucide-react";
+import { ACTIVE_PLAN_ID, CONSUOBRA_PLANS, TRIAL_DAYS } from "@/lib/plans";
 
 export default function Settings() {
   const [user, setUser] = useState(null);
@@ -87,8 +88,8 @@ export default function Settings() {
                   <span className="bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">Período de teste</span>
                 </div>
                 <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-4">
-                  <p className="font-bold text-primary">Professional — 14 dias grátis</p>
-                  <p className="text-sm text-muted-foreground mt-1">Acesso completo a todas as funcionalidades. Renova em R$ 997/mês após o período de teste.</p>
+                  <p className="font-bold text-primary">Gratuito — 1 obra ativa</p>
+                  <p className="text-sm text-muted-foreground mt-1">Comece sem cartão. Os planos pagos têm {TRIAL_DAYS} dias de teste grátis antes da cobrança.</p>
                 </div>
                 <div className="flex gap-3">
                   <Button variant="outline" size="sm">Alterar plano</Button>
@@ -98,15 +99,11 @@ export default function Settings() {
               <div className="bg-card border border-border rounded-xl p-6">
                 <h2 className="font-semibold mb-4">Comparar planos</h2>
                 <div className="grid sm:grid-cols-3 gap-4 text-sm">
-                  {[
-                    { name: "Starter", price: "R$ 497/mês", items: ["3 obras", "20 empreiteiros", "Básico"] },
-                    { name: "Professional", price: "R$ 997/mês", items: ["15 obras", "150 empreiteiros", "IA avançada"], active: true },
-                    { name: "Enterprise", price: "Consultar", items: ["Ilimitado", "Ilimitado", "Multiempresa"] },
-                  ].map(p => (
-                    <div key={p.name} className={`rounded-xl p-4 border ${p.active ? "border-primary bg-primary/5" : "border-border"}`}>
+                  {CONSUOBRA_PLANS.map(p => (
+                    <div key={p.id} className={`rounded-xl p-4 border ${p.id === ACTIVE_PLAN_ID ? "border-primary bg-primary/5" : "border-border"}`}>
                       <p className="font-bold text-sm mb-0.5">{p.name}</p>
-                      <p className="text-xs text-muted-foreground mb-3">{p.price}</p>
-                      {p.items.map(i => <p key={i} className="text-xs flex items-center gap-1.5 mb-1"><CheckCircle2 className="h-3 w-3 text-emerald-500" />{i}</p>)}
+                      <p className="text-xs text-muted-foreground mb-3">{p.price}{p.period}</p>
+                      {p.features.slice(0, 4).map(i => <p key={i} className="text-xs flex items-center gap-1.5 mb-1"><CheckCircle2 className="h-3 w-3 text-emerald-500" />{i}</p>)}
                     </div>
                   ))}
                 </div>
