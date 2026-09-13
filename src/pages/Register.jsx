@@ -4,13 +4,15 @@ import { base44 } from "@/api/base44Client";
 import { Eye, EyeOff } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { redirectToGoogleAuth } from "@/lib/googleAuthRedirect";
-import { ACTIVE_PLAN_ID } from "@/lib/plans";
+import { ACTIVE_PLAN_ID, getPlanById, getTrialEndDate, isPaidPlan } from "@/lib/plans";
 
 const Logo = () => (
   <BrandLogo size="lg" className="justify-center mb-8" />
 );
 
 export default function Register() {
+  const selectedPlanId = new URLSearchParams(window.location.search).get("plan") || ACTIVE_PLAN_ID;
+  const selectedPlan = getPlanById(selectedPlanId);
   const [step, setStep] = useState("form");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,8 +59,9 @@ export default function Register() {
       const res = await base44.auth.verifyOtp({ email, otpCode: otp });
       base44.auth.setToken(res.access_token);
       await base44.auth.updateMe({
-        plan_id: ACTIVE_PLAN_ID,
-        subscription_status: "free",
+        plan_id: selectedPlan.id,
+        subscription_status: isPaidPlan(selectedPlan.id) ? "trialing" : "free",
+        trial_ends_at: isPaidPlan(selectedPlan.id) ? getTrialEndDate() : null,
       }).catch(() => {});
       window.location.href = "/onboarding";
     } catch {
@@ -89,7 +92,11 @@ export default function Register() {
           {step === "form" ? (
             <>
               <h1 className="text-2xl font-black mb-1" style={{ color: "#172441" }}>Crie sua conta</h1>
-              <p className="text-sm mb-6" style={{ color: "#424c62" }}>Grátis para começar, sem cartão de crédito</p>
+              <p className="text-sm mb-6" style={{ color: "#424c62" }}>
+                {isPaidPlan(selectedPlan.id)
+                  ? `${selectedPlan.name}: ${selectedPlan.price}/mês após 7 dias grátis`
+                  : "Grátis para começar, sem cartão de crédito"}
+              </p>
 
               {error && <div className="text-sm rounded-xl px-4 py-3 mb-4" style={{ background: "#FEF2F2", border: "1px solid #FECACA", color: "#DC2626" }}>{error}</div>}
 

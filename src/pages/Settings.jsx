@@ -92,8 +92,8 @@ export default function Settings() {
                   <p className="text-sm text-muted-foreground mt-1">Comece sem cartão. Os planos pagos têm {TRIAL_DAYS} dias de teste grátis antes da cobrança.</p>
                 </div>
                 <div className="flex gap-3">
-                  <Button variant="outline" size="sm">Alterar plano</Button>
-                  <Button variant="ghost" size="sm" className="text-muted-foreground">Cancelar assinatura</Button>
+                  <Button variant="outline" size="sm" onClick={() => { window.location.href = "/plans"; }}>Alterar plano</Button>
+                  <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={() => { window.location.href = "/support"; }}>Cancelar assinatura</Button>
                 </div>
               </div>
               <div className="bg-card border border-border rounded-xl p-6">

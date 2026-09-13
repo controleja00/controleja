@@ -1,5 +1,7 @@
 export const TRIAL_DAYS = 7;
 
+export const BILLING_PROVIDER = "asaas";
+
 export const CONSUOBRA_PLANS = [
   {
     id: "free",
@@ -15,7 +17,7 @@ export const CONSUOBRA_PLANS = [
       "Acesso pelo celular",
     ],
     cta: "Criar conta grátis",
-    ctaTo: "/register",
+    ctaTo: "/register?plan=free",
     highlight: false,
     limits: {
       activeProjects: 1,
@@ -40,7 +42,7 @@ export const CONSUOBRA_PLANS = [
       "Suporte por e-mail",
     ],
     cta: "Começar teste grátis",
-    ctaTo: "/register",
+    ctaTo: "/register?plan=essential",
     highlight: false,
     limits: {
       activeProjects: 3,
@@ -66,7 +68,7 @@ export const CONSUOBRA_PLANS = [
       "Suporte prioritário por WhatsApp",
     ],
     cta: "Testar por 7 dias",
-    ctaTo: "/register",
+    ctaTo: "/register?plan=professional",
     highlight: true,
     tag: "Mais vantajoso",
     limits: {
@@ -85,3 +87,19 @@ export const getPlanById = (planId = ACTIVE_PLAN_ID) => (
 );
 
 export const getUserPlanId = (user) => user?.plan_id || ACTIVE_PLAN_ID;
+
+export const getTrialEndDate = () => {
+  const date = new Date();
+  date.setDate(date.getDate() + TRIAL_DAYS);
+  return date.toISOString();
+};
+
+export const isPaidPlan = (planId) => planId === "essential" || planId === "professional";
+
+export const getCheckoutUrl = (planId) => {
+  const urls = {
+    essential: import.meta.env.VITE_ASAAS_ESSENTIAL_CHECKOUT_URL,
+    professional: import.meta.env.VITE_ASAAS_PROFESSIONAL_CHECKOUT_URL,
+  };
+  return urls[planId] || "";
+};

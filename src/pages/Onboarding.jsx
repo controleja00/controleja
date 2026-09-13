@@ -40,13 +40,14 @@ export default function Onboarding() {
   const next = async () => {
     if (step === 1) {
       setLoading(true);
+      const me = await base44.auth.me().catch(() => null);
       await base44.auth.updateMe({
         company_name: data.company_name,
         company_type: data.company_type,
         full_name: data.contact_name,
         phone: data.phone,
-        plan_id: "free",
-        subscription_status: "free",
+        plan_id: me?.plan_id || "free",
+        subscription_status: me?.subscription_status || "free",
       }).catch(() => {});
       setLoading(false);
     }
