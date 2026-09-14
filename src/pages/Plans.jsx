@@ -2,11 +2,34 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
-import { CONSUOBRA_PLANS, TRIAL_DAYS } from "@/lib/plans";
+import { CONSUOBRA_PLANS, TRIAL_DAYS, getCheckoutUrl, isPaidPlan } from "@/lib/plans";
 
 const NavLogo = () => (
   <BrandLogo size="md" />
 );
+
+const PlanButton = ({ plan }) => {
+  const checkoutUrl = getCheckoutUrl(plan.id);
+  const paid = isPaidPlan(plan.id);
+  const baseClass = "w-full flex items-center justify-center gap-2 py-3 px-5 rounded-xl font-bold text-sm transition-colors";
+  const style = plan.highlight
+    ? { background: "#1f3258", color: "#FFFFFF" }
+    : { border: "2px solid #e1e5ed", color: "#1f3258", background: "#FFFFFF" };
+
+  if (paid && checkoutUrl) {
+    return (
+      <a href={checkoutUrl} target="_blank" rel="noreferrer" className={baseClass} style={style}>
+        Assinar com segurança <ArrowRight className="h-4 w-4" />
+      </a>
+    );
+  }
+
+  return (
+    <Link to={plan.ctaTo} className={baseClass} style={style}>
+      {plan.cta} <ArrowRight className="h-4 w-4" />
+    </Link>
+  );
+};
 
 export default function Plans() {
   useEffect(() => { document.title = "Planos | Consuobra"; }, []);
@@ -54,9 +77,12 @@ export default function Plans() {
                   </li>
                 ))}
               </ul>
-              <Link to={plan.ctaTo} className="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-xl font-bold text-sm transition-colors" style={plan.highlight ? { background: "#1f3258", color: "#FFFFFF" } : { border: "2px solid #e1e5ed", color: "#1f3258", background: "#FFFFFF" }}>
-                {plan.cta} <ArrowRight className="h-4 w-4" />
-              </Link>
+              <PlanButton plan={plan} />
+              {isPaidPlan(plan.id) && !getCheckoutUrl(plan.id) && (
+                <p className="mt-3 text-xs leading-relaxed" style={{ color: "#778096" }}>
+                  Checkout em ativação. Crie sua conta agora e habilitaremos a assinatura assim que o pagamento estiver liberado.
+                </p>
+              )}
             </div>
           ))}
         </div>
@@ -64,7 +90,7 @@ export default function Plans() {
         <div className="max-w-2xl mx-auto mt-16 space-y-3">
           <h2 className="text-2xl font-black text-center mb-8" style={{ color: "#172441" }}>Perguntas frequentes</h2>
           {[
-            { q: "Preciso de cartão de crédito para criar conta?", a: "Não. O plano Inicial é gratuito e não exige cartão de crédito para começar." },
+            { q: "Preciso de cartão de crédito para criar conta?", a: "Não. O plano Gratuito não exige cartão de crédito para começar." },
             { q: "Posso trocar de plano depois?", a: "Sim. Você pode fazer upgrade ou downgrade a qualquer momento pelas configurações da conta." },
             { q: "Meus dados ficam seguros?", a: "Sim. Usamos criptografia TLS/SSL, backups automáticos e estamos em conformidade com a LGPD." },
           ].map(faq => (

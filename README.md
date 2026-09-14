@@ -74,3 +74,15 @@ O dominio `consuobra.com.br` usa Zoho Mail para e-mails corporativos.
 - Alias financeiro: `financeiro@consuobra.com.br`
 
 No DNS da Vercel devem ficar ativos os registros MX do Zoho, SPF, DKIM e DMARC. O DMARC pode iniciar com `p=none` para monitoramento e ser endurecido depois que os envios estiverem estáveis.
+
+## Pagamentos
+
+O gateway escolhido para a primeira versao comercial e o Asaas.
+
+- Plano Essencial: R$ 19,90/mês
+- Plano Profissional: R$ 69,90/mês
+- Teste grátis: 7 dias
+
+Enquanto a conta Asaas estiver pendente de verificacao documental, mantenha as variaveis `VITE_ASAAS_ESSENTIAL_CHECKOUT_URL` e `VITE_ASAAS_PROFESSIONAL_CHECKOUT_URL` vazias. Assim, os planos pagos continuam levando o usuario ao cadastro e mostram que o checkout esta em ativacao.
+
+Depois que a conta Asaas for aprovada, crie os links de assinatura recorrente no Asaas e cadastre as URLs na Vercel nas variaveis acima. O botao dos planos pagos passara automaticamente a abrir o checkout externo.
