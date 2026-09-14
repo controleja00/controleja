@@ -28,6 +28,7 @@ export default function ProjectDashboard() {
   const [newMeasurementOpen, setNewMeasurementOpen] = useState(false);
   const [progressOpen, setProgressOpen] = useState(false);
   const [revenueOpen, setRevenueOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("visao-geral");
 
   const handleProjectUpdated = (updatedProject) => {
     setData(prev => ({ ...prev, project: updatedProject }));
@@ -125,7 +126,7 @@ export default function ProjectDashboard() {
       )}
 
       <div className="px-4 pb-6">
-        <Tabs defaultValue="visao-geral">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="flex flex-wrap h-auto gap-1 mb-4 bg-muted/50 p-1 text-xs">
             <TabsTrigger value="visao-geral" className="text-xs">Visão Geral</TabsTrigger>
             <TabsTrigger value="lucro" className="text-xs">Lucro</TabsTrigger>
@@ -139,7 +140,14 @@ export default function ProjectDashboard() {
           </TabsList>
 
           <TabsContent value="visao-geral" className="mt-0">
-            <ProjOverview project={data.project} measurements={data.measurements} onProjectUpdated={handleProjectUpdated} />
+            <ProjOverview
+              project={data.project}
+              measurements={data.measurements}
+              documents={data.documents}
+              onProjectUpdated={handleProjectUpdated}
+              onOpenMeasurement={() => setNewMeasurementOpen(true)}
+              onOpenTab={setActiveTab}
+            />
           </TabsContent>
 
           <TabsContent value="lucro" className="mt-0">

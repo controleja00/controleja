@@ -1,5 +1,21 @@
 import { useState } from "react";
-import { TrendingUp, TrendingDown, DollarSign, AlertTriangle, Clock, Target, Pencil, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  AlertTriangle,
+  Clock,
+  Target,
+  Pencil,
+  Settings,
+  CheckCircle2,
+  Circle,
+  FileText,
+  Image,
+  ListChecks,
+  Plus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import EditRevenueModal from "./EditRevenueModal";
 import EditProgressModal from "./EditProgressModal";
@@ -57,7 +73,148 @@ function MetricPill({ label, value, color, icon: IconComp, empty, onEdit }) {
   );
 }
 
-export default function ProjOverview({ project: initialProject, measurements, onProjectUpdated }) {
+function ProjectStartChecklist({ project, measurements, documents, onEditRevenue, onEditData, onEditProgress, onOpenMeasurement, onOpenTab }) {
+  const approvedMeasurements = measurements.filter(m => m.status === "Aprovada");
+  const photosCount = [
+    ...(project.photos || []),
+    ...measurements.flatMap(m => m.photos || []),
+  ].length;
+
+  const items = [
+    {
+      id: "revenue",
+      title: "Definir receita contratada",
+      desc: "Informe quanto o cliente contratou para a obra.",
+      done: Number(project.contracted_value) > 0,
+      action: "Definir",
+      onClick: onEditRevenue,
+      icon: DollarSign,
+    },
+    {
+      id: "budget",
+      title: "Definir custo previsto",
+      desc: "Coloque o orçamento para acompanhar margem e risco.",
+      done: Number(project.budget) > 0,
+      action: "Editar dados",
+      onClick: onEditData,
+      icon: Target,
+    },
+    {
+      id: "phases",
+      title: "Configurar fases da obra",
+      desc: "Crie o mapa de etapas para medir avanço físico.",
+      done: (project.phases || []).length > 0,
+      action: "Configurar",
+      to: `/projects/${project.id}`,
+      icon: ListChecks,
+    },
+    {
+      id: "progress",
+      title: "Atualizar progresso inicial",
+      desc: "Mesmo manualmente, registre em que ponto a obra está.",
+      done: Number(project.progress_percent) > 0 || approvedMeasurements.length > 0,
+      action: "Atualizar",
+      onClick: onEditProgress,
+      icon: TrendingUp,
+    },
+    {
+      id: "measurement",
+      title: "Registrar primeira medição ou gasto",
+      desc: "Lance o primeiro movimento para iniciar o histórico.",
+      done: measurements.length > 0,
+      action: "Adicionar",
+      onClick: onOpenMeasurement,
+      icon: Plus,
+    },
+    {
+      id: "documents",
+      title: "Enviar primeiro documento",
+      desc: "Guarde contrato, nota, recibo ou arquivo importante.",
+      done: documents.length > 0,
+      action: "Ver docs",
+      onClick: () => onOpenTab?.("documentos"),
+      icon: FileText,
+    },
+    {
+      id: "photos",
+      title: "Adicionar fotos do dia",
+      desc: "Use fotos para comprovar evolução e gerar relatórios.",
+      done: photosCount > 0,
+      action: "Portal",
+      onClick: () => onOpenTab?.("portal"),
+      icon: Image,
+    },
+  ];
+
+  const doneCount = items.filter(item => item.done).length;
+  const percent = Math.round((doneCount / items.length) * 100);
+
+  return (
+    <div className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="p-4 border-b border-border">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-bold text-primary uppercase tracking-wide">Primeiros passos da obra</p>
+            <h3 className="text-lg font-black mt-1">Deixe esta Central pronta para uso real</h3>
+            <p className="text-xs text-muted-foreground mt-1">Complete o básico para transformar esta obra em uma rotina de controle.</p>
+          </div>
+          <div className="shrink-0 text-left sm:text-right">
+            <p className="text-2xl font-black text-primary">{percent}%</p>
+            <p className="text-xs text-muted-foreground">{doneCount} de {items.length} concluídos</p>
+          </div>
+        </div>
+        <div className="h-2.5 rounded-full bg-muted overflow-hidden mt-4">
+          <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${percent}%` }} />
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2">
+        {items.map((item) => {
+          const Icon = item.icon;
+          const content = (
+            <>
+              <div className={`h-9 w-9 rounded-xl flex items-center justify-center shrink-0 ${item.done ? "bg-emerald-50" : "bg-primary/10"}`}>
+                {item.done ? <CheckCircle2 className="h-4 w-4 text-emerald-600" /> : <Icon className="h-4 w-4 text-primary" />}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-start gap-2">
+                  <p className={`text-sm font-bold leading-tight ${item.done ? "text-muted-foreground line-through" : "text-foreground"}`}>{item.title}</p>
+                  {!item.done && <Circle className="h-3 w-3 text-primary mt-0.5 shrink-0" />}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{item.desc}</p>
+              </div>
+              {!item.done && (
+                <span className="text-xs font-bold text-primary shrink-0 mt-0.5">{item.action}</span>
+              )}
+            </>
+          );
+
+          if (item.to && !item.done) {
+            return (
+              <Link key={item.id} to={item.to} className="flex gap-3 p-4 border-b border-border md:odd:border-r hover:bg-muted/30 transition-colors">
+                {content}
+              </Link>
+            );
+          }
+
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={!item.done ? item.onClick : undefined}
+              disabled={item.done}
+              className="flex gap-3 p-4 text-left border-b border-border md:odd:border-r hover:bg-muted/30 disabled:hover:bg-transparent transition-colors"
+            >
+              {content}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export default function ProjOverview({ project: initialProject, measurements, documents = [], onProjectUpdated, onOpenMeasurement, onOpenTab }) {
   const [project, setProject] = useState(initialProject);
   const [showRevenue, setShowRevenue] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
@@ -119,6 +276,17 @@ export default function ProjOverview({ project: initialProject, measurements, on
           ))}
         </div>
       )}
+
+      <ProjectStartChecklist
+        project={project}
+        measurements={measurements}
+        documents={documents}
+        onEditRevenue={() => setShowRevenue(true)}
+        onEditData={() => setShowData(true)}
+        onEditProgress={() => setShowProgress(true)}
+        onOpenMeasurement={onOpenMeasurement}
+        onOpenTab={onOpenTab}
+      />
 
       {/* Main metrics grid */}
       <div className="grid grid-cols-2 gap-3">
