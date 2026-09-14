@@ -125,7 +125,7 @@ function ReportCard({ report, onUpdate, onDelete }) {
                 <Edit2 className="h-3 w-3" />Editar
               </Button>
             )}
-            {report.status !== "Publicado" ? (
+            {!isVisible ? (
               <Button size="sm" onClick={() => save({ status: "Publicado", visible_to_client: true })} disabled={saving} className="h-8 text-xs gap-1 bg-emerald-600 hover:bg-emerald-700">
                 <Eye className="h-3 w-3" />Publicar
               </Button>
