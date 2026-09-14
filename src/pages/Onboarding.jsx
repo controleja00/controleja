@@ -24,21 +24,35 @@ const OBJECTIVES = [
   { key: "reports", icon: Camera, label: "Gerar relatórios", bg: "#9aabcd" },
 ];
 
+const parseMoney = (value) => {
+  if (!value) return null;
+  const normalized = String(value).replace(/\./g, "").replace(",", ".");
+  const number = Number(normalized);
+  return Number.isFinite(number) ? number : null;
+};
+
 export default function Onboarding() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [createdProjectId, setCreatedProjectId] = useState("");
+  const [error, setError] = useState("");
   const [data, setData] = useState({
     company_name: "", company_type: "", contact_name: "", phone: "",
     project_name: "", project_address: "", project_client: "",
-    project_start: "", project_end: "", project_budget: "",
+    project_start: "", project_end: "", project_contracted_value: "", project_budget: "",
     objective: "",
   });
 
   const set = (k, v) => setData(p => ({ ...p, [k]: v }));
 
   const next = async () => {
+    setError("");
     if (step === 1) {
+      if (!data.company_name.trim()) {
+        setError("Informe o nome da empresa ou o nome profissional para continuar.");
+        return;
+      }
       setLoading(true);
       const me = await base44.auth.me().catch(() => null);
       await base44.auth.updateMe({
@@ -51,24 +65,32 @@ export default function Onboarding() {
       }).catch(() => {});
       setLoading(false);
     }
-    if (step === 2 && data.project_name) {
+    if (step === 2 && data.project_name && !createdProjectId) {
       setLoading(true);
-      await base44.entities.Project.create({
+      const created = await base44.entities.Project.create({
         name: data.project_name,
         address: data.project_address || "A definir",
         client: data.project_client || data.company_name || "Próprio",
         start_date: data.project_start || null,
         expected_end_date: data.project_end || null,
-        budget: data.project_budget ? parseFloat(data.project_budget) : null,
+        contracted_value: parseMoney(data.project_contracted_value),
+        budget: parseMoney(data.project_budget),
         status: "Planejamento",
+        progress_method: "Manual",
         progress_percent: 0,
-      });
+      }).catch(() => null);
+      if (created?.id) setCreatedProjectId(created.id);
+      setLoading(false);
+    }
+    if (step === 3 && data.objective) {
+      setLoading(true);
+      await base44.auth.updateMe({ onboarding_goal: data.objective }).catch(() => {});
       setLoading(false);
     }
     if (step < STEPS.length) setStep(s => s + 1);
   };
 
-  const finish = () => navigate("/dashboard");
+  const finish = () => navigate(createdProjectId ? `/projects/${createdProjectId}/central` : "/projects/new");
   const progress = ((step - 1) / (STEPS.length - 1)) * 100;
 
   return (
@@ -90,16 +112,17 @@ export default function Onboarding() {
           <p className="text-[11px] font-bold uppercase tracking-widest mb-1" style={{ color: "#778096" }}>Primeiros passos</p>
           <h2 className="text-2xl font-black mb-1" style={{ color: "#172441" }}>{STEPS[step - 1].title}</h2>
           <p className="text-sm mb-6" style={{ color: "#424c62" }}>{STEPS[step - 1].sub}</p>
+          {error && <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>}
 
           {/* Step 1: Empresa */}
           {step === 1 && (
             <div className="space-y-4">
               <div>
-                <Label className="text-sm font-semibold text-gray-700">Nome da empresa *</Label>
+                <Label className="text-sm font-semibold text-gray-700">Empresa ou nome profissional *</Label>
                 <Input
                   value={data.company_name}
                   onChange={e => set("company_name", e.target.value)}
-                  placeholder="Construtora Exemplo Ltda."
+                  placeholder="Ex: Ryan Construções"
                   className="mt-1.5"
                 />
               </div>
@@ -181,13 +204,23 @@ export default function Onboarding() {
                 </div>
               </div>
               <div>
-                <Label className="text-sm font-semibold text-gray-700">Orçamento previsto (R$)</Label>
+                <Label className="text-sm font-semibold text-gray-700">Receita contratada (R$)</Label>
                 <Input
-                  type="number"
+                  value={data.project_contracted_value}
+                  onChange={e => set("project_contracted_value", e.target.value)}
+                  placeholder="Ex: 420.000,00"
+                  className="mt-1.5"
+                  inputMode="decimal"
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-semibold text-gray-700">Custo previsto da obra (R$)</Label>
+                <Input
                   value={data.project_budget}
                   onChange={e => set("project_budget", e.target.value)}
-                  placeholder="Ex: 250000"
+                  placeholder="Ex: 300.000,00"
                   className="mt-1.5"
+                  inputMode="decimal"
                 />
               </div>
             </div>
@@ -222,13 +255,17 @@ export default function Onboarding() {
                 <CheckCircle2 className="h-8 w-8" style={{ color: "#1f3258" }} />
               </div>
               <p className="text-lg font-black mb-2" style={{ color: "#172441" }}>Sua conta está pronta!</p>
-              <p className="text-sm mb-6" style={{ color: "#424c62" }}>Bem-vindo ao Consuobra. Comece cadastrando ou acompanhando suas obras.</p>
+              <p className="text-sm mb-6" style={{ color: "#424c62" }}>
+                {createdProjectId
+                  ? "Sua primeira obra já está criada. Agora complete etapas, gastos, documentos e fotos."
+                  : "Agora vamos cadastrar sua primeira obra e começar o controle."}
+              </p>
 
               <div className="rounded-xl p-4 text-left" style={{ background: "#eff2f8" }}>
                 <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: "#778096" }}>Próximos passos</p>
                 <ul className="space-y-2.5">
                   {[
-                    "Cadastrar uma obra",
+                    createdProjectId ? "Abrir a Central da Obra" : "Cadastrar uma obra",
                     "Adicionar etapas da obra",
                     "Registrar gastos",
                     "Enviar documentos",
@@ -259,12 +296,12 @@ export default function Onboarding() {
             )}
             {step === 4 && (
               <Button onClick={finish} className="w-full gap-2">
-                Ir para o Dashboard <ChevronRight className="h-4 w-4" />
+                {createdProjectId ? "Abrir Central da Obra" : "Cadastrar primeira obra"} <ChevronRight className="h-4 w-4" />
               </Button>
             )}
           </div>
 
-          {step < 4 && (
+          {step > 1 && step < 4 && (
             <button onClick={next} className="w-full text-xs text-gray-400 mt-3 hover:text-gray-600 transition-colors py-1">
               Pular esta etapa
             </button>

@@ -67,6 +67,10 @@
     "billing_customer_id": {
       "type": "string",
       "description": "Customer id in the payment provider"
+    },
+    "onboarding_goal": {
+      "type": "string",
+      "description": "Primary goal selected during onboarding"
     }
   },
   "required": [
