@@ -42,7 +42,7 @@ export default function ForgotPassword() {
                 <div>
                   <label className="block text-sm font-semibold mb-1.5" style={{ color: "#172441" }}>E-mail</label>
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="seu@email.com" autoComplete="email" required
-                    className="w-full h-10 rounded-xl px-3 text-sm outline-none" style={{ border: "1.5px solid #e1e5ed", background: "#f6f8fc", color: "#172441" }} />
+                    className="cj-native-input text-sm" />
                 </div>
                 <button type="submit" disabled={loading || !email} className="w-full h-11 rounded-lg font-bold text-base text-white disabled:opacity-60" style={{ background: "#1f3258" }}>
                   {loading ? "Enviando..." : "Enviar link de redefinição"}

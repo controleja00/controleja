@@ -34,7 +34,8 @@ export default function SubcontractorForm() {
   return (
     <div>
       <PageHeader title={isEdit ? "Editar Subempreiteiro" : "Novo Subempreiteiro"} />
-      <div className="p-6 max-w-2xl space-y-5">
+      <div className="mx-auto max-w-3xl space-y-5 p-4 sm:p-6">
+        <section className="cj-form-panel space-y-5 p-5 sm:p-6">
         <div className="grid sm:grid-cols-2 gap-4">
           <div><Label>Nome da Empresa *</Label><Input value={form.company_name} onChange={e => set("company_name", e.target.value)} /></div>
           <div><Label>CNPJ *</Label><Input value={form.cnpj} onChange={e => set("cnpj", e.target.value)} /></div>
@@ -59,6 +60,7 @@ export default function SubcontractorForm() {
           </Button>
           <Button variant="outline" onClick={() => navigate("/subcontractors")}>Cancelar</Button>
         </div>
+        </section>
       </div>
     </div>
   );

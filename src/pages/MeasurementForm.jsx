@@ -135,19 +135,20 @@ export default function MeasurementForm() {
         title={isEdit ? "Editar Medição" : "Nova Medição"}
         subtitle={selectedProject ? `Obra: ${selectedProject.name}` : undefined}
       />
-      <div className="p-6 max-w-2xl space-y-5">
+      <div className="mx-auto max-w-3xl space-y-5 p-4 sm:p-6">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg">
+          <div className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
             {error}
           </div>
         )}
 
+        <section className="cj-form-panel space-y-5 p-5 sm:p-6">
         <div className="grid sm:grid-cols-2 gap-4">
           {/* Obra — locked if pre-filled from project */}
           <div className="sm:col-span-2">
             <Label>Obra *</Label>
             {prefilledProjectId ? (
-              <div className="mt-1 px-3 py-2 bg-muted rounded-lg text-sm font-medium border border-border">
+              <div className="cj-readonly-field">
                 {selectedProject?.name || prefilledProjectId}
               </div>
             ) : (
@@ -204,7 +205,7 @@ export default function MeasurementForm() {
 
           <div>
             <Label>Valor Total (automático)</Label>
-            <div className="mt-1 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 font-bold text-sm">
+            <div className="cj-readonly-field cj-readonly-field--success">
               R$ {totalValue.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
             </div>
           </div>
@@ -232,6 +233,7 @@ export default function MeasurementForm() {
           </Button>
           <Button variant="outline" onClick={handleCancel}>Cancelar</Button>
         </div>
+        </section>
       </div>
     </div>
   );

@@ -27,8 +27,6 @@ export default function ResetPassword() {
     finally { setLoading(false); }
   };
 
-  const inputStyle = { border: "1.5px solid #e1e5ed", background: "#f6f8fc", color: "#172441" };
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8" style={{ background: "#f6f8fc" }}>
       <div className="w-full max-w-sm">
@@ -60,7 +58,7 @@ export default function ResetPassword() {
                   <label className="block text-sm font-semibold mb-1.5" style={{ color: "#172441" }}>Nova senha</label>
                   <div className="relative">
                     <input type={showPass ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mínimo 8 caracteres"
-                      className="w-full h-10 rounded-xl px-3 pr-10 text-sm outline-none" style={inputStyle} />
+                      className="cj-native-input pr-10 text-sm" />
                     <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "#778096" }}>
                       {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -69,7 +67,7 @@ export default function ResetPassword() {
                 <div>
                   <label className="block text-sm font-semibold mb-1.5" style={{ color: "#172441" }}>Confirmar nova senha</label>
                   <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Repita a nova senha"
-                    className="w-full h-10 rounded-xl px-3 text-sm outline-none" style={inputStyle} />
+                    className="cj-native-input text-sm" />
                 </div>
                 <button type="submit" disabled={loading || !password || !confirm || !resetToken} className="w-full h-11 rounded-lg font-bold text-base text-white disabled:opacity-60" style={{ background: "#1f3258" }}>
                   {loading ? "Salvando..." : "Redefinir senha"}

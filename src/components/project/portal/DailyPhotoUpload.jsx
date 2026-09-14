@@ -127,7 +127,8 @@ Regras obrigatórias:
   );
 
   const phases = project.phases?.map(p => p.name).filter(Boolean) || [];
-  const inputCls = "w-full rounded-xl px-3 py-2 text-sm outline-none border border-gray-200 bg-gray-50 focus:border-primary transition-colors";
+  const inputCls = "cj-native-input text-sm";
+  const selectCls = "cj-native-select text-sm";
 
   return (
     <div className="space-y-5">
@@ -140,7 +141,7 @@ Regras obrigatórias:
         <div>
           <label className="text-xs font-semibold text-gray-600 mb-1 block">Etapa</label>
           {phases.length > 0 ? (
-            <select value={form.phase} onChange={e => set("phase", e.target.value)} className={inputCls}>
+            <select value={form.phase} onChange={e => set("phase", e.target.value)} className={selectCls}>
               <option value="">Selecione</option>
               {phases.map(ph => <option key={ph} value={ph}>{ph}</option>)}
             </select>
@@ -153,7 +154,7 @@ Regras obrigatórias:
       {/* Photo Upload */}
       <div>
         <label className="text-xs font-semibold text-gray-600 mb-2 block">Fotos do dia</label>
-        <label className="flex flex-col items-center justify-center gap-2 h-28 border-2 border-dashed border-border rounded-2xl cursor-pointer hover:bg-secondary transition-colors bg-white">
+        <label className="cj-upload-zone flex h-28 cursor-pointer flex-col items-center justify-center gap-2">
           {uploading ? <Loader2 className="h-6 w-6 text-[#8096bc] animate-spin" /> : <Camera className="h-7 w-7 text-[#8096bc]" />}
           <span className="text-sm text-gray-400">{uploading ? "Enviando..." : "Toque para adicionar fotos"}</span>
           <input type="file" accept="image/*" multiple className="hidden" onChange={e => handleFiles(e.target.files)} disabled={uploading} />
@@ -176,7 +177,7 @@ Regras obrigatórias:
       {/* Observation */}
       <div>
         <label className="text-xs font-semibold text-gray-600 mb-1 block">Observação do responsável</label>
-        <textarea value={form.observation} onChange={e => set("observation", e.target.value)} rows={3} placeholder="Descreva o que foi feito hoje na obra..." className={inputCls + " resize-none"} />
+        <textarea value={form.observation} onChange={e => set("observation", e.target.value)} rows={3} placeholder="Descreva o que foi feito hoje na obra..." className="cj-native-textarea text-sm" />
       </div>
 
       {/* Visibility */}
@@ -210,7 +211,7 @@ Regras obrigatórias:
             <Sparkles className="h-4 w-4 text-violet-600" />
             <p className="text-sm font-bold text-violet-700">Relatório gerado pela IA</p>
           </div>
-          <textarea value={aiReport} onChange={e => setAiReport(e.target.value)} rows={8} className="w-full text-xs text-gray-700 bg-transparent outline-none resize-none leading-relaxed" />
+          <textarea value={aiReport} onChange={e => setAiReport(e.target.value)} rows={8} className="cj-native-textarea min-h-[180px] text-xs leading-relaxed" />
         </div>
       )}
 

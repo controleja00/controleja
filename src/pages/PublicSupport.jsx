@@ -41,8 +41,7 @@ export default function PublicSupport() {
     finally { setSending(false); }
   };
 
-  const inputStyle = { border: "1.5px solid #e1e5ed", background: "#f6f8fc", color: "#172441" };
-  const inputClass = "w-full h-10 rounded-xl px-3 text-sm outline-none transition-all mt-1.5";
+  const inputClass = "cj-native-input mt-1.5 text-sm";
 
   return (
     <div className="min-h-screen font-sans" style={{ background: "#f6f8fc" }}>
@@ -104,22 +103,22 @@ export default function PublicSupport() {
                 {error && <div className="text-sm rounded-xl px-4 py-3" style={{ background: "#FEF2F2", border: "1px solid #FECACA", color: "#DC2626" }}>{error}</div>}
                 <div>
                   <label className="text-sm font-semibold" style={{ color: "#172441" }}>Seu nome</label>
-                  <input value={form.name} onChange={e => set("name", e.target.value)} placeholder="João Silva" className={inputClass} style={inputStyle} />
+                  <input value={form.name} onChange={e => set("name", e.target.value)} placeholder="João Silva" className={inputClass} />
                 </div>
                 <div>
                   <label className="text-sm font-semibold" style={{ color: "#172441" }}>Seu e-mail *</label>
-                  <input type="email" value={form.email} onChange={e => set("email", e.target.value)} placeholder="seu@email.com" className={inputClass} style={inputStyle} />
+                  <input type="email" value={form.email} onChange={e => set("email", e.target.value)} placeholder="seu@email.com" className={inputClass} />
                 </div>
                 <div>
                   <label className="text-sm font-semibold block mb-1.5" style={{ color: "#172441" }}>Categoria</label>
-                  <select value={form.category} onChange={e => set("category", e.target.value)} className="w-full h-10 rounded-xl px-3 text-sm outline-none" style={inputStyle}>
+                  <select value={form.category} onChange={e => set("category", e.target.value)} className="cj-native-select text-sm">
                     <option value="">Selecione</option>
                     {["Dúvida geral", "Problema técnico", "Conta e acesso", "Planos e preços", "Sugestão", "Outro"].map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="text-sm font-semibold" style={{ color: "#172441" }}>Mensagem *</label>
-                  <textarea value={form.message} onChange={e => set("message", e.target.value)} placeholder="Descreva sua dúvida ou problema..." rows={4} className="w-full rounded-xl px-3 py-2 text-sm outline-none mt-1.5 resize-none" style={inputStyle} />
+                  <textarea value={form.message} onChange={e => set("message", e.target.value)} placeholder="Descreva sua dúvida ou problema..." rows={4} className="cj-native-textarea mt-1.5 text-sm" />
                 </div>
                 <button onClick={send} disabled={sending || !form.email || !form.message} className="w-full h-11 rounded-xl font-bold text-white disabled:opacity-60" style={{ background: "#1f3258" }}>
                   {sending ? "Enviando..." : "Enviar mensagem"}

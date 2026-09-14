@@ -229,7 +229,7 @@ export default function ProjectForm() {
               {form.project_type && <p className="text-sm text-muted-foreground mt-1">Tipo: <span className="font-semibold text-primary">{form.project_type}</span></p>}
             </div>
 
-            <div className="space-y-4">
+            <section className="cj-form-panel space-y-5 p-5 sm:p-6">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
                   <Label>Nome da Obra *</Label>
@@ -308,7 +308,7 @@ export default function ProjectForm() {
                   )}
                 </div>
               </div>
-            </div>
+            </section>
 
             <div className="flex gap-3">
               {!isEdit && <Button variant="outline" onClick={() => setStep(1)}><ChevronLeft className="h-4 w-4" />Voltar</Button>}

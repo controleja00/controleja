@@ -101,7 +101,7 @@ function ReportCard({ report, onUpdate, onDelete }) {
           <div>
             <p className="text-xs font-semibold text-gray-500 mb-2 flex items-center gap-1"><FileText className="h-3.5 w-3.5" />Relatório</p>
             {editing ? (
-              <textarea value={text} onChange={e => setText(e.target.value)} rows={8} className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs outline-none resize-none" />
+              <textarea value={text} onChange={e => setText(e.target.value)} rows={8} className="cj-native-textarea min-h-[180px] text-xs" />
             ) : (
               <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-wrap">{text || "Sem relatório gerado."}</p>
             )}

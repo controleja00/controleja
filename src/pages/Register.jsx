@@ -25,8 +25,7 @@ export default function Register() {
 
   useEffect(() => { document.title = "Criar conta | Consuobra"; }, []);
 
-  const inputStyle = { border: "1.5px solid #e1e5ed", background: "#f6f8fc", color: "#172441" };
-  const inputClass = "w-full h-10 rounded-xl px-3 text-sm outline-none transition-all";
+  const inputClass = "cj-native-input text-sm";
 
   const handleRegister = async (e) => {
     e.preventDefault(); setError("");
@@ -103,12 +102,12 @@ export default function Register() {
               <form onSubmit={handleRegister} className="space-y-4">
                 <div>
                   <label className="block text-sm font-semibold mb-1.5" style={{ color: "#172441" }}>E-mail *</label>
-                  <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="seu@email.com" autoComplete="email" required className={inputClass} style={inputStyle} />
+                  <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="seu@email.com" autoComplete="email" required className={inputClass} />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold mb-1.5" style={{ color: "#172441" }}>Senha * <span className="font-normal text-xs" style={{ color: "#778096" }}>(mínimo 8 caracteres)</span></label>
                   <div className="relative">
-                    <input type={showPass ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mínimo 8 caracteres" required className={`${inputClass} pr-10`} style={inputStyle} />
+                    <input type={showPass ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mínimo 8 caracteres" required className={`${inputClass} pr-10`} />
                     <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "#778096" }}>
                       {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -116,7 +115,7 @@ export default function Register() {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold mb-1.5" style={{ color: "#172441" }}>Confirmar senha *</label>
-                  <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Repita a senha" required className={inputClass} style={inputStyle} />
+                  <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Repita a senha" required className={inputClass} />
                 </div>
                 <button type="submit" disabled={loading} className="w-full h-11 rounded-xl font-bold text-base text-white transition-opacity disabled:opacity-60" style={{ background: "#1f3258" }}>
                   {loading ? "Criando conta..." : "Criar conta grátis"}
@@ -163,8 +162,7 @@ export default function Register() {
                 <div>
                   <label className="block text-sm font-semibold mb-2" style={{ color: "#172441" }}>Código de verificação</label>
                   <input value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="000000" maxLength={6} inputMode="numeric"
-                    className="w-full h-14 rounded-xl px-3 text-center text-2xl tracking-[0.5em] font-bold outline-none transition-all"
-                    style={{ border: "1.5px solid #e1e5ed", background: "#f6f8fc", color: "#1f3258" }} />
+                    className="cj-native-input h-14 text-center text-2xl tracking-[0.5em]" />
                 </div>
                 <button type="submit" disabled={loading || otp.length < 4} className="w-full h-11 rounded-xl font-bold text-base text-white disabled:opacity-60" style={{ background: "#1f3258" }}>
                   {loading ? "Verificando..." : "Confirmar e entrar"}

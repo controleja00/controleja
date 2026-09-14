@@ -7,7 +7,7 @@ const Input = React.forwardRef(({ className, type, ...props }, ref) => {
     (<input
       type={type}
       className={cn(
-        "flex h-11 w-full rounded-lg border border-[#e1e5ed] bg-[#f6f8fc] px-3 py-2 text-base text-[#172441] transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[#172441] placeholder:text-[#778096] focus-visible:outline-none focus-visible:border-[#1f3258] focus-visible:ring-2 focus-visible:ring-[#1f3258]/10 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "flex h-12 w-full rounded-xl border border-[#cbd4e3] bg-gradient-to-b from-white to-[#f6f8fc] px-4 py-3 text-base font-semibold text-[#172441] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(23,36,65,0.04)] transition-[border-color,box-shadow,background-color] file:mr-3 file:rounded-lg file:border-0 file:bg-[#e7ebf4] file:px-3 file:py-1.5 file:text-xs file:font-black file:uppercase file:tracking-wide file:text-[#1f3258] placeholder:font-medium placeholder:text-[#778096] hover:border-[#8096bc] focus-visible:border-[#1f3258] focus-visible:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#8096bc]/20 disabled:cursor-not-allowed disabled:bg-[#edf0f6] disabled:text-[#778096] disabled:opacity-70 md:text-sm",
         className
       )}
       ref={ref}

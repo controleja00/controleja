@@ -171,7 +171,7 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
             </div>
             <div>
               <Label>Valor Total</Label>
-              <div className="mt-1 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-md text-emerald-800 font-bold text-sm h-9 flex items-center">
+              <div className="cj-readonly-field cj-readonly-field--success mt-1 h-10 text-sm">
                 R$ {totalValue.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
               </div>
             </div>

@@ -47,8 +47,7 @@ export default function Login() {
     } finally { setLoading(false); }
   };
 
-  const inputBase = "w-full h-10 rounded-xl px-3 text-sm outline-none transition-all";
-  const inputStyle = { border: "1.5px solid #e1e5ed", background: "#f6f8fc", color: "#172441" };
+  const inputBase = "cj-native-input text-sm";
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8" style={{ background: "#f6f8fc" }}>
@@ -69,8 +68,7 @@ export default function Login() {
             <div>
               <label className="block text-sm font-semibold mb-1.5" style={{ color: "#172441" }}>E-mail</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="seu@email.com" autoComplete="email"
-                className={inputBase} style={inputStyle}
-                onFocus={e => e.target.style.borderColor = "#1f3258"} onBlur={e => e.target.style.borderColor = "#e1e5ed"} />
+                className={inputBase} />
             </div>
             <div>
               <div className="flex items-center justify-between mb-1.5">
@@ -79,8 +77,7 @@ export default function Login() {
               </div>
               <div className="relative">
                 <input type={showPass ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Sua senha" autoComplete="current-password"
-                  className={`${inputBase} pr-10`} style={inputStyle}
-                  onFocus={e => e.target.style.borderColor = "#1f3258"} onBlur={e => e.target.style.borderColor = "#e1e5ed"} />
+                  className={`${inputBase} pr-10`} />
                 <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "#778096" }}>
                   {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>

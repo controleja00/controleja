@@ -192,7 +192,7 @@ export default function PhaseEditor({ phases, onChange, projectType }) {
                     <select
                       value={phase.unit}
                       onChange={e => update(idx, "unit", e.target.value)}
-                      className="mt-1 w-full h-9 rounded-md border border-input bg-transparent px-3 text-sm"
+                      className="cj-native-select mt-1 h-9 text-sm"
                     >
                       {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
                     </select>

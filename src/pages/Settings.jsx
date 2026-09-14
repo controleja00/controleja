@@ -56,7 +56,7 @@ export default function Settings() {
           </TabsList>
 
           <TabsContent value="profile">
-            <div className="bg-card border border-border rounded-xl p-6 space-y-4">
+            <div className="cj-form-panel space-y-4 p-6">
               <h2 className="font-semibold">Dados pessoais</h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div><Label>Nome completo</Label><Input value={profile.full_name} onChange={e => set("full_name", e.target.value)} /></div>
@@ -71,7 +71,7 @@ export default function Settings() {
           </TabsContent>
 
           <TabsContent value="company">
-            <div className="bg-card border border-border rounded-xl p-6 space-y-4">
+            <div className="cj-form-panel space-y-4 p-6">
               <h2 className="font-semibold">Dados da empresa</h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2"><Label>Razão Social / Nome da empresa</Label><Input value={profile.company_name} onChange={e => set("company_name", e.target.value)} placeholder="Construtora Exemplo Ltda." /></div>
@@ -85,7 +85,7 @@ export default function Settings() {
 
           <TabsContent value="plan">
             <div className="space-y-4">
-              <div className="bg-card border border-border rounded-xl p-6">
+              <div className="cj-form-panel p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h2 className="font-semibold">Plano atual</h2>
@@ -106,7 +106,7 @@ export default function Settings() {
                   <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={() => { window.location.href = "/support"; }}>Cancelar assinatura</Button>
                 </div>
               </div>
-              <div className="bg-card border border-border rounded-xl p-6">
+              <div className="cj-form-panel p-6">
                 <h2 className="font-semibold mb-4">Comparar planos</h2>
                 <div className="grid sm:grid-cols-3 gap-4 text-sm">
                   {CONSUOBRA_PLANS.map(p => (
@@ -128,7 +128,7 @@ export default function Settings() {
 
           <TabsContent value="security">
             <div className="space-y-4">
-              <div className="bg-card border border-border rounded-xl p-6">
+              <div className="cj-form-panel p-6">
                 <h2 className="font-semibold mb-4">Segurança da conta</h2>
                 <div className="space-y-3">
                   {[
@@ -143,7 +143,7 @@ export default function Settings() {
                   ))}
                 </div>
               </div>
-              <div className="bg-card border border-border rounded-xl p-6">
+              <div className="cj-form-panel p-6">
                 <h2 className="font-semibold mb-1 text-destructive">Zona de risco</h2>
                 <p className="text-sm text-muted-foreground mb-4">Ações irreversíveis. Proceda com cuidado.</p>
                 <div className="space-y-3">
@@ -157,7 +157,7 @@ export default function Settings() {
                   </div>
                 </div>
               </div>
-              <div className="bg-card border border-border rounded-xl p-6">
+              <div className="cj-form-panel p-6">
                 <Button variant="outline" className="gap-2 text-muted-foreground" onClick={() => base44.auth.logout()}>
                   <LogOut className="h-4 w-4" />Sair da conta
                 </Button>

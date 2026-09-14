@@ -107,3 +107,110 @@
     background-color: #f6f8fc;
   }
 }
+
+@layer components {
+  .cj-native-input,
+  .cj-native-select,
+  .cj-native-textarea {
+    width: 100%;
+    border: 1.5px solid #cbd4e3;
+    border-radius: 0.75rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
+    color: #172441;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 1px 2px rgba(23, 36, 65, 0.04);
+    font-weight: 600;
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+  }
+
+  .cj-native-input,
+  .cj-native-select {
+    height: 3rem;
+    padding: 0 1rem;
+  }
+
+  .cj-native-textarea {
+    min-height: 7.25rem;
+    padding: 0.85rem 1rem;
+    line-height: 1.55;
+    resize: vertical;
+  }
+
+  .cj-native-input::placeholder,
+  .cj-native-textarea::placeholder {
+    color: #778096;
+    font-weight: 500;
+  }
+
+  .cj-native-input:hover:not(:disabled),
+  .cj-native-select:hover:not(:disabled),
+  .cj-native-textarea:hover:not(:disabled) {
+    border-color: #8096bc;
+    background: #ffffff;
+  }
+
+  .cj-native-input:focus,
+  .cj-native-select:focus,
+  .cj-native-textarea:focus {
+    border-color: #1f3258;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(128, 150, 188, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+
+  .cj-native-input:disabled,
+  .cj-native-select:disabled,
+  .cj-native-textarea:disabled {
+    cursor: not-allowed;
+    background: #edf0f6;
+    color: #778096;
+    opacity: 0.72;
+  }
+
+  .cj-field-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #172441;
+    font-size: 0.6875rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .cj-form-panel {
+    border: 1.5px solid #d6ddea;
+    border-radius: 1.25rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafd 100%);
+    box-shadow: 0 10px 34px rgba(23, 36, 65, 0.06);
+  }
+
+  .cj-readonly-field {
+    display: flex;
+    min-height: 3rem;
+    align-items: center;
+    border: 1.5px solid #9aabcd;
+    border-radius: 0.75rem;
+    background: linear-gradient(180deg, #f8fbff 0%, #e7ebf4 100%);
+    color: #172441;
+    padding: 0.7rem 1rem;
+    font-weight: 800;
+  }
+
+  .cj-readonly-field--success {
+    border-color: #9aabcd;
+    background: linear-gradient(180deg, #ffffff 0%, #e7ebf4 100%);
+    color: #1f3258;
+  }
+
+  .cj-upload-zone {
+    border: 1.5px dashed #8096bc;
+    border-radius: 1rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
+    transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+  }
+
+  .cj-upload-zone:hover {
+    border-color: #1f3258;
+    background: #ffffff;
+  }
+}
