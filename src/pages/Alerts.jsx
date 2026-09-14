@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertTriangle, CheckCircle2, Clock3, ShieldCheck } from "lucide-react";
 import PageHeader from "../components/PageHeader";
 
@@ -47,6 +48,7 @@ function SummaryCard({ label, value, icon: Icon, tone }) {
 export default function Alerts() {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [severityFilter, setSeverityFilter] = useState("all");
 
   const load = () => base44.auth.me().then((me) => (
     base44.entities.Alert.filter({ created_by_id: me.id }, "-created_date")
@@ -59,7 +61,7 @@ export default function Alerts() {
   useEffect(() => { load(); }, []);
 
   const resolve = async (id) => {
-    await base44.entities.Alert.update(id, { is_resolved: true });
+    await base44.entities.Alert.update(id, { is_resolved: true, is_read: true });
     load();
   };
 
@@ -68,6 +70,10 @@ export default function Alerts() {
   const active = alerts.filter((a) => !a.is_resolved);
   const resolved = alerts.filter((a) => a.is_resolved);
   const critical = active.filter((a) => a.severity === "Crítica" || a.severity === "Alta");
+  const severityRank = { "Crítica": 0, Alta: 1, Média: 2, Baixa: 3 };
+  const visibleActive = active
+    .filter((a) => severityFilter === "all" || a.severity === severityFilter)
+    .sort((a, b) => (severityRank[a.severity] ?? 4) - (severityRank[b.severity] ?? 4));
   const today = active.filter((a) => {
     if (!a.created_date) return false;
     return new Date(a.created_date).toDateString() === new Date().toDateString();
@@ -91,22 +97,38 @@ export default function Alerts() {
               <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: palette.muted }}>Fila de decisão</p>
               <h2 className="text-xl font-black" style={{ color: palette.ink }}>Alertas ativos</h2>
             </div>
-            <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: palette.soft, color: palette.navy }}>
-              {active.length} aberto{active.length === 1 ? "" : "s"}
-            </span>
+            <div className="flex items-center gap-2">
+              <Select value={severityFilter} onValueChange={setSeverityFilter}>
+                <SelectTrigger className="h-9 w-36 text-xs">
+                  <SelectValue placeholder="Severidade" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas</SelectItem>
+                  <SelectItem value="Crítica">Crítica</SelectItem>
+                  <SelectItem value="Alta">Alta</SelectItem>
+                  <SelectItem value="Média">Média</SelectItem>
+                  <SelectItem value="Baixa">Baixa</SelectItem>
+                </SelectContent>
+              </Select>
+              <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: palette.soft, color: palette.navy }}>
+                {visibleActive.length} aberto{visibleActive.length === 1 ? "" : "s"}
+              </span>
+            </div>
           </div>
 
-          {active.length === 0 ? (
+          {visibleActive.length === 0 ? (
             <div className="px-4 py-12 text-center">
               <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: palette.soft }}>
                 <CheckCircle2 className="h-7 w-7" style={{ color: palette.navy }} />
               </div>
               <p className="font-black" style={{ color: palette.ink }}>Nenhum alerta ativo</p>
-              <p className="mt-1 text-sm" style={{ color: palette.muted }}>Quando surgir risco de prazo, documento ou financeiro, ele aparece aqui.</p>
+              <p className="mt-1 text-sm" style={{ color: palette.muted }}>
+                {active.length === 0 ? "Quando surgir risco de prazo, documento ou financeiro, ele aparece aqui." : "Nenhum alerta encontrado com este filtro."}
+              </p>
             </div>
           ) : (
             <div className="divide-y" style={{ borderColor: palette.line }}>
-              {active.map((alert) => {
+              {visibleActive.map((alert) => {
                 const style = severityStyle[alert.severity] || severityStyle.Baixa;
                 return (
                   <article key={alert.id} className="flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-start">

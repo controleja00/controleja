@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, TrendingUp, TrendingDown, DollarSign, CheckCircle2, Loader2, ArrowUpRight, ArrowDownRight, CalendarClock } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import PageHeader from "../components/PageHeader";
+import { formatBRLMoney, formatCompactBRL, parseBRLMoney } from "@/lib/money";
 
 const CATEGORIES_DESPESA = ["Medição", "Pagamento empreiteiro", "Funcionário", "Material", "Equipamento", "Combustível", "Transporte", "Aluguel", "Impostos", "Documentação", "Manutenção", "Administrativo", "Outro"];
 const CATEGORIES_RECEITA = ["Pagamento do cliente", "Adiantamento", "Medição recebida", "Reembolso", "Venda de material", "Outro"];
@@ -33,13 +34,8 @@ const statusStyle = {
   Cancelado: { bg: "#f3f4f6", text: "#4b5563" },
 };
 
-const money = (value) => `R$ ${(value || 0).toLocaleString("pt-BR")}`;
-const compactMoney = (value) => {
-  const abs = Math.abs(value || 0);
-  if (abs >= 1000000) return `R$ ${(value / 1000000).toFixed(1)}M`;
-  if (abs >= 1000) return `R$ ${(value / 1000).toFixed(0)}k`;
-  return money(value);
-};
+const money = (value) => formatBRLMoney(value);
+const compactMoney = (value) => formatCompactBRL(value);
 
 function Loading() {
   return (
@@ -113,6 +109,7 @@ export default function CashFlow() {
   const [saving, setSaving] = useState(false);
   const [filterProject, setFilterProject] = useState("all");
   const [form, setForm] = useState({ project_id: "", description: "", type: "Despesa", category: "", value: "", due_date: "", status: "A pagar", notes: "" });
+  const [error, setError] = useState("");
 
   const load = () => base44.auth.me().then((me) => Promise.all([
     base44.entities.CashFlowEntry.filter({ created_by_id: me.id }, "-due_date", 200),
@@ -128,16 +125,23 @@ export default function CashFlow() {
   const set = (k, v) => setForm((prev) => ({ ...prev, [k]: v }));
 
   const save = async () => {
+    const value = parseBRLMoney(form.value);
+    if (!form.project_id || !form.description || value <= 0) {
+      setError("Selecione a obra, descreva o lançamento e informe um valor maior que zero.");
+      return;
+    }
+    setError("");
     setSaving(true);
     const project = projects.find((p) => p.id === form.project_id);
     await base44.entities.CashFlowEntry.create({
       ...form,
       project_name: project?.name || "",
-      value: Number(form.value) || 0,
+      value,
     });
     setSaving(false);
     setOpen(false);
     setForm({ project_id: "", description: "", type: "Despesa", category: "", value: "", due_date: "", status: "A pagar", notes: "" });
+    setError("");
     load();
   };
 
@@ -197,7 +201,7 @@ export default function CashFlow() {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div><Label>Valor (R$)</Label><Input type="number" value={form.value} onChange={(e) => set("value", e.target.value)} className="mt-1.5" /></div>
+                <div><Label>Valor (R$)</Label><Input value={form.value} onChange={(e) => set("value", e.target.value)} placeholder="Ex: 1.500,00" className="mt-1.5" inputMode="decimal" /></div>
                 <div><Label>Vencimento</Label><Input type="date" value={form.due_date} onChange={(e) => set("due_date", e.target.value)} className="mt-1.5" /></div>
               </div>
               <div>
@@ -210,6 +214,7 @@ export default function CashFlow() {
               <Button onClick={save} disabled={saving || !form.project_id || !form.description || !form.value} className="w-full">
                 {saving ? "Salvando..." : "Salvar lançamento"}
               </Button>
+              {error && <p className="rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
             </div>
           </DialogContent>
         </Dialog>
@@ -292,7 +297,11 @@ export default function CashFlow() {
           <TabsContent value="todos">
             <section className="mt-3 overflow-hidden rounded-2xl border bg-white" style={{ borderColor: palette.line }}>
               {filtered.length === 0 ? (
-                <p className="py-10 text-center text-sm" style={{ color: palette.muted }}>Nenhum lançamento cadastrado.</p>
+                <div className="py-10 text-center">
+                  <p className="text-sm font-bold" style={{ color: palette.ink }}>Nenhum lançamento cadastrado</p>
+                  <p className="mt-1 text-sm" style={{ color: palette.muted }}>Registre uma receita ou despesa para começar o controle financeiro.</p>
+                  <Button onClick={() => setOpen(true)} className="mt-4"><Plus className="h-4 w-4" />Novo lançamento</Button>
+                </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">

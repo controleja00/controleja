@@ -54,6 +54,7 @@ export default function Documents() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filterProject, setFilterProject] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("active");
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ project_id: "", project_name: "", subcontractor_id: "", subcontractor_name: "", type: "", name: "", expiry_date: "", notes: "", status: "Pendente" });
   const [uploading, setUploading] = useState(false);
@@ -95,6 +96,12 @@ export default function Documents() {
 
   const setField = (k, v) => setForm((prev) => ({ ...prev, [k]: v }));
 
+  const getEffectiveStatus = (doc) => {
+    if (doc.status === "Reprovado" || !doc.expiry_date) return doc.status || "Pendente";
+    const today = new Date().toISOString().split("T")[0];
+    return doc.expiry_date < today ? "Vencido" : doc.status;
+  };
+
   const handleProjectChange = (projId) => {
     const proj = projects.find((p) => p.id === projId);
     setForm((prev) => ({
@@ -123,7 +130,11 @@ export default function Documents() {
     setError("");
     setSaving(true);
     try {
-      await base44.entities.Document.create({ ...form, file_url: fileUrl });
+      await base44.entities.Document.create({
+        ...form,
+        name: form.name || form.type,
+        file_url: fileUrl,
+      });
       setOpen(false);
       setForm({ project_id: "", project_name: "", subcontractor_id: "", subcontractor_name: "", type: "", name: "", expiry_date: "", notes: "", status: "Pendente" });
       setFileUrl("");
@@ -144,14 +155,19 @@ export default function Documents() {
     const term = search.toLowerCase();
     const matchSearch = !term || doc.type?.toLowerCase().includes(term) || doc.name?.toLowerCase().includes(term) || doc.project_name?.toLowerCase().includes(term);
     const matchProject = filterProject === "all" || doc.project_id === filterProject;
-    return matchSearch && matchProject;
+    const effectiveStatus = getEffectiveStatus(doc);
+    const matchStatus =
+      filterStatus === "all" ||
+      (filterStatus === "active" && effectiveStatus !== "Aprovado" && effectiveStatus !== "Reprovado") ||
+      effectiveStatus === filterStatus;
+    return matchSearch && matchProject && matchStatus;
   });
 
   if (loading) return <Loading />;
 
-  const pendingCount = docs.filter((doc) => doc.status === "Pendente" || doc.status === "Vencido").length;
-  const approvedCount = docs.filter((doc) => doc.status === "Aprovado").length;
-  const expiredCount = docs.filter((doc) => doc.status === "Vencido").length;
+  const pendingCount = docs.filter((doc) => getEffectiveStatus(doc) === "Pendente" || getEffectiveStatus(doc) === "Vencido").length;
+  const approvedCount = docs.filter((doc) => getEffectiveStatus(doc) === "Aprovado").length;
+  const expiredCount = docs.filter((doc) => getEffectiveStatus(doc) === "Vencido").length;
   const selectedProject = projects.find((p) => p.id === form.project_id);
   const linkedSubIds = selectedProject?.subcontractor_ids || [];
   const availableSubs = selectedProject && linkedSubIds.length > 0
@@ -189,6 +205,19 @@ export default function Documents() {
                 {projects.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
               </SelectContent>
             </Select>
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Pendentes/vencidos</SelectItem>
+                <SelectItem value="all">Todos os status</SelectItem>
+                <SelectItem value="Aprovado">Aprovados</SelectItem>
+                <SelectItem value="Pendente">Pendentes</SelectItem>
+                <SelectItem value="Vencido">Vencidos</SelectItem>
+                <SelectItem value="Reprovado">Reprovados</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </section>
 
@@ -222,7 +251,8 @@ export default function Documents() {
                 </thead>
                 <tbody className="divide-y" style={{ borderColor: palette.line }}>
                   {filtered.map((doc) => {
-                    const sc = statusConfig[doc.status] || statusConfig.Pendente;
+                    const effectiveStatus = getEffectiveStatus(doc);
+                    const sc = statusConfig[effectiveStatus] || statusConfig.Pendente;
                     const Icon = sc.icon;
                     return (
                       <tr key={doc.id} className="transition-colors hover:bg-[#f6f8fc]">
@@ -231,9 +261,10 @@ export default function Documents() {
                             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style={{ background: palette.soft }}>
                               <FileText className="h-5 w-5" style={{ color: palette.navy }} />
                             </div>
-                            <div>
+                            <div className="min-w-0">
                               <p className="font-black" style={{ color: palette.ink }}>{doc.name || doc.type}</p>
                               <p className="text-xs" style={{ color: palette.muted }}>{doc.type}</p>
+                              <p className="text-xs sm:hidden" style={{ color: palette.muted }}>{doc.project_name || doc.subcontractor_name || "Sem obra vinculada"}</p>
                             </div>
                           </div>
                         </td>
@@ -241,7 +272,7 @@ export default function Documents() {
                         <td className="hidden px-4 py-3 md:table-cell" style={{ color: palette.text }}>{doc.expiry_date ? new Date(doc.expiry_date).toLocaleDateString("pt-BR") : "Sem vencimento"}</td>
                         <td className="px-4 py-3 text-center">
                           <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold" style={{ background: sc.bg, color: sc.text }}>
-                            <Icon className="h-3 w-3" />{doc.status}
+                            <Icon className="h-3 w-3" />{effectiveStatus}
                           </span>
                         </td>
                         <td className="px-4 py-3">
@@ -253,8 +284,8 @@ export default function Documents() {
                                 </Button>
                               </a>
                             )}
-                            <Button size="sm" variant="ghost" className="h-8 text-xs" onClick={() => updateStatus(doc.id, "Aprovado")}>Aprovar</Button>
-                            <Button size="sm" variant="ghost" className="h-8 text-xs" onClick={() => updateStatus(doc.id, "Reprovado")}>Reprovar</Button>
+                            {effectiveStatus !== "Aprovado" && <Button size="sm" variant="ghost" className="h-8 text-xs" onClick={() => updateStatus(doc.id, "Aprovado")}>Aprovar</Button>}
+                            {effectiveStatus !== "Reprovado" && <Button size="sm" variant="ghost" className="h-8 text-xs" onClick={() => updateStatus(doc.id, "Reprovado")}>Reprovar</Button>}
                           </div>
                         </td>
                       </tr>
@@ -295,7 +326,7 @@ export default function Documents() {
             </div>
             <div>
               <Label className="text-sm font-semibold">Tipo de documento *</Label>
-              <Select value={form.type} onValueChange={(v) => setField("type", v)}>
+              <Select value={form.type} onValueChange={(v) => setForm((prev) => ({ ...prev, type: v, name: prev.name || v }))}>
                 <SelectTrigger className="mt-1.5"><SelectValue placeholder="Selecione o tipo" /></SelectTrigger>
                 <SelectContent>{DOC_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
               </Select>

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Building2, CheckCircle2, ChevronRight, DollarSign, FileText, BarChart3, Bell, Camera } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import { parseBRLMoney } from "@/lib/money";
 
 const STEPS = [
   { id: 1, title: "Dados da empresa", sub: "Vamos configurar sua conta" },
@@ -23,13 +24,6 @@ const OBJECTIVES = [
   { key: "alerts", icon: Bell, label: "Receber alertas de atraso", bg: "#fee2e2" },
   { key: "reports", icon: Camera, label: "Gerar relatórios", bg: "#9aabcd" },
 ];
-
-const parseMoney = (value) => {
-  if (!value) return null;
-  const normalized = String(value).replace(/\./g, "").replace(",", ".");
-  const number = Number(normalized);
-  return Number.isFinite(number) ? number : null;
-};
 
 export default function Onboarding() {
   const navigate = useNavigate();
@@ -73,8 +67,8 @@ export default function Onboarding() {
         client: data.project_client || data.company_name || "Próprio",
         start_date: data.project_start || null,
         expected_end_date: data.project_end || null,
-        contracted_value: parseMoney(data.project_contracted_value),
-        budget: parseMoney(data.project_budget),
+        contracted_value: data.project_contracted_value ? parseBRLMoney(data.project_contracted_value) : null,
+        budget: data.project_budget ? parseBRLMoney(data.project_budget) : null,
         status: "Planejamento",
         progress_method: "Manual",
         progress_percent: 0,
