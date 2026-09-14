@@ -1,43 +1,65 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Copy, Link2, RefreshCw, Shield, Eye, CheckCircle2, Loader2 } from "lucide-react";
+import { AlertTriangle, Copy, Link2, RefreshCw, Shield, Eye, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const genToken = () => Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+const DEFAULT_CONFIG = {
+  active: false,
+  show_photos: true,
+  show_reports: true,
+  show_progress: true,
+  show_next_steps: true,
+  show_deadline: true,
+};
 
 export default function PortalConfig({ project, onUpdate }) {
   const [config, setConfig] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState("");
 
   const load = async () => {
     setLoading(true);
-    const all = await base44.entities.ClientPortalConfig.filter({ project_id: project.id });
-    setConfig(all[0] || null);
-    setLoading(false);
+    setError("");
+    try {
+      const all = await base44.entities.ClientPortalConfig.filter({ project_id: project.id });
+      setConfig(all[0] || null);
+    } catch {
+      setError("Não foi possível carregar as configurações do portal.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); }, [project.id]);
 
   const save = async (patch) => {
     setSaving(true);
-    if (config?.id) {
-      const updated = await base44.entities.ClientPortalConfig.update(config.id, patch);
-      setConfig(updated);
-    } else {
-      const token = patch.access_token || genToken();
-      const created = await base44.entities.ClientPortalConfig.create({ project_id: project.id, access_token: token, ...patch });
-      setConfig(created);
+    setError("");
+    try {
+      if (config?.id) {
+        const updated = await base44.entities.ClientPortalConfig.update(config.id, patch);
+        setConfig(updated);
+      } else {
+        const token = patch.access_token || genToken();
+        const created = await base44.entities.ClientPortalConfig.create({ ...DEFAULT_CONFIG, project_id: project.id, access_token: token, ...patch });
+        setConfig(created);
+      }
+      onUpdate?.();
+    } catch {
+      setError("Não foi possível salvar as configurações do portal.");
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
-    onUpdate?.();
   };
 
-  const toggle = (field) => save({ ...(config || {}), [field]: !config?.[field] });
+  const effectiveConfig = { ...DEFAULT_CONFIG, ...(config || {}) };
+  const toggle = (field) => save({ [field]: !effectiveConfig[field] });
 
-  const portalUrl = config?.access_token
-    ? `${window.location.origin}/portal/${config.access_token}`
+  const portalUrl = effectiveConfig?.access_token
+    ? `${window.location.origin}/portal/${effectiveConfig.access_token}`
     : null;
 
   const copy = () => {
@@ -48,7 +70,7 @@ export default function PortalConfig({ project, onUpdate }) {
   };
 
   const revoke = () => save({ access_token: genToken(), active: false });
-  const generate = () => save({ active: true, access_token: config?.access_token || genToken() });
+  const generate = () => save({ ...DEFAULT_CONFIG, active: true, access_token: effectiveConfig?.access_token || genToken() });
 
   if (loading) return <div className="flex justify-center py-8"><Loader2 className="h-5 w-5 animate-spin text-gray-300" /></div>;
 
@@ -61,8 +83,8 @@ export default function PortalConfig({ project, onUpdate }) {
         <p className="text-sm font-semibold text-gray-800">{label}</p>
         {sub && <p className="text-xs text-gray-400">{sub}</p>}
       </div>
-      <button onClick={() => toggle(field)} className={toggleStyle(config?.[field])}>
-        <div className={thumb(config?.[field])} />
+      <button onClick={() => toggle(field)} className={toggleStyle(effectiveConfig[field])}>
+        <div className={thumb(effectiveConfig[field])} />
       </button>
     </div>
   );
@@ -73,15 +95,15 @@ export default function PortalConfig({ project, onUpdate }) {
       <div className="rounded-2xl border border-gray-200 bg-white p-5">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <div className={`h-2.5 w-2.5 rounded-full ${config?.active ? "bg-emerald-500" : "bg-gray-300"}`} />
+            <div className={`h-2.5 w-2.5 rounded-full ${effectiveConfig.active ? "bg-emerald-500" : "bg-gray-300"}`} />
             <p className="font-bold text-gray-900">Portal do Cliente</p>
           </div>
-          <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${config?.active ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-500"}`}>
-            {config?.active ? "Ativo" : "Inativo"}
+          <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${effectiveConfig.active ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-500"}`}>
+            {effectiveConfig.active ? "Ativo" : "Inativo"}
           </span>
         </div>
 
-        {portalUrl && config?.active ? (
+        {portalUrl && effectiveConfig.active ? (
           <div className="bg-gray-50 rounded-xl border border-gray-200 px-3 py-2.5 flex items-center gap-2 mb-4">
             <Link2 className="h-4 w-4 text-gray-400 shrink-0" />
             <p className="text-xs text-gray-600 truncate flex-1 font-mono">{portalUrl}</p>
@@ -90,8 +112,15 @@ export default function PortalConfig({ project, onUpdate }) {
           <p className="text-xs text-gray-400 mb-4">Ative o portal para gerar um link seguro de acesso para o cliente.</p>
         )}
 
+        {error && (
+          <div className="mb-4 flex items-start gap-2 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-xs text-red-600">
+            <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
         <div className="flex gap-2 flex-wrap">
-          {!config?.active ? (
+          {!effectiveConfig.active ? (
             <Button onClick={generate} disabled={saving} className="gap-1.5 bg-primary hover:bg-[#172441] text-sm">
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
               Ativar Portal

@@ -12,21 +12,29 @@ export default function ProjClientPortal({ project }) {
   const [user, setUser] = useState(null);
   const [showUpload, setShowUpload] = useState(false);
   const [tab, setTab] = useState("upload");
+  const [error, setError] = useState("");
 
   const load = async () => {
     setLoading(true);
-    const [reps, me] = await Promise.all([
-      base44.entities.DailyReport.filter({ project_id: project.id }),
-      base44.auth.me().catch(() => null),
-    ]);
-    setReports(reps.sort((a, b) => (b.report_date || "").localeCompare(a.report_date || "")));
-    setUser(me);
-    setLoading(false);
+    setError("");
+    try {
+      const [reps, me] = await Promise.all([
+        base44.entities.DailyReport.filter({ project_id: project.id }),
+        base44.auth.me().catch(() => null),
+      ]);
+      setReports(reps.sort((a, b) => (b.report_date || "").localeCompare(a.report_date || "")));
+      setUser(me);
+    } catch {
+      setError("Não foi possível carregar o portal do cliente agora.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); }, [project.id]);
 
-  const draftCount = reports.filter(r => r.status === "Rascunho").length;
+  const draftCount = reports.filter(r => r.status === "Rascunho" || r.status === "Revisado").length;
+  const publishedCount = reports.filter(r => r.status === "Publicado" && r.visible_to_client !== false).length;
   const todayStr = new Date().toISOString().split("T")[0];
   const hasToday = reports.some(r => r.report_date === todayStr);
 
@@ -45,6 +53,27 @@ export default function ProjClientPortal({ project }) {
           <p className="text-sm text-primary font-medium">{draftCount} relatório(s) aguardando revisão e publicação.</p>
         </div>
       )}
+      {error && (
+        <div className="flex items-center gap-3 bg-red-50 border border-red-100 rounded-2xl px-4 py-3">
+          <AlertTriangle className="h-4 w-4 text-red-500 shrink-0" />
+          <p className="text-sm text-red-600 font-medium">{error}</p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-3 gap-2">
+        <div className="rounded-2xl border border-border bg-white px-3 py-3">
+          <p className="text-xl font-black text-gray-900">{reports.length}</p>
+          <p className="text-[10px] font-bold uppercase tracking-wide text-gray-400">Registros</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-white px-3 py-3">
+          <p className="text-xl font-black text-gray-900">{publishedCount}</p>
+          <p className="text-[10px] font-bold uppercase tracking-wide text-gray-400">No portal</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-white px-3 py-3">
+          <p className="text-xl font-black text-gray-900">{hasToday ? "Sim" : "Não"}</p>
+          <p className="text-[10px] font-bold uppercase tracking-wide text-gray-400">Hoje</p>
+        </div>
+      </div>
 
       {/* Mobile quick action */}
       {!showUpload && (
@@ -61,7 +90,7 @@ export default function ProjClientPortal({ project }) {
           </TabsTrigger>
           <TabsTrigger value="relatorios" className="text-xs rounded-lg py-2">
             <FileText className="h-3.5 w-3.5 mr-1" />Relatórios
-            {draftCount > 0 && <span className="ml-1 h-4 w-4 bg-secondary0 text-white text-[10px] font-black rounded-full flex items-center justify-center">{draftCount}</span>}
+            {draftCount > 0 && <span className="ml-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-black text-white">{draftCount}</span>}
           </TabsTrigger>
           <TabsTrigger value="config" className="text-xs rounded-lg py-2">
             <Settings className="h-3.5 w-3.5 mr-1" />Link
@@ -88,7 +117,7 @@ export default function ProjClientPortal({ project }) {
         </TabsContent>
 
         <TabsContent value="config" className="mt-4">
-          <PortalConfig project={project} />
+          <PortalConfig project={project} onUpdate={load} />
         </TabsContent>
       </Tabs>
     </div>

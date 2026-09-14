@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { Camera, ChevronDown, ChevronUp, Edit2, Eye, EyeOff, FileText, Loader2, Trash2 } from "lucide-react";
+import { AlertTriangle, Camera, ChevronDown, ChevronUp, Edit2, Eye, EyeOff, FileText, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import jsPDF from "jspdf";
 
@@ -18,17 +18,28 @@ function ReportCard({ report, onUpdate, onDelete }) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(report.ai_report || "");
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const save = async (patch) => {
     setSaving(true);
-    await base44.entities.DailyReport.update(report.id, patch);
-    onUpdate();
-    setSaving(false);
-    setEditing(false);
+    setError("");
+    try {
+      await base44.entities.DailyReport.update(report.id, patch);
+      onUpdate();
+      setEditing(false);
+    } catch {
+      setError("Não foi possível atualizar este relatório.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const exportPdf = () => {
     const doc = new jsPDF();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const bottom = pageHeight - 18;
+    let y = 56;
+
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
     doc.text(report.project_name || "Relatório de Obra", 14, 18);
@@ -39,9 +50,18 @@ function ReportCard({ report, onUpdate, onDelete }) {
     doc.text(`Responsável: ${report.sent_by || "—"}`, 14, 44);
     doc.setFontSize(10);
     const lines = doc.splitTextToSize(text || "Sem relatório.", 182);
-    doc.text(lines, 14, 56);
+    lines.forEach((line) => {
+      if (y > bottom) {
+        doc.addPage();
+        y = 18;
+      }
+      doc.text(line, 14, y);
+      y += 5;
+    });
     doc.save(`relatorio-${report.report_date}.pdf`);
   };
+
+  const isVisible = report.status === "Publicado" && report.visible_to_client !== false;
 
   return (
     <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden">
@@ -53,6 +73,7 @@ function ReportCard({ report, onUpdate, onDelete }) {
             <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${STATUS_STYLE[report.status] || STATUS_STYLE.Rascunho}`}>
               {report.status}
             </span>
+            {isVisible && <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-bold text-blue-700">Visível ao cliente</span>}
           </div>
           <p className="text-xs text-gray-400 mt-0.5">Por {report.sent_by || "—"} · {report.photos?.length || 0} foto(s)</p>
           {report.observation && <p className="text-xs text-gray-500 mt-1 line-clamp-2">{report.observation}</p>}
@@ -86,10 +107,17 @@ function ReportCard({ report, onUpdate, onDelete }) {
             )}
           </div>
 
+          {error && (
+            <div className="flex items-start gap-2 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-xs text-red-600">
+              <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
           {/* Actions */}
           <div className="flex flex-wrap gap-2 pt-1">
             {editing ? (
-              <Button size="sm" onClick={() => save({ ai_report: text, status: "Revisado" })} disabled={saving} className="h-8 text-xs gap-1 bg-primary hover:bg-[#172441]">
+              <Button size="sm" onClick={() => save({ ai_report: text, status: report.status === "Publicado" ? "Publicado" : "Revisado" })} disabled={saving} className="h-8 text-xs gap-1 bg-primary hover:bg-[#172441]">
                 {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : "Salvar"}
               </Button>
             ) : (
@@ -98,11 +126,11 @@ function ReportCard({ report, onUpdate, onDelete }) {
               </Button>
             )}
             {report.status !== "Publicado" ? (
-              <Button size="sm" onClick={() => save({ status: "Publicado" })} disabled={saving} className="h-8 text-xs gap-1 bg-emerald-600 hover:bg-emerald-700">
+              <Button size="sm" onClick={() => save({ status: "Publicado", visible_to_client: true })} disabled={saving} className="h-8 text-xs gap-1 bg-emerald-600 hover:bg-emerald-700">
                 <Eye className="h-3 w-3" />Publicar
               </Button>
             ) : (
-              <Button size="sm" variant="outline" onClick={() => save({ status: "Oculto" })} disabled={saving} className="h-8 text-xs gap-1 text-red-500 border-red-200">
+              <Button size="sm" variant="outline" onClick={() => save({ status: "Oculto", visible_to_client: false })} disabled={saving} className="h-8 text-xs gap-1 text-red-500 border-red-200">
                 <EyeOff className="h-3 w-3" />Ocultar
               </Button>
             )}
@@ -120,10 +148,31 @@ function ReportCard({ report, onUpdate, onDelete }) {
 }
 
 export default function ReportList({ reports, onUpdate }) {
+  const [filter, setFilter] = useState("acao");
+  const [error, setError] = useState("");
+
+  const stats = useMemo(() => ({
+    action: reports.filter(r => r.status === "Rascunho" || r.status === "Revisado").length,
+    visible: reports.filter(r => r.status === "Publicado" && r.visible_to_client !== false).length,
+    hidden: reports.filter(r => r.status === "Oculto" || (r.status === "Publicado" && r.visible_to_client === false)).length,
+  }), [reports]);
+
+  const filteredReports = useMemo(() => {
+    if (filter === "publicados") return reports.filter(r => r.status === "Publicado" && r.visible_to_client !== false);
+    if (filter === "ocultos") return reports.filter(r => r.status === "Oculto" || (r.status === "Publicado" && r.visible_to_client === false));
+    if (filter === "todos") return reports;
+    return reports.filter(r => r.status === "Rascunho" || r.status === "Revisado");
+  }, [filter, reports]);
+
   const handleDelete = async (id) => {
     if (!confirm("Excluir este relatório?")) return;
-    await base44.entities.DailyReport.delete(id);
-    onUpdate();
+    setError("");
+    try {
+      await base44.entities.DailyReport.delete(id);
+      onUpdate();
+    } catch {
+      setError("Não foi possível excluir este relatório.");
+    }
   };
 
   if (reports.length === 0) return (
@@ -136,7 +185,41 @@ export default function ReportList({ reports, onUpdate }) {
 
   return (
     <div className="space-y-3">
-      {reports.map(r => (
+      <div className="grid grid-cols-3 gap-2">
+        <button onClick={() => setFilter("acao")} className={`rounded-xl border px-3 py-2 text-left ${filter === "acao" ? "border-primary bg-secondary" : "border-gray-200 bg-white"}`}>
+          <p className="text-lg font-black text-gray-900">{stats.action}</p>
+          <p className="text-[10px] font-bold uppercase tracking-wide text-gray-500">Para revisar</p>
+        </button>
+        <button onClick={() => setFilter("publicados")} className={`rounded-xl border px-3 py-2 text-left ${filter === "publicados" ? "border-primary bg-secondary" : "border-gray-200 bg-white"}`}>
+          <p className="text-lg font-black text-gray-900">{stats.visible}</p>
+          <p className="text-[10px] font-bold uppercase tracking-wide text-gray-500">No portal</p>
+        </button>
+        <button onClick={() => setFilter("todos")} className={`rounded-xl border px-3 py-2 text-left ${filter === "todos" ? "border-primary bg-secondary" : "border-gray-200 bg-white"}`}>
+          <p className="text-lg font-black text-gray-900">{reports.length}</p>
+          <p className="text-[10px] font-bold uppercase tracking-wide text-gray-500">Todos</p>
+        </button>
+      </div>
+
+      {stats.hidden > 0 && (
+        <button onClick={() => setFilter("ocultos")} className={`w-full rounded-xl border px-3 py-2 text-left text-xs font-semibold ${filter === "ocultos" ? "border-red-200 bg-red-50 text-red-600" : "border-gray-200 bg-white text-gray-500"}`}>
+          {stats.hidden} relatório(s) oculto(s) do cliente
+        </button>
+      )}
+
+      {error && (
+        <div className="flex items-start gap-2 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-xs text-red-600">
+          <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      {filteredReports.length === 0 && (
+        <div className="rounded-2xl border border-gray-200 bg-white px-4 py-8 text-center text-sm text-gray-400">
+          Nenhum relatório nesta visualização.
+        </div>
+      )}
+
+      {filteredReports.map(r => (
         <ReportCard key={r.id} report={r} onUpdate={onUpdate} onDelete={handleDelete} />
       ))}
     </div>

@@ -39,7 +39,7 @@ function ReportItem({ report }) {
             </div>
           )}
           {report.observation && (
-            <p className="text-sm leading-relaxed" style={{ color: "#424c62" }}>📌 {report.observation}</p>
+            <p className="text-sm leading-relaxed" style={{ color: "#424c62" }}>{report.observation}</p>
           )}
           {report.ai_report && (
             <div className="rounded-xl p-3" style={{ background: "#f6f8fc" }}>
@@ -59,21 +59,26 @@ export default function ClientPortalView() {
 
   useEffect(() => {
     (async () => {
-      const configs = await base44.entities.ClientPortalConfig.filter({ access_token: token });
-      const config = configs[0];
-      if (!config || !config.active) { setState(s => ({ ...s, loading: false, error: "Portal inativo ou link inválido." })); return; }
+      try {
+        const configs = await base44.entities.ClientPortalConfig.filter({ access_token: token });
+        const config = configs[0];
+        if (!config || !config.active) { setState(s => ({ ...s, loading: false, error: "Portal inativo ou link inválido." })); return; }
 
-      const [project, allReports] = await Promise.all([
-        base44.entities.Project.get(config.project_id),
-        base44.entities.DailyReport.filter({ project_id: config.project_id }),
-      ]);
+        const [project, allReports] = await Promise.all([
+          base44.entities.Project.get(config.project_id),
+          base44.entities.DailyReport.filter({ project_id: config.project_id }),
+        ]);
 
-      const reports = allReports.filter(r => r.status === "Publicado").sort((a, b) => (b.report_date || "").localeCompare(a.report_date || ""));
+        const reports = allReports
+          .filter(r => r.status === "Publicado" && r.visible_to_client !== false)
+          .sort((a, b) => (b.report_date || "").localeCompare(a.report_date || ""));
 
-      setState({ loading: false, project, config, reports, error: null });
+        setState({ loading: false, project, config, reports, error: null });
 
-      // Register access
-      await base44.entities.ClientPortalConfig.update(config.id, { client_last_access: new Date().toISOString() }).catch(() => {});
+        await base44.entities.ClientPortalConfig.update(config.id, { client_last_access: new Date().toISOString() }).catch(() => {});
+      } catch {
+        setState(s => ({ ...s, loading: false, error: "Não foi possível carregar este portal agora." }));
+      }
     })();
   }, [token]);
 
@@ -220,6 +225,16 @@ export default function ClientPortalView() {
             <div className="space-y-3">
               {reports.map(r => <ReportItem key={r.id} report={r} />)}
             </div>
+          </div>
+        )}
+
+        {config?.show_reports && reports.length === 0 && (
+          <div className="rounded-2xl bg-white p-5 text-center" style={{ border: "1.5px solid #e1e5ed" }}>
+            <FileText className="mx-auto mb-3 h-8 w-8" style={{ color: "#9aabcd" }} />
+            <p className="text-sm font-bold" style={{ color: "#172441" }}>Ainda não há atualizações publicadas</p>
+            <p className="mt-1 text-xs leading-relaxed" style={{ color: "#778096" }}>
+              A equipe responsável pela obra publicará fotos e relatórios aqui assim que houver uma atualização liberada.
+            </p>
           </div>
         )}
 

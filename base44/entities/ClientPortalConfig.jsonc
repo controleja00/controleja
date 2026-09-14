@@ -43,6 +43,10 @@
       "type": "boolean",
       "title": "Mostrar Prazo",
       "default": true
+    },
+    "client_last_access": {
+      "type": "string",
+      "title": "\u00daltimo Acesso do Cliente"
     }
   },
   "required": [
