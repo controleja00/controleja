@@ -61,6 +61,12 @@ const normalizeWrite = (payload = {}, { includeOwner = false } = {}) => {
     if (copy[field] === "" && field.endsWith("_id")) {
       copy[field] = null;
     }
+    if (
+      copy[field] === "" &&
+      (field.endsWith("_date") || field.endsWith("_at") || field === "date" || field === "due_date")
+    ) {
+      copy[field] = null;
+    }
   });
   return copy;
 };

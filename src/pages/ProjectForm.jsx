@@ -127,8 +127,7 @@ export default function ProjectForm() {
       navigate("/projects");
     } catch (saveError) {
       console.error("Project save failed", saveError);
-      const reason = saveError?.message ? ` Motivo: ${saveError.message}` : "";
-      setError(`Não foi possível salvar a obra agora.${reason}`);
+      setError("Não foi possível salvar a obra agora. Revise os dados ou tente novamente em alguns instantes.");
       setSaving(false);
     }
   };
