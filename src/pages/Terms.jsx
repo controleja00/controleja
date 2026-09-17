@@ -34,7 +34,7 @@ export default function Terms() {
               <li>O plano Gratuito é gratuito para sempre, sem necessidade de cartão de crédito.</li>
               <li>Os planos pagos (Essencial e Profissional) são cobrados mensalmente.</li>
               <li>Novos assinantes podem ter 7 dias de teste grátis quando essa oferta estiver disponível na página de planos.</li>
-              <li>Cancelamentos podem ser feitos a qualquer momento nas configurações da conta.</li>
+              <li>Enquanto o fluxo de cobrança está em implantação, cancelamentos e mudanças de plano são solicitados pelo suporte.</li>
               <li>Não há reembolso proporcional para cancelamentos no meio do ciclo pago.</li>
             </ul>
           </section>
@@ -62,7 +62,7 @@ export default function Terms() {
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>8. Cancelamento</h2>
-            <p>Você pode cancelar sua conta a qualquer momento pelas configurações. Após o cancelamento, seus dados ficam disponíveis por 30 dias para exportação.</p>
+            <p>Você pode solicitar o cancelamento da conta e a exportação dos seus dados pelo canal de suporte. Informaremos os prazos aplicáveis no atendimento.</p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>9. Lei aplicável</h2>

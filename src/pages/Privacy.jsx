@@ -22,7 +22,7 @@ export default function Privacy() {
         <div className="space-y-8 text-sm leading-relaxed" style={{ color: "#424c62" }}>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>1. Introdução</h2>
-            <p>A Consuobra está comprometida em proteger a privacidade dos seus usuários. Esta Política descreve como coletamos, usamos e protegemos suas informações, em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
+            <p>A Consuobra está comprometida em proteger a privacidade dos seus usuários. Esta Política descreve como coletamos, usamos e protegemos suas informações, observando os princípios e direitos previstos na Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>2. Dados que coletamos</h2>
@@ -67,11 +67,11 @@ export default function Privacy() {
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>6. Segurança</h2>
-            <p>Implementamos criptografia TLS/SSL, controle de acesso por perfil, backups automáticos e monitoramento contínuo de segurança. Seus dados são usados exclusivamente para organizar e controlar suas obras.</p>
+            <p>Utilizamos conexão criptografada por TLS/SSL, autenticação e regras de acesso que separam os dados de cada conta. Revisamos periodicamente essas medidas e os recursos de continuidade oferecidos pelos nossos provedores de infraestrutura.</p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>7. Retenção de dados</h2>
-            <p>Mantemos seus dados enquanto a conta estiver ativa. Após cancelamento, os dados ficam disponíveis por 30 dias para exportação e são excluídos após 90 dias, salvo obrigação legal.</p>
+            <p>Mantemos os dados necessários enquanto a conta estiver ativa. Pedidos de exportação, correção ou exclusão são atendidos pelo canal de suporte, respeitados os prazos técnicos e as obrigações legais aplicáveis.</p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>8. Contato</h2>

@@ -11,8 +11,8 @@ const DefaultFallback = () => (
   </div>
 );
 
-export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthenticatedElement }) {
-  const { isAuthenticated, isLoadingAuth, authChecked, authError, checkUserAuth } = useAuth();
+export default function ProtectedRoute({ fallback = <DefaultFallback />, requiredRole }) {
+  const { user, isAuthenticated, isLoadingAuth, authChecked, authError, checkUserAuth } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -29,6 +29,10 @@ export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthe
     // Preserve the destination so the user returns after login
     const next = encodeURIComponent(location.pathname + location.search);
     return <Navigate to={`/login?next=${next}`} replace />;
+  }
+
+  if (requiredRole && user?.role !== requiredRole) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <Outlet />;

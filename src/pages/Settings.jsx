@@ -12,7 +12,7 @@ export default function Settings() {
   const [user, setUser] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [profile, setProfile] = useState({ full_name: "", phone: "", company_name: "", cnpj: "", role: "" });
+  const [profile, setProfile] = useState({ full_name: "", phone: "", company_name: "", cnpj: "", job_title: "" });
   const currentPlan = getPlanById(getUserPlanId(user));
   const isTrialing = user?.subscription_status === "trialing";
   const trialEnd = user?.trial_ends_at ? new Date(user.trial_ends_at) : null;
@@ -28,7 +28,7 @@ export default function Settings() {
         phone: u.phone || "",
         company_name: u.company_name || "",
         cnpj: u.cnpj || "",
-        role: u.role || "",
+        job_title: u.job_title || "",
       });
     }).catch(() => {});
   }, []);
@@ -62,7 +62,7 @@ export default function Settings() {
                 <div><Label>Nome completo</Label><Input value={profile.full_name} onChange={e => set("full_name", e.target.value)} /></div>
                 <div><Label>E-mail</Label><Input value={user?.email || ""} disabled className="opacity-60" /></div>
                 <div><Label>Telefone / WhatsApp</Label><Input value={profile.phone} onChange={e => set("phone", e.target.value)} placeholder="(11) 99999-9999" /></div>
-                <div><Label>Cargo</Label><Input value={profile.role} onChange={e => set("role", e.target.value)} placeholder="Engenheiro, Diretor..." /></div>
+                <div><Label>Cargo</Label><Input value={profile.job_title} onChange={e => set("job_title", e.target.value)} placeholder="Engenheiro, Diretor..." /></div>
               </div>
               <Button onClick={saveProfile} disabled={saving} className="gap-2">
                 {saved ? <><CheckCircle2 className="h-4 w-4" />Salvo!</> : saving ? "Salvando..." : "Salvar alterações"}

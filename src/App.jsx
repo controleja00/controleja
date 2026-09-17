@@ -7,6 +7,7 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Layout from './components/Layout';
 import { BrandMark } from '@/components/BrandLogo';
+import AppErrorBoundary from '@/components/AppErrorBoundary';
 
 // Auth pages
 import Login from './pages/Login';
@@ -105,7 +106,6 @@ const AuthenticatedApp = () => {
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin" element={<AdminPanel />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/subcontractors" element={<Subcontractors />} />
           <Route path="/subcontractors/new" element={<SubcontractorForm />} />
@@ -140,6 +140,12 @@ const AuthenticatedApp = () => {
         </Route>
       </Route>
 
+      <Route element={<ProtectedRoute requiredRole="admin" />}>
+        <Route element={<Layout />}>
+          <Route path="/admin" element={<AdminPanel />} />
+        </Route>
+      </Route>
+
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
@@ -147,14 +153,16 @@ const AuthenticatedApp = () => {
 
 function App() {
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <AuthenticatedApp />
-        </Router>
-        <Toaster />
-      </QueryClientProvider>
-    </AuthProvider>
+    <AppErrorBoundary>
+      <AuthProvider>
+        <QueryClientProvider client={queryClientInstance}>
+          <Router>
+            <AuthenticatedApp />
+          </Router>
+          <Toaster />
+        </QueryClientProvider>
+      </AuthProvider>
+    </AppErrorBoundary>
   );
 }
 

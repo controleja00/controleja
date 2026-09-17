@@ -95,19 +95,16 @@ const ensureProfile = async (authUser) => {
   const payload = {
     id: authUser.id,
     email: authUser.email,
-    role: authUser.user_metadata?.role || "user",
     full_name: authUser.user_metadata?.full_name || authUser.user_metadata?.name || null,
-    plan_id: authUser.user_metadata?.plan_id || "free",
-    subscription_status: authUser.user_metadata?.subscription_status || "free",
-    trial_ends_at: authUser.user_metadata?.trial_ends_at || null,
   };
 
   const { data, error } = await client
     .from("profiles")
-    .upsert(payload, { onConflict: "id" })
+    .insert(payload)
     .select("*")
     .single();
 
+  if (error?.code === "23505") return getProfile(authUser.id);
   if (error) throw error;
   return data;
 };
@@ -316,7 +313,7 @@ export const consuobra = {
       return data;
     },
 
-    async register({ email, password, plan_id = "free", subscription_status = "free", trial_ends_at = null }) {
+    async register({ email, password, plan_id = "free" }) {
       const client = requireSupabase();
       const { data, error } = await client.auth.signUp({
         email,
@@ -324,10 +321,7 @@ export const consuobra = {
         options: {
           emailRedirectTo: `${window.location.origin}/login`,
           data: {
-            role: "user",
-            plan_id,
-            subscription_status,
-            trial_ends_at,
+            requested_plan: plan_id,
           },
         },
       });
@@ -370,7 +364,11 @@ export const consuobra = {
       } = await client.auth.getUser();
       if (userError || !user) throw userError || new Error("Usuario nao autenticado.");
 
-      const payload = normalizeWrite(profile, { includeOwner: true });
+      const allowedFields = ["full_name", "phone", "company_name", "company_type", "cnpj", "job_title", "onboarding_goal"];
+      const payload = Object.fromEntries(
+        Object.entries(normalizeWrite(profile, { includeOwner: true }))
+          .filter(([field]) => allowedFields.includes(field))
+      );
       const { data, error } = await client
         .from("profiles")
         .update(payload)

@@ -15,7 +15,7 @@ const faqs = [
   { q: "Como enviar um documento?", a: 'Acesse "Documentos", clique em "Enviar Documento", selecione a obra e o tipo, depois anexe o arquivo.' },
   { q: "Como acompanhar o progresso de uma obra?", a: 'Na página "Obras", clique em "Ver obra" para acessar a Central da Obra com etapas, gastos, documentos e fotos.' },
   { q: "Como gerar um relatório?", a: 'Acesse "Relatórios" no menu, selecione a obra desejada e clique em "Gerar Relatório".' },
-  { q: "Meus dados são seguros?", a: 'Sim. Seus dados são protegidos com criptografia TLS/SSL e estamos em conformidade com a LGPD. Seus dados são usados apenas para organizar suas obras.' },
+  { q: "Como meus dados são protegidos?", a: 'Usamos conexão TLS/SSL, autenticação e regras de acesso que separam os dados de cada conta.' },
 ];
 
 export default function Support() {

@@ -91,8 +91,8 @@ export default function Plans() {
           <h2 className="text-2xl font-black text-center mb-8" style={{ color: "#172441" }}>Perguntas frequentes</h2>
           {[
             { q: "Preciso de cartão de crédito para criar conta?", a: "Não. O plano Gratuito não exige cartão de crédito para começar." },
-            { q: "Posso trocar de plano depois?", a: "Sim. Você pode fazer upgrade ou downgrade a qualquer momento pelas configurações da conta." },
-            { q: "Meus dados ficam seguros?", a: "Sim. Usamos criptografia TLS/SSL, backups automáticos e estamos em conformidade com a LGPD." },
+            { q: "Posso trocar de plano depois?", a: "Sim. Enquanto o checkout está em implantação, nossa equipe faz a alteração pelo suporte. Depois, a troca ficará disponível na conta." },
+            { q: "Como meus dados são protegidos?", a: "Usamos conexão TLS/SSL, autenticação e regras de acesso que separam os dados de cada conta." },
           ].map(faq => (
             <details key={faq.q} className="group rounded-xl" style={{ border: "1.5px solid #e1e5ed" }}>
               <summary className="px-5 py-4 text-sm font-semibold cursor-pointer list-none flex items-center justify-between hover:bg-gray-50 rounded-xl transition-colors" style={{ color: "#172441" }}>

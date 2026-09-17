@@ -9,7 +9,7 @@ const faqs = [
   { q: "Como criar uma conta no Consuobra?", a: 'Clique em "Criar conta grátis" na página inicial, preencha seu e-mail e senha e confirme seu e-mail. É rápido e gratuito.' },
   { q: "O Consuobra é gratuito?", a: "Sim! O plano Inicial é gratuito para sempre e permite controlar 1 obra com gastos, documentos e alertas básicos." },
   { q: "Funciona no celular?", a: "Sim, o Consuobra é totalmente responsivo e funciona bem em qualquer smartphone, sem precisar instalar nada." },
-  { q: "Meus dados são seguros?", a: "Sim. Usamos criptografia TLS/SSL e estamos em conformidade com a LGPD. Seus dados são usados apenas para organizar suas obras." },
+  { q: "Como meus dados são protegidos?", a: "Usamos conexão TLS/SSL, autenticação e regras de acesso que separam os dados de cada conta." },
   { q: "Como cadastrar uma obra?", a: 'Após criar sua conta, acesse "Obras" e clique em "Nova Obra". Preencha nome, endereço e cliente para começar.' },
   { q: "Posso usar com minha equipe?", a: "Sim, no plano Empresa você pode adicionar múltiplos usuários com permissões diferentes. Fale com nossa equipe para saber mais." },
 ];
