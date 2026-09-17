@@ -21,27 +21,31 @@ export default function EditProgressModal({ open, onClose, project, onSaved }) {
   const handleSave = async () => {
     if (pct < 0 || pct > 100) { toast.error("O progresso deve estar entre 0% e 100%."); return; }
     setSaving(true);
-    const prev = project.progress_percent ?? 0;
-    const me = await consuobra.auth.me();
-    await Promise.all([
-      consuobra.entities.Project.update(project.id, { progress_percent: pct }),
-      consuobra.entities.ProgressHistory.create({
+    try {
+      const prev = project.progress_percent ?? 0;
+      const me = await consuobra.auth.me();
+      const updated = await consuobra.entities.Project.update(project.id, { progress_percent: pct });
+      await consuobra.entities.ProgressHistory.create({
         project_id: project.id,
         project_name: project.name,
         previous_percent: prev,
         new_percent: pct,
         observation: obs,
         responsible: me?.full_name || me?.email || "Responsável",
-      }),
-    ]);
-    setSaving(false);
-    toast.success("Progresso da obra atualizado com sucesso.");
-    onSaved({ ...project, progress_percent: pct });
-    onClose();
+      });
+      toast.success("Progresso da obra atualizado com sucesso.");
+      onSaved(updated);
+      onClose();
+    } catch (error) {
+      console.error("Progress update failed", error);
+      toast.error("Não foi possível atualizar o progresso agora.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && onClose()}>
       <DialogContent className="max-w-sm">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
