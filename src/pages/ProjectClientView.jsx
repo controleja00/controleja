@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { CheckCircle2, AlertTriangle, Camera, DollarSign, Calendar, MapPin } from "lucide-react";
 
 const getHealthInfo = (project, alerts, cashFlow) => {
@@ -24,10 +24,10 @@ export default function ProjectClientView() {
 
   useEffect(() => {
     Promise.all([
-      base44.entities.Project.get(id),
-      base44.entities.Measurement.filter({ project_id: id }),
-      base44.entities.Alert.filter({ related_id: id, is_resolved: false }),
-      base44.entities.CashFlowEntry.filter({ project_id: id }),
+      consuobra.entities.Project.get(id),
+      consuobra.entities.Measurement.filter({ project_id: id }),
+      consuobra.entities.Alert.filter({ related_id: id, is_resolved: false }),
+      consuobra.entities.CashFlowEntry.filter({ project_id: id }),
     ]).then(([p, m, a, cf]) => {
       setProject(p);
       setMeasurements(m);

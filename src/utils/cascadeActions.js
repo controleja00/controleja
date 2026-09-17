@@ -5,7 +5,7 @@
  * Toda alteração em qualquer módulo dispara eventos automáticos em cascata:
  * medição → progresso, fases, financeiro, score, alertas, dashboard
  */
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { isOwnTeam } from "@/lib/workActors";
 
 /**
@@ -18,7 +18,7 @@ import { isOwnTeam } from "@/lib/workActors";
  */
 export async function approveMeasurement(measurement, { projects = [], allMeasurements = [] } = {}) {
   // 1. Aprovar medição
-  await base44.entities.Measurement.update(measurement.id, {
+  await consuobra.entities.Measurement.update(measurement.id, {
     status: "Aprovada",
     approved_by: "Sistema",
   });
@@ -57,7 +57,7 @@ export async function approveMeasurement(measurement, { projects = [], allMeasur
         return sum + (phasePct * (Number(phase.weight) || 0)) / 100;
       }, 0);
 
-      await base44.entities.Project.update(measurement.project_id, {
+      await consuobra.entities.Project.update(measurement.project_id, {
         phases: updatedPhases,
         progress_percent: Math.round(weightedProgress),
       });
@@ -68,13 +68,13 @@ export async function approveMeasurement(measurement, { projects = [], allMeasur
       const newProgress = totalBudget > 0
         ? Math.min(100, Math.round((totalApprovedValue / totalBudget) * 100))
         : Math.min(100, (project.progress_percent || 0) + 5);
-      await base44.entities.Project.update(measurement.project_id, { progress_percent: newProgress });
+      await consuobra.entities.Project.update(measurement.project_id, { progress_percent: newProgress });
     }
   }
 
   // 3. Criar lançamento no fluxo de caixa
   if ((measurement.total_value || 0) > 0) {
-    await base44.entities.CashFlowEntry.create({
+    await consuobra.entities.CashFlowEntry.create({
       project_id: measurement.project_id,
       project_name: measurement.project_name || "",
       description: `Medição aprovada: ${measurement.service}`,
@@ -91,13 +91,13 @@ export async function approveMeasurement(measurement, { projects = [], allMeasur
   // 4. Atualizar score do subempreiteiro (+2 pontos operacional por medição aprovada)
   if (measurement.subcontractor_id && !isOwnTeam(measurement.subcontractor_id)) {
     let sub = null;
-    try { sub = await base44.entities.Subcontractor.get(measurement.subcontractor_id); } catch (e) { sub = null; }
+    try { sub = await consuobra.entities.Subcontractor.get(measurement.subcontractor_id); } catch (e) { sub = null; }
     if (sub) {
       const op = Math.min(100, (sub.score_operational || 50) + 2);
       const total = Math.round(
         ((sub.score_technical || 50) + (sub.score_legal || 50) + (sub.score_financial || 50) + op + (sub.score_behavioral || 50)) / 5
       );
-      await base44.entities.Subcontractor.update(measurement.subcontractor_id, {
+      await consuobra.entities.Subcontractor.update(measurement.subcontractor_id, {
         score_operational: op,
         score_total: total,
         availability: sub.availability === "Indisponível" ? sub.availability : "Ocupado",
@@ -107,7 +107,7 @@ export async function approveMeasurement(measurement, { projects = [], allMeasur
 
   // 5. Criar alerta de acompanhamento se valor alto
   if ((measurement.total_value || 0) > 50000) {
-    await base44.entities.Alert.create({
+    await consuobra.entities.Alert.create({
       title: `Pagamento de alto valor pendente — ${measurement.service}`,
       description: `Medição aprovada de R$ ${measurement.total_value?.toLocaleString("pt-BR")} (${measurement.subcontractor_name}). Vencimento em 7 dias.`,
       type: "Medição pendente",
@@ -129,25 +129,25 @@ export async function approveMeasurement(measurement, { projects = [], allMeasur
  * - registra data de pagamento
  */
 export async function markCashFlowPaid(entryId, paidDate) {
-  return base44.entities.CashFlowEntry.update(entryId, {
+  return consuobra.entities.CashFlowEntry.update(entryId, {
     status: "Pago",
     paid_date: paidDate || new Date().toISOString().split("T")[0],
   });
 }
 
 export async function rejectMeasurement(measurement) {
-  await base44.entities.Measurement.update(measurement.id, { status: "Rejeitada" });
+  await consuobra.entities.Measurement.update(measurement.id, { status: "Rejeitada" });
 
   // Leve penalidade no score
   if (measurement.subcontractor_id && !isOwnTeam(measurement.subcontractor_id)) {
     let sub = null;
-    try { sub = await base44.entities.Subcontractor.get(measurement.subcontractor_id); } catch (e) { sub = null; }
+    try { sub = await consuobra.entities.Subcontractor.get(measurement.subcontractor_id); } catch (e) { sub = null; }
     if (sub) {
       const op = Math.max(0, (sub.score_operational || 50) - 1);
       const total = Math.round(
         ((sub.score_technical || 50) + (sub.score_legal || 50) + (sub.score_financial || 50) + op + (sub.score_behavioral || 50)) / 5
       );
-      await base44.entities.Subcontractor.update(measurement.subcontractor_id, {
+      await consuobra.entities.Subcontractor.update(measurement.subcontractor_id, {
         score_operational: op,
         score_total: total,
       });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,7 +34,7 @@ export default function EditRevenueModal({ open, onClose, project, onSaved }) {
     const value = parseBRL(rawValue);
     if (value < 0) { toast.error("Informe um valor válido."); return; }
     setSaving(true);
-    await base44.entities.Project.update(project.id, { contracted_value: value });
+    await consuobra.entities.Project.update(project.id, { contracted_value: value });
     setSaving(false);
     toast.success("Receita contratada atualizada com sucesso.");
     onSaved({ ...project, contracted_value: value });

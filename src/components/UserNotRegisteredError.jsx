@@ -1,5 +1,5 @@
 import { LogOut } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { consuobra } from '@/api/consuobraClient';
 import BrandLogo from '@/components/BrandLogo';
 import { CONTACT_EMAILS, CONTACT_LINKS } from '@/lib/contact';
 
@@ -27,7 +27,7 @@ export default function UserNotRegisteredError() {
               <li className="flex items-start gap-2"><span className="shrink-0">•</span>Entre em contato: <a href={CONTACT_LINKS.supportEmail} className="font-medium underline" style={{ color: "#1f3258" }}>{CONTACT_EMAILS.support}</a></li>
             </ul>
           </div>
-          <button onClick={() => base44.auth.logout("/")} className="w-full h-11 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors" style={{ border: "1.5px solid #e1e5ed", color: "#424c62", background: "#FFFFFF" }}>
+          <button onClick={() => consuobra.auth.logout("/")} className="w-full h-11 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors" style={{ border: "1.5px solid #e1e5ed", color: "#424c62", background: "#FFFFFF" }}>
             <LogOut className="h-4 w-4" />Sair e tentar com outra conta
           </button>
         </div>

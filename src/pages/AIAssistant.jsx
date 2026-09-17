@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Bot, Loader2 } from "lucide-react";
@@ -22,7 +22,7 @@ export default function AIAssistant() {
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    base44.agents.createConversation({
+    consuobra.agents.createConversation({
       agent_name: "assistant",
       metadata: { name: "Nova conversa" }
     }).then(conv => setConversation(conv));
@@ -30,7 +30,7 @@ export default function AIAssistant() {
 
   useEffect(() => {
     if (!conversation?.id) return;
-    const unsub = base44.agents.subscribeToConversation(conversation.id, (data) => {
+    const unsub = consuobra.agents.subscribeToConversation(conversation.id, (data) => {
       setMessages(data.messages || []);
       if (data.messages?.at(-1)?.role === "assistant") setLoading(false);
     });
@@ -46,7 +46,7 @@ export default function AIAssistant() {
     if (!msg || !conversation || loading) return;
     setInput("");
     setLoading(true);
-    await base44.agents.addMessage(conversation, { role: "user", content: msg });
+    await consuobra.agents.addMessage(conversation, { role: "user", content: msg });
   };
 
   return (

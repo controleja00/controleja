@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Link } from "react-router-dom";
 import { Trophy, Medal, Award } from "lucide-react";
 import ScoreBadge from "../components/ScoreBadge";
@@ -28,7 +28,7 @@ export default function Ranking() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.auth.me().then((me) => base44.entities.Subcontractor.filter({ created_by_id: me.id }))
+    consuobra.auth.me().then((me) => consuobra.entities.Subcontractor.filter({ created_by_id: me.id }))
       .then(d => { setSubs(d); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);

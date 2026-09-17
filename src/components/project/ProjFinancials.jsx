@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Link } from "react-router-dom";
 import {
   TrendingUp, TrendingDown, DollarSign, Clock,
@@ -32,7 +32,7 @@ export default function ProjFinancials({ project, measurements }) {
   const [loadingCF, setLoadingCF] = useState(true);
 
   useEffect(() => {
-    base44.entities.CashFlowEntry.filter({ project_id: project.id })
+    consuobra.entities.CashFlowEntry.filter({ project_id: project.id })
       .then(data => { setCashFlow(data); setLoadingCF(false); });
   }, [project.id]);
 

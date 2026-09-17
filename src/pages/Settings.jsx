@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +21,7 @@ export default function Settings() {
     : `${TRIAL_DAYS} dias de teste grátis nos planos pagos`;
 
   useEffect(() => {
-    base44.auth.me().then(u => {
+    consuobra.auth.me().then(u => {
       setUser(u);
       setProfile({
         full_name: u.full_name || "",
@@ -35,7 +35,7 @@ export default function Settings() {
 
   const saveProfile = async () => {
     setSaving(true);
-    await base44.auth.updateMe(profile);
+    await consuobra.auth.updateMe(profile);
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -158,7 +158,7 @@ export default function Settings() {
                 </div>
               </div>
               <div className="cj-form-panel p-6">
-                <Button variant="outline" className="gap-2 text-muted-foreground" onClick={() => base44.auth.logout()}>
+                <Button variant="outline" className="gap-2 text-muted-foreground" onClick={() => consuobra.auth.logout()}>
                   <LogOut className="h-4 w-4" />Sair da conta
                 </Button>
               </div>

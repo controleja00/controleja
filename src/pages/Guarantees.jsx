@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,11 +26,11 @@ export default function Guarantees() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ project_id: "", subcontractor_id: "", service: "", completion_date: "", warranty_months: "12", notes: "" });
 
-  const load = () => base44.auth.me()
+  const load = () => consuobra.auth.me()
     .then((me) => Promise.all([
-      base44.entities.Guarantee.filter({ created_by_id: me.id }, "-created_date"),
-      base44.entities.Project.filter({ created_by_id: me.id }),
-      base44.entities.Subcontractor.filter({ created_by_id: me.id })
+      consuobra.entities.Guarantee.filter({ created_by_id: me.id }, "-created_date"),
+      consuobra.entities.Project.filter({ created_by_id: me.id }),
+      consuobra.entities.Subcontractor.filter({ created_by_id: me.id })
     ]))
     .then(([g, p, s]) => { setItems(g); setProjects(p); setSubs(s); setLoading(false); });
 
@@ -49,7 +49,7 @@ export default function Guarantees() {
       d.setMonth(d.getMonth() + months);
       warranty_end_date = d.toISOString().split("T")[0];
     }
-    await base44.entities.Guarantee.create({
+    await consuobra.entities.Guarantee.create({
       ...form,
       project_name: project?.name || "",
       subcontractor_name: isOwnTeam(form.subcontractor_id) ? OWN_TEAM_NAME : sub?.company_name || "",

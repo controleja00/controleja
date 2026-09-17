@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,14 +18,14 @@ export default function Benchmark() {
   const [form, setForm] = useState({ service: "", category: "", region: "", unit: "", avg_price: "", min_price: "", max_price: "", avg_productivity: "", productivity_unit: "", sample_size: "", period: "" });
   const [saving, setSaving] = useState(false);
 
-  const load = () => base44.entities.Benchmark.list().then(d => { setItems(d); setLoading(false); });
+  const load = () => consuobra.entities.Benchmark.list().then(d => { setItems(d); setLoading(false); });
   useEffect(() => { load(); }, []);
 
   const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
 
   const save = async () => {
     setSaving(true);
-    await base44.entities.Benchmark.create({
+    await consuobra.entities.Benchmark.create({
       ...form,
       avg_price: Number(form.avg_price) || 0,
       min_price: Number(form.min_price) || 0,

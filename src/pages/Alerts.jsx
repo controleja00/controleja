@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertTriangle, CheckCircle2, Clock3, ShieldCheck } from "lucide-react";
@@ -50,8 +50,8 @@ export default function Alerts() {
   const [loading, setLoading] = useState(true);
   const [severityFilter, setSeverityFilter] = useState("all");
 
-  const load = () => base44.auth.me().then((me) => (
-    base44.entities.Alert.filter({ created_by_id: me.id }, "-created_date")
+  const load = () => consuobra.auth.me().then((me) => (
+    consuobra.entities.Alert.filter({ created_by_id: me.id }, "-created_date")
       .then((data) => {
         setAlerts(data);
         setLoading(false);
@@ -61,7 +61,7 @@ export default function Alerts() {
   useEffect(() => { load(); }, []);
 
   const resolve = async (id) => {
-    await base44.entities.Alert.update(id, { is_resolved: true, is_read: true });
+    await consuobra.entities.Alert.update(id, { is_resolved: true, is_read: true });
     load();
   };
 

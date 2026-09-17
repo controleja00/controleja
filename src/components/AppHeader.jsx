@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { ChevronLeft, Bell } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import BrandLogo from "@/components/BrandLogo";
 
 const pageTitles = {
@@ -40,8 +40,8 @@ export default function AppHeader() {
   const [alertCount, setAlertCount] = useState(0);
 
   useEffect(() => {
-    base44.auth.me().then((me) => {
-      return base44.entities.Alert.filter({ is_resolved: false, created_by_id: me.id });
+    consuobra.auth.me().then((me) => {
+      return consuobra.entities.Alert.filter({ is_resolved: false, created_by_id: me.id });
     }).then((alerts) => {
       setAlertCount(alerts.filter((a) => a.severity === "Crítica" || a.severity === "Alta").length);
     }).catch(() => {});

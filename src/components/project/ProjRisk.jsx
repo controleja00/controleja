@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Loader2, Shield, Brain } from "lucide-react";
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer } from "recharts";
@@ -30,7 +30,7 @@ export default function ProjRisk({ project, subs, measurements, documents }) {
 
   const runAIAnalysis = async () => {
     setLoading(true);
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é um especialista em gestão de risco de obras de construção civil. Analise os dados abaixo e gere um relatório de risco completo.
 
 Obra: ${project.name}

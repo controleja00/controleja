@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { ArrowLeft, MailCheck } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 
@@ -13,7 +13,7 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); setLoading(true);
-    try { await base44.auth.resetPasswordRequest(email); } catch {}
+    try { await consuobra.auth.resetPasswordRequest(email); } catch {}
     setLoading(false); setSent(true);
   };
 

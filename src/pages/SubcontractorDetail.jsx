@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2, ArrowLeft } from "lucide-react";
@@ -13,15 +13,15 @@ export default function SubcontractorDetail() {
   const [docs, setDocs] = useState([]);
 
   useEffect(() => {
-    base44.entities.Subcontractor.get(id).then(setSub);
-    base44.entities.Document.filter({ subcontractor_id: id }).then(setDocs);
+    consuobra.entities.Subcontractor.get(id).then(setSub);
+    consuobra.entities.Document.filter({ subcontractor_id: id }).then(setDocs);
   }, [id]);
 
   if (!sub) return <div className="flex items-center justify-center h-96"><div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" /></div>;
 
   const handleDelete = async () => {
     if (confirm("Deseja realmente excluir este subempreiteiro?")) {
-      await base44.entities.Subcontractor.delete(id);
+      await consuobra.entities.Subcontractor.delete(id);
       navigate("/subcontractors");
     }
   };

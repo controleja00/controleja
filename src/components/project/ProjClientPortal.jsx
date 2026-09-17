@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Camera, FileText, Settings, Bell, Loader2, AlertTriangle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DailyPhotoUpload from "./portal/DailyPhotoUpload";
@@ -19,8 +19,8 @@ export default function ProjClientPortal({ project }) {
     setError("");
     try {
       const [reps, me] = await Promise.all([
-        base44.entities.DailyReport.filter({ project_id: project.id }),
-        base44.auth.me().catch(() => null),
+        consuobra.entities.DailyReport.filter({ project_id: project.id }),
+        consuobra.auth.me().catch(() => null),
       ]);
       setReports(reps.sort((a, b) => (b.report_date || "").localeCompare(a.report_date || "")));
       setUser(me);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Zap, Loader2, CheckCircle2 } from "lucide-react";
 
@@ -34,7 +34,7 @@ export default function ProjAlerts({ project, subs, measurements, documents }) {
 
   const generateAIAlerts = async () => {
     setLoading(true);
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Gere alertas inteligentes para a obra "${project.name}" com base nos dados:
 Status: ${project.status} | Progresso: ${project.progress_percent || 0}%
 Prazo: ${project.expected_end_date} | Hoje: ${new Date().toISOString().split("T")[0]}

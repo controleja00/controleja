@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Bot, Loader2 } from "lucide-react";
@@ -38,7 +38,7 @@ Documentos: total ${documents.length}, vencidos ${documents.filter(d => d.status
     setLoading(true);
 
     const history = newMessages.map(m => `${m.role === "user" ? "Usuário" : "Assistente"}: ${m.content}`).join("\n");
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é o Assistente IA da obra "${project.name}" no Consuobra. Responda em português, de forma direta e prática, usando os dados abaixo.
 
 DADOS DA OBRA:

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
@@ -76,13 +76,13 @@ export default function Reports() {
   const [report, setReport] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(me => Promise.all([
-      base44.entities.Project.filter({ created_by_id: me.id }),
-      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
-      base44.entities.Measurement.filter({ created_by_id: me.id }),
-      base44.entities.Document.filter({ created_by_id: me.id }),
-      base44.entities.CashFlowEntry.filter({ created_by_id: me.id }, "-due_date", 300),
-      base44.entities.DailyReport.filter({ created_by_id: me.id }, "-report_date", 200),
+    consuobra.auth.me().then(me => Promise.all([
+      consuobra.entities.Project.filter({ created_by_id: me.id }),
+      consuobra.entities.Subcontractor.filter({ created_by_id: me.id }),
+      consuobra.entities.Measurement.filter({ created_by_id: me.id }),
+      consuobra.entities.Document.filter({ created_by_id: me.id }),
+      consuobra.entities.CashFlowEntry.filter({ created_by_id: me.id }, "-due_date", 300),
+      consuobra.entities.DailyReport.filter({ created_by_id: me.id }, "-report_date", 200),
     ]).then(([p, s, m, d, c, r]) => {
       setUser(me);
       setProjects(p.filter(project => project.status !== "Arquivada"));
@@ -195,7 +195,7 @@ Inclua uma seção final chamada "Dados que faltam para melhorar este relatório
     };
 
     try {
-      const res = await base44.integrations.Core.InvokeLLM({ prompt: prompts[reportType] });
+      const res = await consuobra.integrations.Core.InvokeLLM({ prompt: prompts[reportType] });
       setReport({
         content: typeof res === "string" ? res : JSON.stringify(res, null, 2),
         type: reportType,
@@ -219,7 +219,7 @@ Inclua uma seção final chamada "Dados que faltam para melhorar este relatório
     setSaving(true);
     setError("");
     try {
-      await base44.entities.DailyReport.create({
+      await consuobra.entities.DailyReport.create({
         project_id: selectedProjectData.id,
         project_name: selectedProjectData.name,
         report_date: today(),

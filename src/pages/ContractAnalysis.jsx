@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FileText, Loader2, AlertTriangle, CheckCircle2, Upload, Scale } from "lucide-react";
@@ -18,7 +18,7 @@ export default function ContractAnalysis() {
     if (!f) return;
     setFile(f);
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file: f });
+    const { file_url } = await consuobra.integrations.Core.UploadFile({ file: f });
     setFileUrl(file_url);
     setUploading(false);
   };
@@ -28,7 +28,7 @@ export default function ContractAnalysis() {
     setAnalyzing(true);
     setResult(null);
 
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é um advogado especialista em contratos de construção civil e direito trabalhista brasileiro. Analise o contrato abaixo em detalhes.
 
 ${contractText ? `Texto do contrato:\n${contractText}` : "Analise o documento anexo."}

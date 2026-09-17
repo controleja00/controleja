@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,7 +52,7 @@ function BaixaDialog({ entry, onDone }) {
 
   const confirm = async () => {
     setSaving(true);
-    await base44.entities.CashFlowEntry.update(entry.id, {
+    await consuobra.entities.CashFlowEntry.update(entry.id, {
       status: "Pago",
       paid_date: date,
     });
@@ -111,9 +111,9 @@ export default function CashFlow() {
   const [form, setForm] = useState({ project_id: "", description: "", type: "Despesa", category: "", value: "", due_date: "", status: "A pagar", notes: "" });
   const [error, setError] = useState("");
 
-  const load = () => base44.auth.me().then((me) => Promise.all([
-    base44.entities.CashFlowEntry.filter({ created_by_id: me.id }, "-due_date", 200),
-    base44.entities.Project.filter({ created_by_id: me.id }),
+  const load = () => consuobra.auth.me().then((me) => Promise.all([
+    consuobra.entities.CashFlowEntry.filter({ created_by_id: me.id }, "-due_date", 200),
+    consuobra.entities.Project.filter({ created_by_id: me.id }),
   ]).then(([e, p]) => {
     setEntries(e);
     setProjects(p);
@@ -133,7 +133,7 @@ export default function CashFlow() {
     setError("");
     setSaving(true);
     const project = projects.find((p) => p.id === form.project_id);
-    await base44.entities.CashFlowEntry.create({
+    await consuobra.entities.CashFlowEntry.create({
       ...form,
       project_name: project?.name || "",
       value,

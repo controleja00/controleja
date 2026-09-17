@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Link } from "react-router-dom";
 import {
   Building2,
@@ -140,17 +140,17 @@ export default function Dashboard() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().catch(() => null).then((me) => {
+    consuobra.auth.me().catch(() => null).then((me) => {
       if (!me) {
         setLoading(false);
         return;
       }
       setUser(me);
       Promise.all([
-        base44.entities.Project.filter({ created_by_id: me.id }),
-        base44.entities.Alert.filter({ is_resolved: false, created_by_id: me.id }),
-        base44.entities.Document.filter({ created_by_id: me.id }),
-        base44.entities.CashFlowEntry.filter({ created_by_id: me.id }, "-due_date", 100),
+        consuobra.entities.Project.filter({ created_by_id: me.id }),
+        consuobra.entities.Alert.filter({ is_resolved: false, created_by_id: me.id }),
+        consuobra.entities.Document.filter({ created_by_id: me.id }),
+        consuobra.entities.CashFlowEntry.filter({ created_by_id: me.id }, "-due_date", 100),
       ]).then(([p, a, d, c]) => {
         setProjects(p.filter((proj) => proj.status !== "Arquivada"));
         setAlerts(a);

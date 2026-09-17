@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Input } from "@/components/ui/input";
 import { Search, Shield } from "lucide-react";
 import PageHeader from "../components/PageHeader";
@@ -10,7 +10,7 @@ export default function AuditLogs() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    base44.auth.me().then((me) => base44.entities.AuditLog.filter({ created_by_id: me.id }, "-created_date", 100))
+    consuobra.auth.me().then((me) => consuobra.entities.AuditLog.filter({ created_by_id: me.id }, "-created_date", 100))
       .then(d => { setLogs(d); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);

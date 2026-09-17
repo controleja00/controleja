@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,7 +52,7 @@ export default function EditProjectDataModal({ open, onClose, project, onSaved }
       budget: form.budget ? parseBRL(form.budget) : null,
       progress_percent: Math.min(100, Math.max(0, Number(form.progress_percent) || 0)),
     };
-    await base44.entities.Project.update(project.id, updates);
+    await consuobra.entities.Project.update(project.id, updates);
     setSaving(false);
     toast.success("Dados da obra atualizados com sucesso.");
     onSaved({ ...project, ...updates });

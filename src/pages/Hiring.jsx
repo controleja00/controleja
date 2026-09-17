@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Link } from "react-router-dom";
 import { Plus, Search, Zap, Users, MapPin, Calendar, DollarSign, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -41,9 +41,9 @@ export default function Hiring() {
     workers_needed: "", equipment_needed: "", technical_requirements: ""
   });
 
-  const load = () => base44.auth.me().then(me => Promise.all([
-    base44.entities.HiringRequest.filter({ created_by_id: me.id }, "-created_date"),
-    base44.entities.Project.filter({ created_by_id: me.id }),
+  const load = () => consuobra.auth.me().then(me => Promise.all([
+    consuobra.entities.HiringRequest.filter({ created_by_id: me.id }, "-created_date"),
+    consuobra.entities.Project.filter({ created_by_id: me.id }),
   ]).then(([r, p]) => { setRequests(r); setProjects(p); setLoading(false); }));
 
   useEffect(() => { load(); }, []);
@@ -53,7 +53,7 @@ export default function Hiring() {
   const save = async () => {
     setSaving(true);
     const project = projects.find(p => p.id === form.project_id);
-    await base44.entities.HiringRequest.create({
+    await consuobra.entities.HiringRequest.create({
       ...form,
       project_name: project?.name || "",
       estimated_budget: Number(form.estimated_budget) || 0,

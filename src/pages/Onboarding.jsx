@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,8 +48,8 @@ export default function Onboarding() {
         return;
       }
       setLoading(true);
-      const me = await base44.auth.me().catch(() => null);
-      await base44.auth.updateMe({
+      const me = await consuobra.auth.me().catch(() => null);
+      await consuobra.auth.updateMe({
         company_name: data.company_name,
         company_type: data.company_type,
         full_name: data.contact_name,
@@ -61,7 +61,7 @@ export default function Onboarding() {
     }
     if (step === 2 && data.project_name && !createdProjectId) {
       setLoading(true);
-      const created = await base44.entities.Project.create({
+      const created = await consuobra.entities.Project.create({
         name: data.project_name,
         address: data.project_address || "A definir",
         client: data.project_client || data.company_name || "Próprio",
@@ -78,7 +78,7 @@ export default function Onboarding() {
     }
     if (step === 3 && data.objective) {
       setLoading(true);
-      await base44.auth.updateMe({ onboarding_goal: data.objective }).catch(() => {});
+      await consuobra.auth.updateMe({ onboarding_goal: data.objective }).catch(() => {});
       setLoading(false);
     }
     if (step < STEPS.length) setStep(s => s + 1);

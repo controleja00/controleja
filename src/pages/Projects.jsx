@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Link } from "react-router-dom";
 import { Plus, Search, Cpu, Archive, MoreVertical, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,10 +17,10 @@ export default function Projects() {
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(me => {
+    consuobra.auth.me().then(me => {
       Promise.all([
-        base44.entities.Project.filter({ created_by_id: me.id }),
-        base44.entities.Alert.filter({ is_resolved: false, created_by_id: me.id }),
+        consuobra.entities.Project.filter({ created_by_id: me.id }),
+        consuobra.entities.Alert.filter({ is_resolved: false, created_by_id: me.id }),
       ]).then(([p, a]) => { setProjects(p); setAlerts(a); setLoading(false); });
     });
   }, []);
@@ -122,7 +122,7 @@ export default function Projects() {
           project={deleteTarget}
           open={!!deleteTarget}
           onOpenChange={o => { if (!o) setDeleteTarget(null); }}
-          onArchived={() => { setDeleteTarget(null); base44.auth.me().then(me => base44.entities.Project.filter({ created_by_id: me.id }).then(d => setProjects(d))); }}
+          onArchived={() => { setDeleteTarget(null); consuobra.auth.me().then(me => consuobra.entities.Project.filter({ created_by_id: me.id }).then(d => setProjects(d))); }}
         />
       )}
     </div>

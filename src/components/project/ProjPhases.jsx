@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Link } from "react-router-dom";
 import {
   ChevronDown, ChevronUp, Sparkles, AlertTriangle, CheckCircle2, Loader2, Edit3, TrendingUp, TrendingDown, Minus
@@ -188,7 +188,7 @@ export default function ProjPhases({ project, measurements }) {
       progresso: calcPhaseProgress(p, measurements),
       status: p.status,
     }));
-    const result = await base44.integrations.Core.InvokeLLM({
+    const result = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é um especialista em gestão de obras de construção civil.
 Analise as fases da obra abaixo e forneça uma análise de risco e previsão por fase.
 

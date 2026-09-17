@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
+import { consuobra } from '@/api/consuobraClient';
 import { useQuery } from '@tanstack/react-query';
 import { Home, LayoutDashboard, LogIn } from 'lucide-react';
 import BrandLogo from '@/components/BrandLogo';
@@ -9,7 +9,7 @@ export default function PageNotFound() {
     queryKey: ['auth-check-404'],
     queryFn: async () => {
       try {
-        const user = await base44.auth.me();
+        const user = await consuobra.auth.me();
         return { isAuthenticated: true, user };
       } catch {
         return { isAuthenticated: false, user: null };

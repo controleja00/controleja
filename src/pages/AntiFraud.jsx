@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, ShieldAlert, Loader2, Upload, CheckCircle2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,7 +16,7 @@ export default function AntiFraud() {
 
   useEffect(() => {
     setLoading(true);
-    base44.auth.me().then((me) => base44.entities.Measurement.filter({ created_by_id: me.id }, "-created_date", 50)).then(d => {
+    consuobra.auth.me().then((me) => consuobra.entities.Measurement.filter({ created_by_id: me.id }, "-created_date", 50)).then(d => {
       setMeasurements(d);
       setLoading(false);
     }).catch(() => setLoading(false));
@@ -26,7 +26,7 @@ export default function AntiFraud() {
     const files = Array.from(e.target.files);
     setLoading(true);
     try {
-      const urls = await Promise.all(files.map(f => base44.integrations.Core.UploadFile({ file: f }).then(r => r.file_url)));
+      const urls = await Promise.all(files.map(f => consuobra.integrations.Core.UploadFile({ file: f }).then(r => r.file_url)));
       setPhotos(prev => [...prev, ...urls]);
     } catch {
       setResult({ overall_risk: "Erro", fraud_probability: 0, anomalies: [], summary: "Não foi possível enviar uma ou mais fotos. Tente novamente." });
@@ -49,7 +49,7 @@ export default function AntiFraud() {
       date: m.measurement_date
     }));
 
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é um especialista em detecção de fraudes em obras de construção civil. Analise os dados de medições e imagens fornecidos.
 
 Medições recentes: ${JSON.stringify(measurementSummary)}

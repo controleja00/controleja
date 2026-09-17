@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Sparkles, Loader2, ChevronRight, AlertCircle, ShoppingCart, Users, DollarSign, Clock, TrendingDown } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
@@ -30,7 +30,7 @@ export default function DecisionCenter({ data }) {
       empreiteiros_bloqueados: subcontractors.filter(s => s.status === "Bloqueado").length,
     };
 
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é um gerente de obras sênior com 20 anos de experiência. Analise os dados abaixo e gere exatamente 4 ações prioritárias para o gestor fazer HOJE.
 
 REGRAS:

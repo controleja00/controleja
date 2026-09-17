@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Zap, ArrowLeft, MapPin, Calendar, DollarSign, Users, Star, AlertTriangle, CheckCircle2, Loader2, ShieldCheck, TrendingUp, Clock, FileText } from "lucide-react";
 import ScoreBadge from "../components/ScoreBadge";
@@ -21,9 +21,9 @@ export default function HiringDetail() {
   const [generatedContract, setGeneratedContract] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then((me) => Promise.all([
-      base44.entities.HiringRequest.get(id),
-      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
+    consuobra.auth.me().then((me) => Promise.all([
+      consuobra.entities.HiringRequest.get(id),
+      consuobra.entities.Subcontractor.filter({ created_by_id: me.id }),
     ]).then(([r, s]) => {
       if (r?.created_by_id && r.created_by_id !== me.id) {
         setLoading(false);
@@ -46,7 +46,7 @@ export default function HiringDetail() {
       (s.specialty === request.service_type || !request.service_type || s.specialty === "Outro")
     );
 
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é um especialista em contratação de subempreiteiros para construção civil brasileira.
 
 NECESSIDADE DA OBRA:
@@ -114,7 +114,7 @@ Seja preciso, prático e direto.`,
       }
     });
     setMatches(res);
-    await base44.entities.HiringRequest.update(id, { status: "Em análise", ai_analysis: res.general_insight });
+    await consuobra.entities.HiringRequest.update(id, { status: "Em análise", ai_analysis: res.general_insight });
     setRequest(r => ({ ...r, status: "Em análise", ai_analysis: res.general_insight }));
     setAiLoading(false);
   };
@@ -122,7 +122,7 @@ Seja preciso, prático e direto.`,
   const generateContract = async (sub) => {
     setContractLoading(true);
     const matchData = matches?.ranking?.find(m => m.subcontractor_id === sub.id);
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Gere um CONTRATO DE EMPREITADA completo e profissional em português, baseado nos dados abaixo. Use linguagem jurídica adequada para construção civil brasileira. Inclua todas as cláusulas essenciais.
 
 CONTRATANTE: [Nome da Construtora]
@@ -160,21 +160,21 @@ Inclua obrigatoriamente:
 
   const hireSub = async (sub) => {
     setContracting(sub.id);
-    await base44.entities.HiringRequest.update(id, {
+    await consuobra.entities.HiringRequest.update(id, {
       status: "Contratado",
       hired_subcontractor_id: sub.id,
       hired_subcontractor_name: sub.company_name,
     });
     if (request.project_id) {
-      const project = await base44.entities.Project.get(request.project_id);
+      const project = await consuobra.entities.Project.get(request.project_id);
       const currentIds = project.subcontractor_ids || [];
       if (!currentIds.includes(sub.id)) {
-        await base44.entities.Project.update(request.project_id, {
+        await consuobra.entities.Project.update(request.project_id, {
           subcontractor_ids: [...currentIds, sub.id],
         });
       }
     }
-    await base44.entities.Alert.create({
+    await consuobra.entities.Alert.create({
       title: `Empreiteiro contratado: ${sub.company_name}`,
       description: `Serviço: ${request.service_type} · ${request.description}`,
       type: "Outro",

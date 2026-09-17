@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,10 +22,10 @@ export default function EditProgressModal({ open, onClose, project, onSaved }) {
     if (pct < 0 || pct > 100) { toast.error("O progresso deve estar entre 0% e 100%."); return; }
     setSaving(true);
     const prev = project.progress_percent ?? 0;
-    const me = await base44.auth.me();
+    const me = await consuobra.auth.me();
     await Promise.all([
-      base44.entities.Project.update(project.id, { progress_percent: pct }),
-      base44.entities.ProgressHistory.create({
+      consuobra.entities.Project.update(project.id, { progress_percent: pct }),
+      consuobra.entities.ProgressHistory.create({
         project_id: project.id,
         project_name: project.name,
         previous_percent: prev,

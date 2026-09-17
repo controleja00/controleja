@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Building2, MapPin, Calendar, CheckCircle2, Camera, FileText, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 
 const fmtDate = (d) => d ? new Date(d + "T12:00:00").toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" }) : "—";
@@ -60,22 +60,9 @@ export default function ClientPortalView() {
   useEffect(() => {
     (async () => {
       try {
-        const configs = await base44.entities.ClientPortalConfig.filter({ access_token: token });
-        const config = configs[0];
-        if (!config || !config.active) { setState(s => ({ ...s, loading: false, error: "Portal inativo ou link inválido." })); return; }
-
-        const [project, allReports] = await Promise.all([
-          base44.entities.Project.get(config.project_id),
-          base44.entities.DailyReport.filter({ project_id: config.project_id }),
-        ]);
-
-        const reports = allReports
-          .filter(r => r.status === "Publicado" && r.visible_to_client !== false)
-          .sort((a, b) => (b.report_date || "").localeCompare(a.report_date || ""));
-
+        const { config, project, reports } = await consuobra.portal.getByToken(token);
+        if (!config || !project) { setState(s => ({ ...s, loading: false, error: "Portal inativo ou link inválido." })); return; }
         setState({ loading: false, project, config, reports, error: null });
-
-        await base44.entities.ClientPortalConfig.update(config.id, { client_last_access: new Date().toISOString() }).catch(() => {});
       } catch {
         setState(s => ({ ...s, loading: false, error: "Não foi possível carregar este portal agora." }));
       }

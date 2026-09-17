@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Link } from "react-router-dom";
 import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ export default function Subcontractors() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    base44.auth.me().then(me => base44.entities.Subcontractor.filter({ created_by_id: me.id }).then(d => { setSubs(d); setLoading(false); }));
+    consuobra.auth.me().then(me => consuobra.entities.Subcontractor.filter({ created_by_id: me.id }).then(d => { setSubs(d); setLoading(false); }));
   }, []);
 
   const filtered = subs.filter(s =>

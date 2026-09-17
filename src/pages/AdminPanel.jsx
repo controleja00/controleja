@@ -1,4 +1,4 @@
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { useQuery } from "@tanstack/react-query";
 import PageHeader from "../components/PageHeader";
 import { Users, Building2, DollarSign, TrendingUp, AlertTriangle, CheckCircle2, Ruler } from "lucide-react";
@@ -6,12 +6,12 @@ import { Users, Building2, DollarSign, TrendingUp, AlertTriangle, CheckCircle2, 
 const PLAN_PRICES = { starter: 497, professional: 997 };
 
 export default function AdminPanel() {
-  const { data: projects = [] } = useQuery({ queryKey: ["admin_projects"], queryFn: () => base44.entities.Project.list() });
-  const { data: subs = [] } = useQuery({ queryKey: ["admin_subs"], queryFn: () => base44.entities.Subcontractor.list() });
-  const { data: measurements = [] } = useQuery({ queryKey: ["admin_meas"], queryFn: () => base44.entities.Measurement.list() });
-  const { data: docs = [] } = useQuery({ queryKey: ["admin_docs"], queryFn: () => base44.entities.Document.list() });
-  const { data: alerts = [] } = useQuery({ queryKey: ["admin_alerts"], queryFn: () => base44.entities.Alert.list() });
-  const { data: cashflow = [] } = useQuery({ queryKey: ["admin_cf"], queryFn: () => base44.entities.CashFlowEntry.list() });
+  const { data: projects = [] } = useQuery({ queryKey: ["admin_projects"], queryFn: () => consuobra.entities.Project.list() });
+  const { data: subs = [] } = useQuery({ queryKey: ["admin_subs"], queryFn: () => consuobra.entities.Subcontractor.list() });
+  const { data: measurements = [] } = useQuery({ queryKey: ["admin_meas"], queryFn: () => consuobra.entities.Measurement.list() });
+  const { data: docs = [] } = useQuery({ queryKey: ["admin_docs"], queryFn: () => consuobra.entities.Document.list() });
+  const { data: alerts = [] } = useQuery({ queryKey: ["admin_alerts"], queryFn: () => consuobra.entities.Alert.list() });
+  const { data: cashflow = [] } = useQuery({ queryKey: ["admin_cf"], queryFn: () => consuobra.entities.CashFlowEntry.list() });
 
   const totalRevenue = cashflow.filter(c => c.type === "Receita" && c.status === "Pago").reduce((a, c) => a + (c.value || 0), 0);
   const totalExpenses = cashflow.filter(c => c.type === "Despesa" && c.status === "Pago").reduce((a, c) => a + (c.value || 0), 0);

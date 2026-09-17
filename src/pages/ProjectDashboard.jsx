@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, RefreshCw } from "lucide-react";
@@ -38,8 +38,8 @@ export default function ProjectDashboard() {
     if (!silent) setLoading(true);
     else setRefreshing(true);
 
-    const me = await base44.auth.me();
-    const project = await base44.entities.Project.get(id);
+    const me = await consuobra.auth.me();
+    const project = await consuobra.entities.Project.get(id);
 
     // Verificar se o projeto pertence ao usuário logado
     if (project && project.created_by_id !== me.id) {
@@ -50,10 +50,10 @@ export default function ProjectDashboard() {
     }
 
     const [allSubs, allMeasurements, allDocuments, allAlerts] = await Promise.all([
-      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
-      base44.entities.Measurement.filter({ project_id: id, created_by_id: me.id }),
-      base44.entities.Document.filter({ created_by_id: me.id }),
-      base44.entities.Alert.filter({ is_resolved: false, created_by_id: me.id }),
+      consuobra.entities.Subcontractor.filter({ created_by_id: me.id }),
+      consuobra.entities.Measurement.filter({ project_id: id, created_by_id: me.id }),
+      consuobra.entities.Document.filter({ created_by_id: me.id }),
+      consuobra.entities.Alert.filter({ is_resolved: false, created_by_id: me.id }),
     ]);
 
     const subIds = project.subcontractor_ids || [];

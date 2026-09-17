@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Link } from "react-router-dom";
 import {
   Zap, AlertTriangle, DollarSign, FileText, Users, Building2,
@@ -194,15 +194,15 @@ export default function AutoPilot() {
   const load = async (silent = false) => {
     if (!silent) setLoading(true);
     else setRefreshing(true);
-    const me = await base44.auth.me();
+    const me = await consuobra.auth.me();
     const [projects, subcontractors, measurements, alerts, documents, cashFlow, supplies] = await Promise.all([
-      base44.entities.Project.filter({ created_by_id: me.id }),
-      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
-      base44.entities.Measurement.filter({ created_by_id: me.id }, "-created_date", 200),
-      base44.entities.Alert.filter({ is_resolved: false, created_by_id: me.id }),
-      base44.entities.Document.filter({ created_by_id: me.id }),
-      base44.entities.CashFlowEntry.filter({ created_by_id: me.id }, "-due_date", 200),
-      base44.entities.Supply.filter({ created_by_id: me.id }),
+      consuobra.entities.Project.filter({ created_by_id: me.id }),
+      consuobra.entities.Subcontractor.filter({ created_by_id: me.id }),
+      consuobra.entities.Measurement.filter({ created_by_id: me.id }, "-created_date", 200),
+      consuobra.entities.Alert.filter({ is_resolved: false, created_by_id: me.id }),
+      consuobra.entities.Document.filter({ created_by_id: me.id }),
+      consuobra.entities.CashFlowEntry.filter({ created_by_id: me.id }, "-due_date", 200),
+      consuobra.entities.Supply.filter({ created_by_id: me.id }),
     ]);
     setData({ projects, subcontractors, measurements, alerts, documents, cashFlow, supplies });
     setLoading(false);
@@ -216,7 +216,7 @@ export default function AutoPilot() {
     setAiLoading(true);
     setAiMode(true);
     const { projects, measurements, alerts, cashFlow, documents, subcontractors } = data;
-    const result = await base44.integrations.Core.InvokeLLM({
+    const result = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é o sistema de IA do Consuobra. Modo Autopiloto ativado.
 
 Analise TODOS os dados abaixo e gere um relatório executivo completo com ações prioritárias.

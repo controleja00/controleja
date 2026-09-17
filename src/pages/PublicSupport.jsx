@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Mail, MessageSquare, CheckCircle2, BookOpen, Zap } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { CONTACT_EMAILS, CONTACT_LINKS, getSupportRecipient } from "@/lib/contact";
@@ -31,9 +31,10 @@ export default function PublicSupport() {
     if (!form.email || !form.message) { setError("Preencha e-mail e mensagem."); return; }
     setError(""); setSending(true);
     try {
-      await base44.integrations.Core.SendEmail({
+      await consuobra.integrations.Core.SendEmail({
         to: getSupportRecipient(form.category),
         subject: `[Suporte Consuobra] ${form.category || "Geral"}: ${form.name || form.email}`,
+        replyTo: form.email,
         body: `Nome: ${form.name}\nE-mail: ${form.email}\nCategoria: ${form.category || "Não informada"}\n\nMensagem:\n${form.message}`,
       });
       setSent(true);

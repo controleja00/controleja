@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -19,7 +19,7 @@ export default function Recommendations() {
   const [form, setForm] = useState({ specialty: "", region: "", budget: "", priority: "melhor custo-benefício" });
 
   useEffect(() => {
-    base44.auth.me().then((me) => base44.entities.Subcontractor.filter({ created_by_id: me.id }))
+    consuobra.auth.me().then((me) => consuobra.entities.Subcontractor.filter({ created_by_id: me.id }))
       .then(d => { setSubs(d); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
@@ -52,7 +52,7 @@ export default function Recommendations() {
       employees: s.employee_count
     }));
 
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é um motor de recomendação para gestão de subempreiteiros de construção civil. Analise a lista de subempreiteiros disponíveis e recomende os melhores para o projeto.
 
 Especialidade desejada: ${form.specialty || "qualquer"}

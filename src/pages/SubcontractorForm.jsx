@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +18,7 @@ export default function SubcontractorForm() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (isEdit) base44.entities.Subcontractor.get(id).then(d => setForm(d));
+    if (isEdit) consuobra.entities.Subcontractor.get(id).then(d => setForm(d));
   }, [id]);
 
   const set = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
@@ -26,8 +26,8 @@ export default function SubcontractorForm() {
   const save = async () => {
     setSaving(true);
     const data = { ...form, employee_count: Number(form.employee_count) || 0 };
-    if (isEdit) await base44.entities.Subcontractor.update(id, data);
-    else await base44.entities.Subcontractor.create(data);
+    if (isEdit) await consuobra.entities.Subcontractor.update(id, data);
+    else await consuobra.entities.Subcontractor.create(data);
     navigate("/subcontractors");
   };
 

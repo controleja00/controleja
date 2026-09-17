@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 
 export default function ResetPassword() {
-  const params = new URLSearchParams(window.location.search);
-  const resetToken = params.get("token") || "";
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [showPass, setShowPass] = useState(false);
@@ -20,9 +18,8 @@ export default function ResetPassword() {
     e.preventDefault(); setError("");
     if (password !== confirm) { setError("As senhas não coincidem. Verifique e tente novamente."); return; }
     if (password.length < 8) { setError("A senha deve ter no mínimo 8 caracteres."); return; }
-    if (!resetToken) { setError("Link inválido. Solicite um novo link de redefinição."); return; }
     setLoading(true);
-    try { await base44.auth.resetPassword({ resetToken, newPassword: password }); setDone(true); }
+    try { await consuobra.auth.resetPassword({ newPassword: password }); setDone(true); }
     catch { setError("Link inválido ou expirado. Solicite um novo link de redefinição de senha."); }
     finally { setLoading(false); }
   };
@@ -47,11 +44,6 @@ export default function ResetPassword() {
             <>
               <h1 className="text-2xl font-black mb-1" style={{ color: "#172441" }}>Redefinir senha</h1>
               <p className="text-sm mb-6" style={{ color: "#424c62" }}>Escolha uma nova senha segura para sua conta.</p>
-              {!resetToken && (
-                <div className="text-sm rounded-xl px-4 py-3 mb-4" style={{ background: "#FEF2F2", border: "1px solid #FECACA", color: "#DC2626" }}>
-                  Link inválido. <Link to="/forgot-password" className="font-bold underline">Solicite um novo link.</Link>
-                </div>
-              )}
               {error && <div className="text-sm rounded-xl px-4 py-3 mb-4" style={{ background: "#FEF2F2", border: "1px solid #FECACA", color: "#DC2626" }}>{error}</div>}
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -69,7 +61,7 @@ export default function ResetPassword() {
                   <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Repita a nova senha"
                     className="cj-native-input text-sm" />
                 </div>
-                <button type="submit" disabled={loading || !password || !confirm || !resetToken} className="w-full h-11 rounded-lg font-bold text-base text-white disabled:opacity-60" style={{ background: "#1f3258" }}>
+                <button type="submit" disabled={loading || !password || !confirm} className="w-full h-11 rounded-lg font-bold text-base text-white disabled:opacity-60" style={{ background: "#1f3258" }}>
                   {loading ? "Salvando..." : "Redefinir senha"}
                 </button>
               </form>

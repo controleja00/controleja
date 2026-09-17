@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { History, Loader2, TrendingUp, TrendingDown } from "lucide-react";
 
 export default function ProgressHistory({ projectId }) {
@@ -7,7 +7,7 @@ export default function ProgressHistory({ projectId }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.ProgressHistory.filter({ project_id: projectId }, "-created_date", 20)
+    consuobra.entities.ProgressHistory.filter({ project_id: projectId }, "-created_date", 20)
       .then(d => { setHistory(d); setLoading(false); });
   }, [projectId]);
 

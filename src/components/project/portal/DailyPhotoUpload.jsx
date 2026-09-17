@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { AlertTriangle, Camera, X, Loader2, Sparkles, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -27,7 +27,7 @@ export default function DailyPhotoUpload({ project, user, onSaved }) {
     try {
       const uploaded = [];
       for (const file of images.slice(0, Math.max(0, 12 - photos.length))) {
-        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        const { file_url } = await consuobra.integrations.Core.UploadFile({ file });
         uploaded.push(file_url);
       }
       setPhotos(p => [...p, ...uploaded]);
@@ -71,7 +71,7 @@ Regras obrigatórias:
 - Termine com uma observação curta dizendo que a análise precisa ser validada pela equipe responsável.`;
 
     try {
-      const result = await base44.integrations.Core.InvokeLLM({
+      const result = await consuobra.integrations.Core.InvokeLLM({
         prompt,
         file_urls: photos.slice(0, 5),
       });
@@ -92,7 +92,7 @@ Regras obrigatórias:
     setSaving(true);
     setError("");
     try {
-      await base44.entities.DailyReport.create({
+      await consuobra.entities.DailyReport.create({
         project_id: project.id,
         project_name: project.name,
         report_date: form.report_date,

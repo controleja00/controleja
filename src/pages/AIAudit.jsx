@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Camera, Upload, AlertTriangle, CheckCircle2, Loader2, Eye } from "lucide-react";
@@ -14,7 +14,7 @@ export default function AIAudit() {
   const handleFiles = async (e) => {
     const files = Array.from(e.target.files);
     setLoading(true);
-    const urls = await Promise.all(files.map(f => base44.integrations.Core.UploadFile({ file: f }).then(r => r.file_url)));
+    const urls = await Promise.all(files.map(f => consuobra.integrations.Core.UploadFile({ file: f }).then(r => r.file_url)));
     setPhotos(prev => [...prev, ...urls]);
     setLoading(false);
   };
@@ -23,7 +23,7 @@ export default function AIAudit() {
     if (photos.length === 0) return;
     setLoading(true);
     setResult(null);
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é um especialista em auditoria visual de obras de construção civil. Analise as imagens enviadas e forneça um relatório detalhado em português. Contexto adicional: ${context || "Nenhum"}.
       
       Avalie:

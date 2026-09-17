@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -18,8 +18,8 @@ export default function ProjDeleteDialog({ project, open, onOpenChange, onArchiv
 
   const archiveProject = async () => {
     setLoading(true);
-    await base44.entities.Project.update(project.id, { status: "Arquivada" });
-    await base44.entities.AuditLog.create({
+    await consuobra.entities.Project.update(project.id, { status: "Arquivada" });
+    await consuobra.entities.AuditLog.create({
       action: "Obra arquivada",
       entity_type: "Project",
       entity_id: project.id,
@@ -38,17 +38,17 @@ export default function ProjDeleteDialog({ project, open, onOpenChange, onArchiv
     setLoading(true);
     // Cascade delete related records
     const [measurements, cashflow, alerts] = await Promise.all([
-      base44.entities.Measurement.filter({ project_id: project.id }),
-      base44.entities.CashFlowEntry.filter({ project_id: project.id }),
-      base44.entities.Alert.filter({ related_id: project.id }),
+      consuobra.entities.Measurement.filter({ project_id: project.id }),
+      consuobra.entities.CashFlowEntry.filter({ project_id: project.id }),
+      consuobra.entities.Alert.filter({ related_id: project.id }),
     ]);
     await Promise.all([
-      ...measurements.map(m => base44.entities.Measurement.delete(m.id)),
-      ...cashflow.map(c => base44.entities.CashFlowEntry.delete(c.id)),
-      ...alerts.map(a => base44.entities.Alert.delete(a.id)),
+      ...measurements.map(m => consuobra.entities.Measurement.delete(m.id)),
+      ...cashflow.map(c => consuobra.entities.CashFlowEntry.delete(c.id)),
+      ...alerts.map(a => consuobra.entities.Alert.delete(a.id)),
     ]);
     try {
-      await base44.entities.AuditLog.create({
+      await consuobra.entities.AuditLog.create({
         action: "Obra excluída permanentemente",
         entity_type: "Project",
         entity_id: project.id,
@@ -58,7 +58,7 @@ export default function ProjDeleteDialog({ project, open, onOpenChange, onArchiv
       });
     } catch (_) {}
     try {
-      await base44.entities.Project.delete(project.id);
+      await consuobra.entities.Project.delete(project.id);
     } catch (_) {}
     setLoading(false);
     handleClose();

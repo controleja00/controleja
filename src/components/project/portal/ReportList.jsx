@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { AlertTriangle, Camera, ChevronDown, ChevronUp, Edit2, Eye, EyeOff, FileText, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import jsPDF from "jspdf";
@@ -24,7 +24,7 @@ function ReportCard({ report, onUpdate, onDelete }) {
     setSaving(true);
     setError("");
     try {
-      await base44.entities.DailyReport.update(report.id, patch);
+      await consuobra.entities.DailyReport.update(report.id, patch);
       onUpdate();
       setEditing(false);
     } catch {
@@ -168,7 +168,7 @@ export default function ReportList({ reports, onUpdate }) {
     if (!confirm("Excluir este relatório?")) return;
     setError("");
     try {
-      await base44.entities.DailyReport.delete(id);
+      await consuobra.entities.DailyReport.delete(id);
       onUpdate();
     } catch {
       setError("Não foi possível excluir este relatório.");

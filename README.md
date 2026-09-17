@@ -1,8 +1,18 @@
 # Consuobra
 
-Aplicativo web para controle de obras, gastos, documentos, fotos, progresso e relatorios.
+SaaS web para controle de obras, gastos, documentos, fotos, progresso, relatorios e portal do cliente.
 
 URL oficial: https://consuobra.com.br/
+
+## Arquitetura
+
+- Frontend: React + Vite publicado na Vercel.
+- Banco de dados: Supabase/Postgres.
+- Autenticacao: Supabase Auth.
+- Arquivos: Supabase Storage.
+- E-mails oficiais: Zoho Mail via SMTP.
+- IA: endpoints proprios em `/api/ai/*` usando OpenAI quando a chave estiver configurada.
+- Pagamentos: Asaas, com checkout publico enquanto a verificacao documental estiver pendente.
 
 ## Rodar localmente
 
@@ -15,8 +25,9 @@ npm install
 2. Crie um arquivo `.env.local` usando o `.env.example` como base:
 
 ```bash
-VITE_BASE44_APP_ID=6a14c26bf1186131feba185a
-VITE_BASE44_APP_BASE_URL=https://prehistoric-smart-build-connect.base44.app
+VITE_SUPABASE_URL=https://fnbcbepmwgqwecwlbfco.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=
+VITE_ENABLE_GOOGLE_AUTH=false
 VITE_PUBLIC_WHATSAPP_URL=
 VITE_ASAAS_ESSENTIAL_CHECKOUT_URL=
 VITE_ASAAS_PROFESSIONAL_CHECKOUT_URL=
@@ -34,11 +45,19 @@ npm run dev
 npm run build
 ```
 
+## Supabase
+
+A primeira migracao esta em:
+
+```bash
+supabase/migrations/202609150001_initial_consuobra.sql
+```
+
+Ela cria tabelas, indices, politicas RLS por usuario, bucket `app-files` e a funcao segura `get_client_portal_by_token` para o portal do cliente.
+
 ## Publicar na Vercel
 
-1. Suba esta pasta para um repositorio no GitHub.
-2. Na Vercel, clique em `Add New Project` e importe o repositorio.
-3. Use as configuracoes:
+Use as configuracoes:
 
 ```bash
 Framework Preset: Vite
@@ -47,23 +66,30 @@ Build Command: npm run build
 Output Directory: dist
 ```
 
-4. Em `Environment Variables`, cadastre:
+Variaveis obrigatorias:
 
 ```bash
-VITE_BASE44_APP_ID=6a14c26bf1186131feba185a
-VITE_BASE44_APP_BASE_URL=https://prehistoric-smart-build-connect.base44.app
-VITE_PUBLIC_WHATSAPP_URL=
-VITE_ASAAS_ESSENTIAL_CHECKOUT_URL=
-VITE_ASAAS_PROFESSIONAL_CHECKOUT_URL=
+VITE_SUPABASE_URL=
+VITE_SUPABASE_PUBLISHABLE_KEY=
+VITE_ENABLE_GOOGLE_AUTH=false
 ```
 
-5. Clique em `Deploy`.
+Variaveis recomendadas para producao:
 
-## Importante
-
-Este projeto esta pronto para publicar o frontend na Vercel, mas ainda usa o backend, autenticacao, banco de dados e arquivos do Base44. Para tirar 100% do Base44 depois, a proxima etapa e migrar backend, login, banco e storage para uma stack propria, como Supabase.
-
-O dominio oficial `consuobra.com.br` deve apontar para a Vercel. O backend, autenticacao, banco de dados e arquivos ainda passam pelo Base44.
+```bash
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4o-mini
+OPENAI_TRANSCRIBE_MODEL=whisper-1
+SMTP_HOST=smtp.zoho.com
+SMTP_PORT=465
+SMTP_USER=suporte@consuobra.com.br
+SMTP_PASS=
+SMTP_FROM=Consuobra <suporte@consuobra.com.br>
+MAIL_ALLOWED_TO=suporte@consuobra.com.br,contato@consuobra.com.br,financeiro@consuobra.com.br
+VITE_ASAAS_ESSENTIAL_CHECKOUT_URL=
+VITE_ASAAS_PROFESSIONAL_CHECKOUT_URL=
+VITE_PUBLIC_WHATSAPP_URL=
+```
 
 ## E-mails oficiais
 
@@ -73,16 +99,14 @@ O dominio `consuobra.com.br` usa Zoho Mail para e-mails corporativos.
 - Alias comercial: `contato@consuobra.com.br`
 - Alias financeiro: `financeiro@consuobra.com.br`
 
-No DNS da Vercel devem ficar ativos os registros MX do Zoho, SPF, DKIM e DMARC. O DMARC pode iniciar com `p=none` para monitoramento e ser endurecido depois que os envios estiverem estáveis.
+No DNS da Vercel devem ficar ativos os registros MX do Zoho, SPF, DKIM e DMARC.
 
 ## Pagamentos
 
 O gateway escolhido para a primeira versao comercial e o Asaas.
 
-- Plano Essencial: R$ 19,90/mês
-- Plano Profissional: R$ 69,90/mês
-- Teste grátis: 7 dias
+- Plano Essencial: R$ 19,90/mes
+- Plano Profissional: R$ 69,90/mes
+- Teste gratis: 7 dias
 
-Enquanto a conta Asaas estiver pendente de verificacao documental, mantenha as variaveis `VITE_ASAAS_ESSENTIAL_CHECKOUT_URL` e `VITE_ASAAS_PROFESSIONAL_CHECKOUT_URL` vazias. Assim, os planos pagos continuam levando o usuario ao cadastro e mostram que o checkout esta em ativacao.
-
-Depois que a conta Asaas for aprovada, crie os links de assinatura recorrente no Asaas e cadastre as URLs na Vercel nas variaveis acima. O botao dos planos pagos passara automaticamente a abrir o checkout externo.
+Enquanto a conta Asaas estiver pendente de verificacao documental, mantenha `VITE_ASAAS_ESSENTIAL_CHECKOUT_URL` e `VITE_ASAAS_PROFESSIONAL_CHECKOUT_URL` vazias. Assim, os planos pagos continuam levando o usuario ao cadastro e mostram que o checkout esta em ativacao.

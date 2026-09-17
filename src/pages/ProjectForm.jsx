@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,11 +63,11 @@ export default function ProjectForm() {
   });
 
   useEffect(() => {
-    base44.auth.me().then((me) => {
-      base44.entities.Subcontractor.filter({ created_by_id: me.id }).then(setSubs);
+    consuobra.auth.me().then((me) => {
+      consuobra.entities.Subcontractor.filter({ created_by_id: me.id }).then(setSubs);
       if (!isEdit) {
         const plan = getPlanById(getUserPlanId(me));
-        base44.entities.Project.filter({ created_by_id: me.id }).then((items) => {
+        consuobra.entities.Project.filter({ created_by_id: me.id }).then((items) => {
           const activeCount = items.filter((p) => p.status !== "Arquivada").length;
           if (activeCount >= plan.limits.activeProjects) {
             setPlanLimit({
@@ -80,7 +80,7 @@ export default function ProjectForm() {
       }
     });
     if (isEdit) {
-      Promise.all([base44.entities.Project.get(id), base44.auth.me()]).then(([data, me]) => {
+      Promise.all([consuobra.entities.Project.get(id), consuobra.auth.me()]).then(([data, me]) => {
         if (!data || data.created_by_id !== me.id) {
           navigate("/projects");
           return;
@@ -122,8 +122,8 @@ export default function ProjectForm() {
       subcontractor_ids: form.subcontractor_ids || [],
     };
     try {
-      if (isEdit) await base44.entities.Project.update(id, data);
-      else await base44.entities.Project.create(data);
+      if (isEdit) await consuobra.entities.Project.update(id, data);
+      else await consuobra.entities.Project.create(data);
       navigate("/projects");
     } catch {
       setError("Não foi possível salvar a obra agora. Verifique os campos e tente novamente.");

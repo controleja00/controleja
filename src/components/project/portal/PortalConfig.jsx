@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { AlertTriangle, Copy, Link2, RefreshCw, Shield, Eye, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -24,7 +24,7 @@ export default function PortalConfig({ project, onUpdate }) {
     setLoading(true);
     setError("");
     try {
-      const all = await base44.entities.ClientPortalConfig.filter({ project_id: project.id });
+      const all = await consuobra.entities.ClientPortalConfig.filter({ project_id: project.id });
       setConfig(all[0] || null);
     } catch {
       setError("Não foi possível carregar as configurações do portal.");
@@ -40,11 +40,11 @@ export default function PortalConfig({ project, onUpdate }) {
     setError("");
     try {
       if (config?.id) {
-        const updated = await base44.entities.ClientPortalConfig.update(config.id, patch);
+        const updated = await consuobra.entities.ClientPortalConfig.update(config.id, patch);
         setConfig(updated);
       } else {
         const token = patch.access_token || genToken();
-        const created = await base44.entities.ClientPortalConfig.create({ ...DEFAULT_CONFIG, project_id: project.id, access_token: token, ...patch });
+        const created = await consuobra.entities.ClientPortalConfig.create({ ...DEFAULT_CONFIG, project_id: project.id, access_token: token, ...patch });
         setConfig(created);
       }
       onUpdate?.();

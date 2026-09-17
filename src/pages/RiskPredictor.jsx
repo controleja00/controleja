@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, TrendingDown, Loader2, Shield, Zap } from "lucide-react";
 import PageHeader from "../components/PageHeader";
@@ -13,10 +13,10 @@ export default function RiskPredictor() {
   const [predictions, setPredictions] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then((me) => Promise.all([
-      base44.entities.Project.filter({ created_by_id: me.id }),
-      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
-      base44.entities.Measurement.filter({ created_by_id: me.id }),
+    consuobra.auth.me().then((me) => Promise.all([
+      consuobra.entities.Project.filter({ created_by_id: me.id }),
+      consuobra.entities.Subcontractor.filter({ created_by_id: me.id }),
+      consuobra.entities.Measurement.filter({ created_by_id: me.id }),
     ])).then(([p, s, m]) => { setProjects(p); setSubs(s); setMeasurements(m); setDataLoading(false); });
   }, []);
 
@@ -28,7 +28,7 @@ export default function RiskPredictor() {
       subcontractors: subs.map(s => ({ name: s.company_name, score: s.score_total, specialty: s.specialty, status: s.status })),
       measurements: measurements.map(m => ({ project: m.project_name, sub: m.subcontractor_name, status: m.status, value: m.total_value }))
     };
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é um sistema de IA preditiva para gestão de obras de construção civil. Analise os dados abaixo e gere previsões de risco.
 
 Dados: ${JSON.stringify(summary)}

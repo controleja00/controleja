@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Mic, MicOff, Loader2, Sparkles } from "lucide-react";
 
 export default function VoiceInput({ onResult, placeholder = "Fale para preencher automaticamente..." }) {
@@ -20,12 +20,12 @@ export default function VoiceInput({ onResult, placeholder = "Fale para preenche
       stream.getTracks().forEach(t => t.stop());
       const blob = new Blob(chunksRef.current, { type: "audio/webm" });
       const file = new File([blob], "voice.webm", { type: "audio/webm" });
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      const text = await base44.integrations.Core.TranscribeAudio({ audio_url: file_url });
+      const { file_url } = await consuobra.integrations.Core.UploadFile({ file });
+      const text = await consuobra.integrations.Core.TranscribeAudio({ audio_url: file_url });
       setTranscript(text);
 
       // Use AI to parse the spoken text into structured data
-      const parsed = await base44.integrations.Core.InvokeLLM({
+      const parsed = await consuobra.integrations.Core.InvokeLLM({
         prompt: `O usuário falou: "${text}"\n\nExtraia as informações de medição de obra desse texto e retorne JSON com os campos disponíveis: servico, quantidade_executada, unidade, valor_unitario, comentarios. Se não encontrar um campo, deixe null. Exemplo: "Concretagem concluída, 42 metros cúbicos executados" → { servico: "Concretagem", quantidade_executada: 42, unidade: "m³", valor_unitario: null, comentarios: null }`,
         response_json_schema: {
           type: "object",

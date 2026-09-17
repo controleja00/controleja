@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Link } from "react-router-dom";
 import { Plus, Search, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { approveMeasurement, rejectMeasurement } from "../utils/cascadeActions";
@@ -15,10 +15,10 @@ export default function Measurements() {
   const [acting, setActing] = useState({});
 
   const load = async () => {
-    const me = await base44.auth.me();
+    const me = await consuobra.auth.me();
     const [m, p] = await Promise.all([
-      base44.entities.Measurement.filter({ created_by_id: me.id }, "-created_date"),
-      base44.entities.Project.filter({ created_by_id: me.id }),
+      consuobra.entities.Measurement.filter({ created_by_id: me.id }, "-created_date"),
+      consuobra.entities.Project.filter({ created_by_id: me.id }),
     ]);
     setItems(m); setProjects(p); setLoading(false);
   };

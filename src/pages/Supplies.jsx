@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,9 +37,9 @@ export default function Supplies() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [form, setForm] = useState({ project_id: "", name: "", category: "", unit: "", quantity_needed: "", quantity_in_stock: "0", unit_price: "", supplier: "", status: "Disponível", priority: "Média", needed_by: "", notes: "" });
 
-  const load = () => base44.auth.me().then(me => Promise.all([
-    base44.entities.Supply.filter({ created_by_id: me.id }, "-created_date", 100),
-    base44.entities.Project.filter({ created_by_id: me.id }),
+  const load = () => consuobra.auth.me().then(me => Promise.all([
+    consuobra.entities.Supply.filter({ created_by_id: me.id }, "-created_date", 100),
+    consuobra.entities.Project.filter({ created_by_id: me.id }),
   ]).then(([s, p]) => { setItems(s); setProjects(p); setLoading(false); }));
 
   useEffect(() => { load(); }, []);
@@ -51,7 +51,7 @@ export default function Supplies() {
     const project = projects.find(p => p.id === form.project_id);
     const qty = Number(form.quantity_needed) || 0;
     const price = Number(form.unit_price) || 0;
-    await base44.entities.Supply.create({
+    await consuobra.entities.Supply.create({
       ...form,
       project_name: project?.name || "",
       quantity_needed: qty,
@@ -68,7 +68,7 @@ export default function Supplies() {
   const generateAISuggestions = async () => {
     setAiLoading(true);
     const summary = items.map(i => ({ name: i.name, cat: i.category, stock: i.quantity_in_stock, needed: i.quantity_needed, status: i.status, priority: i.priority, date: i.needed_by }));
-    const res = await base44.integrations.Core.InvokeLLM({
+    const res = await consuobra.integrations.Core.InvokeLLM({
       prompt: `Você é um especialista em gestão de suprimentos para obras de construção civil. Analise o estoque atual e gere recomendações de compra urgentes.
 
 Estoque atual: ${JSON.stringify(summary)}

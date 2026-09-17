@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,10 +40,10 @@ export default function MeasurementForm() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    base44.auth.me().then((me) => Promise.all([
-      base44.entities.Project.filter({ created_by_id: me.id }),
-      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
-      isEdit ? base44.entities.Measurement.get(id) : Promise.resolve(null),
+    consuobra.auth.me().then((me) => Promise.all([
+      consuobra.entities.Project.filter({ created_by_id: me.id }),
+      consuobra.entities.Subcontractor.filter({ created_by_id: me.id }),
+      isEdit ? consuobra.entities.Measurement.get(id) : Promise.resolve(null),
     ]).then(([p, s, measurement]) => {
       setCurrentUser(me);
       setProjects(p);
@@ -70,7 +70,7 @@ export default function MeasurementForm() {
     if (!file) return;
     setUploading(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await consuobra.integrations.Core.UploadFile({ file });
       setForm(prev => ({ ...prev, photos: [...(prev.photos || []), file_url] }));
     } catch {
       setError("Não foi possível enviar a foto. Tente novamente.");
@@ -98,9 +98,9 @@ export default function MeasurementForm() {
     };
     try {
       if (isEdit) {
-        await base44.entities.Measurement.update(id, data);
+        await consuobra.entities.Measurement.update(id, data);
       } else {
-        await base44.entities.Measurement.create(data);
+        await consuobra.entities.Measurement.create(data);
       }
       // Navigate back to project central if came from a project, else to measurements list
       if (prefilledProjectId) {

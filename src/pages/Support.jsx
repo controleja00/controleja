@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,7 +30,7 @@ export default function Support() {
     setError("");
     setSending(true);
     try {
-      await base44.integrations.Core.SendEmail({
+      await consuobra.integrations.Core.SendEmail({
         to: getSupportRecipient(form.category),
         subject: `[Suporte Consuobra] ${form.category}: ${form.subject}`,
         body: `Categoria: ${form.category}\nAssunto: ${form.subject}\n\nMensagem:\n${form.message}`,

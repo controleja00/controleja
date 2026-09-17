@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -64,10 +64,10 @@ export default function Documents() {
   const [error, setError] = useState("");
 
   const load = () => {
-    base44.auth.me().then((me) => Promise.all([
-      base44.entities.Document.filter({ created_by_id: me.id }, "-created_date"),
-      base44.entities.Project.filter({ created_by_id: me.id }),
-      base44.entities.Subcontractor.filter({ created_by_id: me.id }),
+    consuobra.auth.me().then((me) => Promise.all([
+      consuobra.entities.Document.filter({ created_by_id: me.id }, "-created_date"),
+      consuobra.entities.Project.filter({ created_by_id: me.id }),
+      consuobra.entities.Subcontractor.filter({ created_by_id: me.id }),
     ]).then(([d, p, s]) => {
       setDocs(d);
       setProjects(p.filter((proj) => proj.status !== "Arquivada"));
@@ -85,7 +85,7 @@ export default function Documents() {
     setFileName(file.name);
     setError("");
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await consuobra.integrations.Core.UploadFile({ file });
       setFileUrl(file_url);
     } catch {
       setError("Não foi possível enviar o arquivo. Tente novamente.");
@@ -130,7 +130,7 @@ export default function Documents() {
     setError("");
     setSaving(true);
     try {
-      await base44.entities.Document.create({
+      await consuobra.entities.Document.create({
         ...form,
         name: form.name || form.type,
         file_url: fileUrl,
@@ -147,7 +147,7 @@ export default function Documents() {
   };
 
   const updateStatus = async (docId, status) => {
-    await base44.entities.Document.update(docId, { status });
+    await consuobra.entities.Document.update(docId, { status });
     load();
   };
 

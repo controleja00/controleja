@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { consuobra } from "@/api/consuobraClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +30,7 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    base44.auth.me().then((me) => base44.entities.Subcontractor.filter({ created_by_id: me.id }).then(setSubs));
+    consuobra.auth.me().then((me) => consuobra.entities.Subcontractor.filter({ created_by_id: me.id }).then(setSubs));
   }, []);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
     if (!file) return;
     setUploading(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await consuobra.integrations.Core.UploadFile({ file });
       setForm(prev => ({ ...prev, photos: [...(prev.photos || []), file_url] }));
     } catch (err) {
       toast.error("Erro ao enviar foto: " + err.message);
@@ -63,7 +63,7 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
     setSaving(true);
     try {
       const sub = subs.find(s => s.id === form.subcontractor_id);
-      await base44.entities.Measurement.create({
+      await consuobra.entities.Measurement.create({
         ...form,
         project_id: project.id,
         project_name: project.name,
