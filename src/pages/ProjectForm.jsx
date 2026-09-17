@@ -125,8 +125,10 @@ export default function ProjectForm() {
       if (isEdit) await consuobra.entities.Project.update(id, data);
       else await consuobra.entities.Project.create(data);
       navigate("/projects");
-    } catch {
-      setError("Não foi possível salvar a obra agora. Verifique os campos e tente novamente.");
+    } catch (saveError) {
+      console.error("Project save failed", saveError);
+      const reason = saveError?.message ? ` Motivo: ${saveError.message}` : "";
+      setError(`Não foi possível salvar a obra agora.${reason}`);
       setSaving(false);
     }
   };
