@@ -211,9 +211,14 @@ const createEntity = (name) => {
 };
 
 const apiPost = async (path, body) => {
+  const session = supabase ? await supabase.auth.getSession().catch(() => null) : null;
+  const accessToken = session?.data?.session?.access_token;
   const response = await fetch(path, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    },
     body: JSON.stringify(body || {}),
   });
   const payload = await response.json().catch(() => ({}));
@@ -497,6 +502,12 @@ export const consuobra = {
       if (error) throw error;
       if (!data) throw new Error("Portal nao encontrado.");
       return data;
+    },
+  },
+
+  billing: {
+    createCheckout(planId) {
+      return apiPost("/api/billing/checkout", { planId });
     },
   },
 };

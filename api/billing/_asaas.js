@@ -53,3 +53,42 @@ export const getProviderSubscriptionId = (payload = {}) => (
   null
 );
 
+export const BILLING_PLANS = {
+  essential: { name: "Plano Essencial Consuobra", value: 19.9 },
+  professional: { name: "Plano Profissional Consuobra", value: 69.9 },
+};
+
+const formatAsaasDateTime = (date) => date.toISOString().slice(0, 19).replace("T", " ");
+
+export const buildCheckoutPayload = ({ userId, planId, origin, firstDueDate }) => {
+  const plan = BILLING_PLANS[planId];
+  if (!plan) throw new Error("Plano de cobranca invalido.");
+  const dueDate = new Date(firstDueDate);
+  if (Number.isNaN(dueDate.getTime())) throw new Error("Data da primeira cobranca invalida.");
+  const endDate = new Date(dueDate);
+  endDate.setFullYear(endDate.getFullYear() + 10);
+  const reference = `consuobra:${userId}:${planId}`;
+
+  return {
+    billingTypes: ["CREDIT_CARD"],
+    chargeTypes: ["RECURRENT"],
+    minutesToExpire: 60,
+    externalReference: reference,
+    callback: {
+      successUrl: `${origin}/settings?billing=success`,
+      cancelUrl: `${origin}/settings?billing=canceled`,
+      expiredUrl: `${origin}/settings?billing=expired`,
+    },
+    items: [{
+      name: plan.name,
+      description: "Assinatura mensal da plataforma Consuobra",
+      quantity: 1,
+      value: plan.value,
+    }],
+    subscription: {
+      cycle: "MONTHLY",
+      nextDueDate: formatAsaasDateTime(dueDate),
+      endDate: formatAsaasDateTime(endDate),
+    },
+  };
+};

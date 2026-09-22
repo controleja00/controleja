@@ -6,12 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageHeader from "../components/PageHeader";
 import { User, Building2, Shield, CreditCard, LogOut, CheckCircle2 } from "lucide-react";
-import { CONSUOBRA_PLANS, TRIAL_DAYS, getCheckoutUrl, getPlanById, getUserPlanId } from "@/lib/plans";
+import { CONSUOBRA_PLANS, TRIAL_DAYS, getPlanById, getUserPlanId, isPaidPlan } from "@/lib/plans";
 
 export default function Settings() {
   const [user, setUser] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [checkoutPlan, setCheckoutPlan] = useState("");
+  const [billingError, setBillingError] = useState("");
   const [profile, setProfile] = useState({ full_name: "", phone: "", company_name: "", cnpj: "", job_title: "" });
   const currentPlan = getPlanById(getUserPlanId(user));
   const isTrialing = user?.subscription_status === "trialing";
@@ -42,6 +44,18 @@ export default function Settings() {
   };
 
   const set = (k, v) => setProfile(p => ({ ...p, [k]: v }));
+
+  const startCheckout = async (planId) => {
+    setBillingError("");
+    setCheckoutPlan(planId);
+    try {
+      const { checkoutUrl } = await consuobra.billing.createCheckout(planId);
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      setBillingError(error?.message || "Nao foi possivel abrir o checkout agora.");
+      setCheckoutPlan("");
+    }
+  };
 
   return (
     <div>
@@ -108,15 +122,16 @@ export default function Settings() {
               </div>
               <div className="cj-form-panel p-6">
                 <h2 className="font-semibold mb-4">Comparar planos</h2>
+                {billingError && <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{billingError}</p>}
                 <div className="grid sm:grid-cols-3 gap-4 text-sm">
                   {CONSUOBRA_PLANS.map(p => (
                     <div key={p.id} className={`rounded-xl p-4 border ${p.id === getUserPlanId(user) ? "border-primary bg-primary/5" : "border-border"}`}>
                       <p className="font-bold text-sm mb-0.5">{p.name}</p>
                       <p className="text-xs text-muted-foreground mb-3">{p.price}{p.period}</p>
                       {p.features.slice(0, 4).map(i => <p key={i} className="text-xs flex items-center gap-1.5 mb-1"><CheckCircle2 className="h-3 w-3 text-emerald-500" />{i}</p>)}
-                      {getCheckoutUrl(p.id) && p.id !== getUserPlanId(user) && (
-                        <Button variant="outline" size="sm" className="mt-3 w-full" onClick={() => { window.location.href = getCheckoutUrl(p.id); }}>
-                          Assinar
+                      {isPaidPlan(p.id) && p.id !== getUserPlanId(user) && (
+                        <Button variant="outline" size="sm" className="mt-3 w-full" disabled={Boolean(checkoutPlan)} onClick={() => startCheckout(p.id)}>
+                          {checkoutPlan === p.id ? "Abrindo checkout..." : "Assinar"}
                         </Button>
                       )}
                     </div>
