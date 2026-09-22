@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { consuobra } from "@/api/consuobraClient";
 import { History, Loader2, TrendingUp, TrendingDown } from "lucide-react";
 
-export default function ProgressHistory({ projectId }) {
+export default function ProgressHistory({ projectId, refreshKey = 0 }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     consuobra.entities.ProgressHistory.filter({ project_id: projectId }, "-created_date", 20)
       .then(d => { setHistory(d); setLoading(false); });
-  }, [projectId]);
+  }, [projectId, refreshKey]);
 
   if (loading) return (
     <div className="flex items-center justify-center py-8">

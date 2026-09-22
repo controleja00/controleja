@@ -28,13 +28,17 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
   const [subs, setSubs] = useState([]);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     consuobra.auth.me().then((me) => consuobra.entities.Subcontractor.filter({ created_by_id: me.id }).then(setSubs));
   }, []);
 
   useEffect(() => {
-    if (open) setForm(getEmpty());
+    if (open) {
+      setForm(getEmpty());
+      setError("");
+    }
   }, [open]);
 
   const set = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
@@ -61,26 +65,36 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
     }
 
     setSaving(true);
+    setError("");
     try {
       const sub = subs.find(s => s.id === form.subcontractor_id);
       await consuobra.entities.Measurement.create({
-        ...form,
         project_id: project.id,
         project_name: project.name,
+        subcontractor_id: isOwnTeam(form.subcontractor_id) ? null : form.subcontractor_id,
         subcontractor_name: isOwnTeam(form.subcontractor_id) ? OWN_TEAM_NAME : sub?.company_name || "",
+        service: form.service,
+        unit: form.unit,
         contracted_qty: Number(form.contracted_qty) || 0,
         executed_qty: Number(form.executed_qty) || 0,
         unit_price: Number(form.unit_price) || 0,
         total_value: totalValue,
+        measurement_date: form.measurement_date || null,
+        comments: form.phase_name
+          ? `Fase: ${form.phase_name}${form.comments ? `\n${form.comments}` : ""}`
+          : form.comments,
+        photos: form.photos || [],
         status: "Pendente",
       });
       toast.success("Medição criada com sucesso!");
       onSaved();
     } catch (err) {
       console.error("Erro ao criar medição:", err);
-      toast.error("Erro ao salvar: " + (err.message || "Tente novamente."));
+      setError("Não foi possível salvar a medição. Revise os dados ou tente novamente.");
+      toast.error("Não foi possível salvar a medição.");
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
   // Filter subs linked to this project if available
@@ -99,6 +113,11 @@ export default function NewMeasurementModal({ open, onOpenChange, project, onSav
         </DialogHeader>
 
         <div className="space-y-4 pt-2">
+          {error && (
+            <div role="alert" className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {error}
+            </div>
+          )}
           {/* Serviço */}
           <div>
             <Label>Serviço Executado *</Label>

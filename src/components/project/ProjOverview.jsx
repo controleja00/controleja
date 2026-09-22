@@ -219,9 +219,11 @@ export default function ProjOverview({ project: initialProject, measurements, do
   const [showRevenue, setShowRevenue] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
   const [showData, setShowData] = useState(false);
+  const [historyRefreshKey, setHistoryRefreshKey] = useState(0);
 
   const handleProjectSaved = (updated) => {
     setProject(updated);
+    setHistoryRefreshKey((key) => key + 1);
     onProjectUpdated?.(updated);
   };
 
@@ -385,7 +387,7 @@ export default function ProjOverview({ project: initialProject, measurements, do
       </div>
 
       {/* Histórico de Progresso */}
-      <ProgressHistory projectId={project.id} />
+      <ProgressHistory projectId={project.id} refreshKey={historyRefreshKey} />
 
       {/* Modals */}
       <EditRevenueModal open={showRevenue} onClose={() => setShowRevenue(false)} project={project} onSaved={handleProjectSaved} />
