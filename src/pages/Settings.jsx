@@ -147,13 +147,13 @@ export default function Settings() {
                 <h2 className="font-semibold mb-4">Segurança da conta</h2>
                 <div className="space-y-3">
                   {[
-                    { label: "Autenticação de dois fatores", status: "Desativada", action: "Ativar" },
-                    { label: "Sessões ativas", status: "1 dispositivo", action: "Gerenciar" },
-                    { label: "Log de acessos", status: "Disponível", action: "Ver histórico" },
+                    { label: "Autenticação de dois fatores", status: "Em preparação", action: "Em breve", disabled: true },
+                    { label: "Sessões ativas", status: "Gerenciadas com segurança pelo Supabase", action: "Protegido", disabled: true },
+                    { label: "Histórico de atividades", status: "Alterações registradas na conta", action: "Ver histórico", to: "/audit-logs" },
                   ].map(item => (
                     <div key={item.label} className="flex items-center justify-between py-3 border-b border-border last:border-0">
                       <div><p className="text-sm font-medium">{item.label}</p><p className="text-xs text-muted-foreground">{item.status}</p></div>
-                      <Button variant="outline" size="sm">{item.action}</Button>
+                      <Button variant="outline" size="sm" disabled={item.disabled} onClick={() => item.to && (window.location.href = item.to)}>{item.action}</Button>
                     </div>
                   ))}
                 </div>
@@ -164,11 +164,11 @@ export default function Settings() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between py-3 border-b border-border">
                     <div><p className="text-sm font-medium">Exportar todos os dados</p><p className="text-xs text-muted-foreground">Download completo em JSON</p></div>
-                    <Button variant="outline" size="sm">Exportar</Button>
+                    <Button variant="outline" size="sm" onClick={() => { window.location.href = "/support?subject=exportar-dados"; }}>Solicitar</Button>
                   </div>
                   <div className="flex items-center justify-between py-3">
                     <div><p className="text-sm font-medium text-destructive">Excluir conta</p><p className="text-xs text-muted-foreground">Remove permanentemente todos os dados</p></div>
-                    <Button variant="destructive" size="sm">Excluir</Button>
+                    <Button variant="destructive" size="sm" onClick={() => { window.location.href = "/support?subject=excluir-conta"; }}>Solicitar exclusão</Button>
                   </div>
                 </div>
               </div>
