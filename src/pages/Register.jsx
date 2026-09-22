@@ -4,7 +4,7 @@ import { consuobra } from "@/api/consuobraClient";
 import { Eye, EyeOff, MailCheck } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { isGoogleAuthEnabled, redirectToGoogleAuth } from "@/lib/googleAuthRedirect";
-import { ACTIVE_PLAN_ID, getPlanById, getTrialEndDate, isPaidPlan } from "@/lib/plans";
+import { ACTIVE_PLAN_ID, getPlanById, isPaidPlan } from "@/lib/plans";
 
 const Logo = () => (
   <BrandLogo size="lg" className="justify-center mb-8" />
@@ -36,15 +36,8 @@ export default function Register() {
         email,
         password,
         plan_id: selectedPlan.id,
-        subscription_status: isPaidPlan(selectedPlan.id) ? "trialing" : "free",
-        trial_ends_at: isPaidPlan(selectedPlan.id) ? getTrialEndDate() : null,
       });
       if (result?.session) {
-        await consuobra.auth.updateMe({
-          plan_id: selectedPlan.id,
-          subscription_status: isPaidPlan(selectedPlan.id) ? "trialing" : "free",
-          trial_ends_at: isPaidPlan(selectedPlan.id) ? getTrialEndDate() : null,
-        }).catch(() => {});
         window.location.href = "/onboarding";
         return;
       }

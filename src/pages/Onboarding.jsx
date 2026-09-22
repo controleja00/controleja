@@ -48,14 +48,11 @@ export default function Onboarding() {
         return;
       }
       setLoading(true);
-      const me = await consuobra.auth.me().catch(() => null);
       await consuobra.auth.updateMe({
         company_name: data.company_name,
         company_type: data.company_type,
         full_name: data.contact_name,
         phone: data.phone,
-        plan_id: me?.plan_id || "free",
-        subscription_status: me?.subscription_status || "free",
       }).catch(() => {});
       setLoading(false);
     }

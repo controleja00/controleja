@@ -68,7 +68,7 @@ export default function ProjectForm() {
       if (!isEdit) {
         const plan = getPlanById(getUserPlanId(me));
         consuobra.entities.Project.filter({ created_by_id: me.id }).then((items) => {
-          const activeCount = items.filter((p) => p.status !== "Arquivada").length;
+          const activeCount = items.filter((p) => p.status !== "Concluída").length;
           if (activeCount >= plan.limits.activeProjects) {
             setPlanLimit({
               activeCount,
@@ -127,7 +127,10 @@ export default function ProjectForm() {
       navigate("/projects");
     } catch (saveError) {
       console.error("Project save failed", saveError);
-      setError("Não foi possível salvar a obra agora. Revise os dados ou tente novamente em alguns instantes.");
+      const isPlanLimit = saveError?.message?.includes("PROJECT_PLAN_LIMIT");
+      setError(isPlanLimit
+        ? "Você atingiu o limite de obras ativas do seu plano. Conclua uma obra ou escolha um plano com mais capacidade."
+        : "Não foi possível salvar a obra agora. Revise os dados ou tente novamente em alguns instantes.");
       setSaving(false);
     }
   };

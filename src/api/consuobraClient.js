@@ -115,6 +115,15 @@ const ensureProfile = async (authUser) => {
   return data;
 };
 
+const activateRequestedTrial = async (authUser) => {
+  const requestedPlan = authUser?.user_metadata?.requested_plan;
+  if (requestedPlan !== "essential" && requestedPlan !== "professional") return null;
+  const client = requireSupabase();
+  const { data, error } = await client.rpc("start_trial", { p_plan: requestedPlan });
+  if (error) throw error;
+  return data;
+};
+
 const applyFilters = (query, filters = {}) => {
   Object.entries(filters || {}).forEach(([field, value]) => {
     if (value === undefined || value === null || value === "") return;
@@ -349,6 +358,7 @@ export const consuobra = {
       const { data, error } = await client.auth.signInWithPassword({ email, password });
       if (error) throw error;
       await ensureProfile(data.user);
+      await activateRequestedTrial(data.user);
       return data;
     },
 
@@ -365,7 +375,10 @@ export const consuobra = {
         },
       });
       if (error) throw error;
-      if (data.user && data.session) await ensureProfile(data.user);
+      if (data.user && data.session) {
+        await ensureProfile(data.user);
+        await activateRequestedTrial(data.user);
+      }
       return data;
     },
 
@@ -378,6 +391,7 @@ export const consuobra = {
       });
       if (error) throw error;
       await ensureProfile(data.user);
+      await activateRequestedTrial(data.user);
       return {
         ...data,
         access_token: data.session?.access_token,
