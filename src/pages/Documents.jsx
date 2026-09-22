@@ -132,6 +132,7 @@ export default function Documents() {
     try {
       await consuobra.entities.Document.create({
         ...form,
+        subcontractor_id: isOwnTeam(form.subcontractor_id) ? null : form.subcontractor_id,
         name: form.name || form.type,
         file_url: fileUrl,
       });
