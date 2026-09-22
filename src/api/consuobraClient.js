@@ -256,6 +256,39 @@ const uploadFile = async ({ file }) => {
   return { file_url: data.publicUrl, path };
 };
 
+const uploadPrivateFile = async ({ file }) => {
+  if (!file) throw new Error("Arquivo nao informado.");
+  const client = requireSupabase();
+  const {
+    data: { user },
+    error: userError,
+  } = await client.auth.getUser();
+
+  if (userError || !user) throw new Error("Faca login para enviar arquivos.");
+
+  const safeName = file.name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9._-]/g, "-")
+    .toLowerCase();
+  const path = `${user.id}/${Date.now()}-${crypto.randomUUID()}-${safeName}`;
+  const { error } = await client.storage.from("private-files").upload(path, file, {
+    cacheControl: "3600",
+    upsert: false,
+  });
+  if (error) throw error;
+  return { file_url: `private://${path}`, path };
+};
+
+const getFileUrl = async (storedUrl, expiresIn = 900) => {
+  if (!storedUrl?.startsWith("private://")) return storedUrl || "";
+  const client = requireSupabase();
+  const path = storedUrl.slice("private://".length);
+  const { data, error } = await client.storage.from("private-files").createSignedUrl(path, expiresIn);
+  if (error) throw error;
+  return data.signedUrl;
+};
+
 const createAgentsAdapter = () => ({
   async createConversation({ metadata } = {}) {
     const id = crypto.randomUUID();
@@ -430,6 +463,8 @@ export const consuobra = {
   integrations: {
     Core: {
       UploadFile: uploadFile,
+      UploadPrivateFile: uploadPrivateFile,
+      GetFileUrl: getFileUrl,
       InvokeLLM: invokeLLM,
       SendEmail: (request) => apiPost("/api/email/send", request),
       TranscribeAudio: async (request) => {

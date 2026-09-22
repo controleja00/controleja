@@ -62,6 +62,7 @@ export default function Documents() {
   const [fileUrl, setFileUrl] = useState("");
   const [fileName, setFileName] = useState("");
   const [error, setError] = useState("");
+  const [documentUrls, setDocumentUrls] = useState({});
 
   const load = () => {
     consuobra.auth.me().then((me) => Promise.all([
@@ -78,6 +79,23 @@ export default function Documents() {
 
   useEffect(load, []);
 
+  useEffect(() => {
+    let active = true;
+    Promise.all(
+      docs.filter((doc) => doc.file_url).map(async (doc) => {
+        try {
+          const url = await consuobra.integrations.Core.GetFileUrl(doc.file_url);
+          return [doc.id, url];
+        } catch {
+          return [doc.id, ""];
+        }
+      })
+    ).then((entries) => {
+      if (active) setDocumentUrls(Object.fromEntries(entries));
+    });
+    return () => { active = false; };
+  }, [docs]);
+
   const handleFile = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -85,7 +103,7 @@ export default function Documents() {
     setFileName(file.name);
     setError("");
     try {
-      const { file_url } = await consuobra.integrations.Core.UploadFile({ file });
+      const { file_url } = await consuobra.integrations.Core.UploadPrivateFile({ file });
       setFileUrl(file_url);
     } catch {
       setError("Não foi possível enviar o arquivo. Tente novamente.");
@@ -278,8 +296,8 @@ export default function Documents() {
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex flex-wrap justify-center gap-1">
-                            {doc.file_url && (
-                              <a href={doc.file_url} target="_blank" rel="noopener noreferrer">
+                            {documentUrls[doc.id] && (
+                              <a href={documentUrls[doc.id]} target="_blank" rel="noopener noreferrer">
                                 <Button size="sm" variant="ghost" className="h-8 text-xs">
                                   <ExternalLink className="h-3 w-3" />Ver
                                 </Button>
