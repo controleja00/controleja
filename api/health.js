@@ -4,8 +4,9 @@ export default function handler(_request, response) {
     email: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
     ai: Boolean(process.env.OPENAI_API_KEY),
     payments: Boolean(
-      process.env.VITE_ASAAS_ESSENTIAL_CHECKOUT_URL &&
-      process.env.VITE_ASAAS_PROFESSIONAL_CHECKOUT_URL
+      process.env.ASAAS_API_KEY &&
+      process.env.ASAAS_WEBHOOK_TOKEN &&
+      process.env.SUPABASE_SERVICE_ROLE_KEY
     ),
   };
 
