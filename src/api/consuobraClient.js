@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { validateUploadFile } from "@/lib/fileUpload";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
 const supabaseAnonKey =
@@ -245,7 +246,7 @@ const invokeLLM = async (request = {}) => {
 };
 
 const uploadFile = async ({ file }) => {
-  if (!file) throw new Error("Arquivo nao informado.");
+  validateUploadFile(file);
   const client = requireSupabase();
   const {
     data: { user },
@@ -271,7 +272,7 @@ const uploadFile = async ({ file }) => {
 };
 
 const uploadPrivateFile = async ({ file }) => {
-  if (!file) throw new Error("Arquivo nao informado.");
+  validateUploadFile(file);
   const client = requireSupabase();
   const {
     data: { user },

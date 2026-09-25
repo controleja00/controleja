@@ -18,8 +18,9 @@ export default function ContractAnalysis() {
     if (!f) return;
     setFile(f);
     setUploading(true);
-    const { file_url } = await consuobra.integrations.Core.UploadFile({ file: f });
-    setFileUrl(file_url);
+    const { file_url } = await consuobra.integrations.Core.UploadPrivateFile({ file: f });
+    const signedUrl = await consuobra.integrations.Core.GetFileUrl(file_url, 1800);
+    setFileUrl(signedUrl);
     setUploading(false);
   };
 

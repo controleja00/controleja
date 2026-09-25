@@ -359,7 +359,7 @@ export default function Documents() {
               <label className="mt-1.5 flex cursor-pointer items-center gap-3 rounded-xl border border-dashed px-4 py-3 transition-colors hover:bg-[#f6f8fc]" style={{ borderColor: palette.steel }}>
                 <Upload className="h-4 w-4" style={{ color: palette.navy }} />
                 <span className="text-sm" style={{ color: palette.text }}>{uploading ? "Enviando arquivo..." : fileName || "Escolher arquivo"}</span>
-                <input type="file" className="hidden" onChange={handleFile} disabled={uploading} />
+                <input type="file" accept="image/jpeg,image/png,image/webp,application/pdf,.doc,.docx,.xls,.xlsx" className="hidden" onChange={handleFile} disabled={uploading} />
               </label>
             </div>
             <div>
