@@ -5,6 +5,7 @@ import { Eye, EyeOff, MailCheck } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { isGoogleAuthEnabled, redirectToGoogleAuth } from "@/lib/googleAuthRedirect";
 import { ACTIVE_PLAN_ID, getPlanById, isPaidPlan } from "@/lib/plans";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Logo = () => (
   <BrandLogo size="lg" className="justify-center mb-8" />
@@ -20,6 +21,7 @@ export default function Register() {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [legalAccepted, setLegalAccepted] = useState(false);
 
   useEffect(() => { document.title = "Criar conta | Consuobra"; }, []);
 
@@ -28,6 +30,7 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault(); setError("");
     if (!email || !password) { setError("Preencha todos os campos obrigatórios."); return; }
+    if (!legalAccepted) { setError("Aceite os Termos de Uso e a Política de Privacidade para continuar."); return; }
     if (password !== confirm) { setError("As senhas não coincidem. Verifique e tente novamente."); return; }
     if (password.length < 8) { setError("A senha deve ter no mínimo 8 caracteres."); return; }
     setLoading(true);
@@ -36,6 +39,7 @@ export default function Register() {
         email,
         password,
         plan_id: selectedPlan.id,
+        legalAccepted,
       });
       if (result?.session) {
         window.location.href = "/onboarding";
@@ -58,7 +62,12 @@ export default function Register() {
 
   const handleGoogleRegister = () => {
     setError("");
+    if (!legalAccepted) {
+      setError("Aceite os Termos de Uso e a Política de Privacidade para continuar com o Google.");
+      return;
+    }
     try {
+      window.localStorage.setItem("consuobra_legal_consent", "2026-09-25");
       redirectToGoogleAuth("/onboarding");
     } catch (err) {
       setError(err?.message || "Não foi possível iniciar o cadastro pelo Google. Tente novamente ou crie a conta usando e-mail e senha.");
@@ -98,6 +107,12 @@ export default function Register() {
                 <div>
                   <label className="block text-sm font-semibold mb-1.5" style={{ color: "#172441" }}>Confirmar senha *</label>
                   <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Repita a senha" required className={inputClass} />
+                </div>
+                <div className="flex items-start gap-2.5 rounded-lg border border-[#e1e5ed] p-3">
+                  <Checkbox id="legal-consent" checked={legalAccepted} onCheckedChange={(checked) => setLegalAccepted(checked === true)} />
+                  <label htmlFor="legal-consent" className="text-xs leading-relaxed cursor-pointer" style={{ color: "#424c62" }}>
+                    Li e aceito os <Link to="/terms" target="_blank" className="font-semibold underline">Termos de Uso</Link> e a <Link to="/privacy" target="_blank" className="font-semibold underline">Política de Privacidade</Link>.
+                  </label>
                 </div>
                 <button type="submit" disabled={loading} className="w-full h-11 rounded-xl font-bold text-base text-white transition-opacity disabled:opacity-60" style={{ background: "#1f3258" }}>
                   {loading ? "Criando conta..." : "Criar conta grátis"}

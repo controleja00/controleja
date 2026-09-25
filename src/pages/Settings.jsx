@@ -5,8 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageHeader from "../components/PageHeader";
-import { User, Building2, Shield, CreditCard, LogOut, CheckCircle2 } from "lucide-react";
+import { User, Building2, Shield, CreditCard, LogOut, CheckCircle2, Download, Trash2, Loader2 } from "lucide-react";
 import { CONSUOBRA_PLANS, TRIAL_DAYS, getPlanById, getUserPlanId, isPaidPlan } from "@/lib/plans";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function Settings() {
   const [user, setUser] = useState(null);
@@ -14,6 +15,11 @@ export default function Settings() {
   const [saved, setSaved] = useState(false);
   const [checkoutPlan, setCheckoutPlan] = useState("");
   const [billingError, setBillingError] = useState("");
+  const [exporting, setExporting] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [privacyError, setPrivacyError] = useState("");
   const [profile, setProfile] = useState({ full_name: "", phone: "", company_name: "", cnpj: "", job_title: "" });
   const currentPlan = getPlanById(getUserPlanId(user));
   const isTrialing = user?.subscription_status === "trialing";
@@ -54,6 +60,30 @@ export default function Settings() {
     } catch (error) {
       setBillingError(error?.message || "Nao foi possivel abrir o checkout agora.");
       setCheckoutPlan("");
+    }
+  };
+
+  const exportData = async () => {
+    setPrivacyError("");
+    setExporting(true);
+    try {
+      await consuobra.auth.exportMyData();
+    } catch (error) {
+      setPrivacyError(error?.message || "Não foi possível exportar seus dados agora.");
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const deleteAccount = async () => {
+    setPrivacyError("");
+    setDeleting(true);
+    try {
+      await consuobra.auth.deleteMyAccount(deleteConfirmation);
+    } catch (error) {
+      setPrivacyError(error?.message || "Não foi possível excluir sua conta agora.");
+      setDeleting(false);
+      setDeleteOpen(false);
     }
   };
 
@@ -161,14 +191,20 @@ export default function Settings() {
               <div className="cj-form-panel p-6">
                 <h2 className="font-semibold mb-1 text-destructive">Zona de risco</h2>
                 <p className="text-sm text-muted-foreground mb-4">Ações irreversíveis. Proceda com cuidado.</p>
+                {privacyError && <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{privacyError}</p>}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between py-3 border-b border-border">
                     <div><p className="text-sm font-medium">Exportar todos os dados</p><p className="text-xs text-muted-foreground">Download completo em JSON</p></div>
-                    <Button variant="outline" size="sm" onClick={() => { window.location.href = "/support?subject=exportar-dados"; }}>Solicitar</Button>
+                    <Button variant="outline" size="sm" className="gap-1.5" disabled={exporting} onClick={exportData}>
+                      {exporting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+                      {exporting ? "Preparando..." : "Baixar dados"}
+                    </Button>
                   </div>
                   <div className="flex items-center justify-between py-3">
                     <div><p className="text-sm font-medium text-destructive">Excluir conta</p><p className="text-xs text-muted-foreground">Remove permanentemente todos os dados</p></div>
-                    <Button variant="destructive" size="sm" onClick={() => { window.location.href = "/support?subject=excluir-conta"; }}>Solicitar exclusão</Button>
+                    <Button variant="destructive" size="sm" className="gap-1.5" onClick={() => { setPrivacyError(""); setDeleteConfirmation(""); setDeleteOpen(true); }}>
+                      <Trash2 className="h-3.5 w-3.5" />Excluir conta
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -181,6 +217,28 @@ export default function Settings() {
           </TabsContent>
         </Tabs>
       </div>
+      <Dialog open={deleteOpen} onOpenChange={(open) => !deleting && setDeleteOpen(open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Excluir sua conta definitivamente?</DialogTitle>
+            <DialogDescription>
+              Obras, medições, documentos, fotos e demais dados serão removidos. Uma assinatura ativa será cancelada antes da exclusão. Esta ação não pode ser desfeita.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2">
+            <Label htmlFor="delete-confirmation">Digite seu e-mail para confirmar</Label>
+            <Input id="delete-confirmation" type="email" value={deleteConfirmation} onChange={(event) => setDeleteConfirmation(event.target.value)} placeholder={user?.email || "seu@email.com"} autoComplete="off" />
+            <p className="text-xs text-muted-foreground">Por segurança, pode ser necessário sair e entrar novamente antes de concluir.</p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" disabled={deleting} onClick={() => setDeleteOpen(false)}>Cancelar</Button>
+            <Button variant="destructive" disabled={deleting || deleteConfirmation.trim().toLowerCase() !== user?.email?.trim().toLowerCase()} onClick={deleteAccount}>
+              {deleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Excluir permanentemente
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

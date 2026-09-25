@@ -227,6 +227,24 @@ const apiPost = async (path, body) => {
   return payload;
 };
 
+const authenticatedFetch = async (path, options = {}) => {
+  const session = supabase ? await supabase.auth.getSession().catch(() => null) : null;
+  const accessToken = session?.data?.session?.access_token;
+  const response = await fetch(path, {
+    ...options,
+    headers: {
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      ...(options.headers || {}),
+    },
+  });
+  if (!response.ok) {
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload.error || "Servico indisponivel no momento.");
+  }
+  return response;
+};
+
 const safeSameOriginPath = (value, fallback = "/dashboard") => {
   if (!value || typeof value !== "string" || value.includes("\\")) return fallback;
   try {
@@ -348,6 +366,11 @@ export const consuobra = {
       } = await client.auth.getUser();
       if (error || !user) throw error || new Error("Usuario nao autenticado.");
       const profile = await getProfile(user.id).catch(() => ensureProfile(user));
+      if (window.localStorage.getItem("consuobra_legal_consent") === "2026-09-25" && !profile?.legal_version) {
+        await client.rpc("record_current_legal_consent", { p_version: "2026-09-25" });
+        window.localStorage.removeItem("consuobra_legal_consent");
+        return normalizeUser(user, await getProfile(user.id));
+      }
       return normalizeUser(user, profile);
     },
 
@@ -368,8 +391,10 @@ export const consuobra = {
       return data;
     },
 
-    async register({ email, password, plan_id = "free" }) {
+    async register({ email, password, plan_id = "free", legalAccepted = false }) {
+      if (!legalAccepted) throw new Error("Aceite os Termos de Uso e a Politica de Privacidade.");
       const client = requireSupabase();
+      const legalAcceptedAt = new Date().toISOString();
       const { data, error } = await client.auth.signUp({
         email,
         password,
@@ -377,6 +402,8 @@ export const consuobra = {
           emailRedirectTo: `${window.location.origin}/login`,
           data: {
             requested_plan: plan_id,
+            legal_accepted_at: legalAcceptedAt,
+            legal_version: "2026-09-25",
           },
         },
       });
@@ -475,6 +502,31 @@ export const consuobra = {
       });
       if (error) throw error;
       return data;
+    },
+
+    async exportMyData() {
+      const response = await authenticatedFetch("/api/account/export", { method: "GET" });
+      const blob = await response.blob();
+      const disposition = response.headers.get("Content-Disposition") || "";
+      const filename = disposition.match(/filename="([^"]+)"/)?.[1] || "consuobra-dados.json";
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = filename;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    },
+
+    async deleteMyAccount(confirmation) {
+      const response = await authenticatedFetch("/api/account/delete", {
+        method: "DELETE",
+        body: JSON.stringify({ confirmation }),
+      });
+      await response.json();
+      if (supabase) await supabase.auth.signOut().catch(() => {});
+      window.location.href = "/?account_deleted=1";
     },
   },
 

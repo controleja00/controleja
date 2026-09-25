@@ -17,7 +17,7 @@ export default function Privacy() {
         </div>
       </nav>
       <div className="max-w-3xl mx-auto px-4 py-12">
-        <p className="text-sm mb-2" style={{ color: "#778096" }}>Última atualização: 4 de junho de 2026</p>
+        <p className="text-sm mb-2" style={{ color: "#778096" }}>Última atualização: 25 de setembro de 2026</p>
         <h1 className="text-3xl font-black mb-8" style={{ color: "#172441" }}>Política de Privacidade</h1>
         <div className="space-y-8 text-sm leading-relaxed" style={{ color: "#424c62" }}>
           <section>
@@ -63,7 +63,7 @@ export default function Privacy() {
               <li>Portabilidade dos dados</li>
               <li>Revogar consentimento a qualquer momento</li>
             </ul>
-            <p className="mt-2">Para exercer seus direitos, entre em contato: <strong>{CONTACT_EMAILS.support}</strong></p>
+            <p className="mt-2">A exportação e a exclusão podem ser feitas diretamente em Configurações &gt; Segurança. Para correção ou dúvidas, entre em contato: <strong>{CONTACT_EMAILS.support}</strong></p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>6. Segurança</h2>
@@ -71,7 +71,7 @@ export default function Privacy() {
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>7. Retenção de dados</h2>
-            <p>Mantemos os dados necessários enquanto a conta estiver ativa. Pedidos de exportação, correção ou exclusão são atendidos pelo canal de suporte, respeitados os prazos técnicos e as obrigações legais aplicáveis.</p>
+            <p>Mantemos os dados operacionais enquanto a conta estiver ativa. Ao excluir a conta, removemos os registros e arquivos vinculados, inclusive cópias técnicas identificáveis sob nosso controle. Evidências anonimizadas de consentimento e registros que provedores de pagamento precisem conservar por obrigação legal podem permanecer pelo prazo exigido em lei.</p>
           </section>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: "#172441" }}>8. Contato</h2>
