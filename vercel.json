@@ -8,6 +8,10 @@
     {
       "path": "/api/monitor/health",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/backup/storage",
+      "schedule": "30 3 * * *"
     }
   ],
   "headers": [
